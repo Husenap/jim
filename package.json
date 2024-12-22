@@ -26,6 +26,7 @@
     "@types/node": "22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "19.0.2",
+    "daisyui": "^4.12.22",
     "postcss": "8.4.49",
     "supabase": "^2.1.1",
     "tailwind-merge": "^2.5.2",
