@@ -43,7 +43,6 @@ export async function updateSession(request: NextRequest) {
 
   if (user) {
     const { data: profiles } = await supabase.from("profiles").select().eq("user_id", user?.id);
-    console.log(profiles);
     if (!request.nextUrl.pathname.startsWith('/create-profile') &&
       !(profiles && profiles.length > 0)) {
       const url = request.nextUrl.clone();

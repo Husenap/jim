@@ -19,8 +19,6 @@ export async function signInWithGithubAction() {
     console.error(error.code + " " + error.message);
   }
 
-  console.log(data);
-
   if (data.url) {
     redirect(data.url);
   }

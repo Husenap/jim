@@ -1,7 +1,9 @@
 import { signInWithGithubAction } from "@/components/auth/actions";
+import { Button } from "@nextui-org/react";
+
 
 export default function SignInButton() {
   return (
-    <button className="btn btn-primary" onClick={signInWithGithubAction}>Sign in</button>
+    <Button color="primary" onPress={signInWithGithubAction}>Sign in</Button>
   );
 }

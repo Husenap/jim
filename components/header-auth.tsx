@@ -1,5 +1,3 @@
-import { signInWithGithubAction, signOutAction } from "@/components/auth/actions";
-import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
 import SignOutButton from "@/components/auth/sign-out-button";
 import SignInButton from "@/components/auth/sign-in-button";

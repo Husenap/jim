@@ -1,7 +1,8 @@
 import { signOutAction } from "@/components/auth/actions";
+import { Button } from "@nextui-org/react";
 
 export default function SignOutButton() {
   return (
-    <button className="btn btn-primary" onClick={signOutAction}>Sign out</button>
+    <Button color="danger" onPress={signOutAction}>Sign out</Button>
   );
 }
