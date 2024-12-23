@@ -36,7 +36,7 @@ export default function RootLayout({
               <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
                 <div className="flex gap-5 items-center font-semibold">
                   <Link href={"/"} className="flex flex-row gap-2 items-center">
-                    <Avatar src="favicon.ico"></Avatar>
+                    <Avatar src="/favicon.ico"></Avatar>
                     Jim
                   </Link>
                 </div>

@@ -5,7 +5,7 @@ export default function Header() {
     <div
       className="w-full grid bg-center bg-cover"
       style={{
-        backgroundImage: "url(hero.webp)",
+        backgroundImage: "url(/hero.webp)",
       }}>
       <div className="bg-opacity-60 bg-background col-start-1 row-start-1"></div>
       <div className="flex items-center justify-center text-foreground text-center col-start-1 row-start-1 p-4 text-balance">
