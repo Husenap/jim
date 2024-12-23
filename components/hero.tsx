@@ -1,11 +1,10 @@
-import SignInButton from "@/components/auth/sign-in-button";
 
 export default function Header() {
   return (
     <div
       className="w-full grid bg-center bg-cover"
       style={{
-        backgroundImage: "url(hero.webp)",
+        backgroundImage: "url(/hero.webp)",
       }}>
       <div className="bg-opacity-60 bg-background col-start-1 row-start-1"></div>
       <div className="flex items-center justify-center text-foreground text-center col-start-1 row-start-1 p-4 text-balance">
@@ -14,7 +13,6 @@ export default function Header() {
           <p className="mb-5">
             The best and fastest way to track your gym progress!
           </p>
-          <SignInButton />
         </div>
       </div>
     </div>
