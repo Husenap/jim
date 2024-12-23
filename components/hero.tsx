@@ -1,4 +1,3 @@
-import SignInButton from "@/components/auth/sign-in-button";
 
 export default function Header() {
   return (
@@ -14,7 +13,6 @@ export default function Header() {
           <p className="mb-5">
             The best and fastest way to track your gym progress!
           </p>
-          <SignInButton />
         </div>
       </div>
     </div>

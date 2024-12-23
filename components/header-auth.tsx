@@ -1,21 +1,17 @@
-import { createClient } from "@/utils/supabase/server";
-import SignOutButton from "@/components/auth/sign-out-button";
-import SignInButton from "@/components/auth/sign-in-button";
+"use client";
 
-export default async function AuthButton() {
-  const supabase = await createClient();
+import { SignInButton, UserButton } from "@clerk/clerk-react";
+import { Authenticated, Unauthenticated } from "convex/react";
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return user ? (
-    <div className="flex items-center gap-4">
-      {user.user_metadata.name}!
-      <img src={user.user_metadata.avatar_url} width={30} alt="" />
-      <SignOutButton />
-    </div>
-  ) : (
-    <SignInButton />
+export default function AuthButton() {
+  return (
+    <main>
+      <Unauthenticated>
+        <SignInButton />
+      </Unauthenticated>
+      <Authenticated>
+        <UserButton />
+      </Authenticated>
+    </main>
   );
 }
