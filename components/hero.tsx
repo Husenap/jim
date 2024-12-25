@@ -1,8 +1,13 @@
+"use client";
+
+import { SignInButton } from "@clerk/clerk-react";
+import { Button } from "@nextui-org/react";
+import { LogIn } from "lucide-react";
 
 export default function Header() {
   return (
     <div
-      className="w-full grid bg-center bg-cover"
+      className="w-full flex-1 grid bg-center bg-cover"
       style={{
         backgroundImage: "url(/hero.webp)",
       }}>
@@ -13,6 +18,9 @@ export default function Header() {
           <p className="mb-5">
             The best and fastest way to track your gym progress!
           </p>
+          <SignInButton>
+            <Button color="primary" variant="shadow" startContent={<LogIn />}>Sign In</Button>
+          </SignInButton>
         </div>
       </div>
     </div>
