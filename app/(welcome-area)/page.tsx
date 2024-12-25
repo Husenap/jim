@@ -5,11 +5,11 @@ import Link from "next/link";
 
 export default async function Home() {
   return (
-    <main className="min-h-dvh flex flex-col">
-      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-        <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-          <div className="flex gap-5 items-center font-semibold">
-            <Link href={"/"} className="flex flex-row gap-2 items-center">
+    <main className="flex min-h-dvh flex-col">
+      <nav className="flex h-16 w-full justify-center border-b border-b-foreground/10">
+        <div className="flex w-full max-w-5xl items-center justify-between p-3 px-5 text-sm">
+          <div className="flex items-center gap-5 font-semibold">
+            <Link href={"/"} className="flex flex-row items-center gap-2">
               <Avatar src="/favicon.ico"></Avatar>
               Jim
             </Link>
@@ -18,7 +18,7 @@ export default async function Home() {
         </div>
       </nav>
 
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-1 flex-col">
         <Hero />
       </div>
     </main>

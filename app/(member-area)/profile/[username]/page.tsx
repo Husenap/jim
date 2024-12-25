@@ -6,19 +6,17 @@ import { Link, User } from "@nextui-org/react";
 import { fetchQuery } from "convex/nextjs";
 import { redirect } from "next/navigation";
 
-
-export default async function Page({ params }: {
-  params: Promise<{ username: string }>
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ username: string }>;
 }) {
   const { username } = await params;
-
 
   const user = await fetchQuery(api.users.byUsername, { username });
 
   if (!user) {
-    return (
-      <span>User @{username} doesn't exist!</span>
-    );
+    return <span>User @{username} doesn't exist!</span>;
   }
 
   const token = await getAuthToken();
@@ -33,12 +31,13 @@ export default async function Page({ params }: {
     <div>
       <User
         avatarProps={{
-          src: user.image_url
+          src: user.image_url,
         }}
         name={user.name}
         description=<Link href={`/profile/${user.username}`} size="sm">
           @{user.username}
-        </Link> />
+        </Link>
+      />
     </div>
   );
 }

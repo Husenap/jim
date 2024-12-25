@@ -3,8 +3,8 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL
-  ? 'https://jim.husseintaher.com'
-  : 'http://localhost:3000';
+  ? "https://jim.husseintaher.com"
+  : "http://localhost:3000";
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
@@ -24,10 +24,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
-      <body className="bg-background h-full w-full text-foreground">
-        <Providers>
-          {children}
-        </Providers>
+      <body className="h-full w-full bg-background text-foreground">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
