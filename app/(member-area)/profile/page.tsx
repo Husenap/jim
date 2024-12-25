@@ -34,7 +34,9 @@ async function UserDataSkeleton() {
 }
 async function UserData() {
   const token = await getAuthToken();
+  if (!token) return <h1>Failed to load user page!</h1>;
   const user = await fetchQuery(api.users.current, {}, { token });
+  if (!user) return <h1>Failed to load user page!</h1>;
 
   return (
     <User
