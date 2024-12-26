@@ -1,6 +1,7 @@
 import { Providers } from "@/app/providers";
 import { Geist } from "next/font/google";
 import "./globals.css";
+import { cn } from "@nextui-org/react";
 
 const defaultUrl = process.env.VERCEL
   ? "https://jim.husseintaher.com"
@@ -23,8 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={geistSans.className} suppressHydrationWarning>
-      <body className="relative h-full w-full bg-background text-foreground">
+    <html
+      lang="en"
+      className={cn(geistSans.className, "h-full min-h-full")}
+      suppressHydrationWarning
+    >
+      <body className="relative h-full min-h-full w-full bg-background text-foreground">
         <Providers>{children}</Providers>
       </body>
     </html>

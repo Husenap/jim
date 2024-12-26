@@ -27,6 +27,8 @@ export function ThemeSwitcher() {
             theme == "light" ? "dark" : theme == "dark" ? "system" : "light",
           )
         }
+        radius="full"
+        size="md"
       >
         {theme == "light" ? <Sun /> : theme == "dark" ? <Moon /> : <Computer />}
       </Button>

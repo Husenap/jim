@@ -8,12 +8,12 @@ import { Authenticated, AuthLoading } from "convex/react";
 export default function Navbar() {
   const userButtonAppearance = {
     elements: {
-      userButtonAvatarBox: "w-8 h-8",
+      userButtonAvatarBox: "w-10 h-10",
     },
   };
 
   return (
-    <nav className="absolute top-0 z-50 flex h-auto w-full items-center gap-2 bg-content1 p-3">
+    <nav className="fixed top-0 z-50 flex h-auto w-full items-center gap-2 bg-content1 p-3">
       <div className="flex-1">
         <Link href="/profile/edit">Edit Profile</Link>
       </div>
@@ -21,12 +21,12 @@ export default function Navbar() {
       <div>
         <ThemeSwitcher />
       </div>
-      <div className="h-8 max-h-8">
+      <div className="h-10 max-h-10">
         <Authenticated>
           <UserButton appearance={userButtonAppearance} />
         </Authenticated>
         <AuthLoading>
-          <Skeleton className="h-8 w-8 rounded-full" />
+          <Skeleton className="h-10 w-10 rounded-full" />
         </AuthLoading>
       </div>
     </nav>

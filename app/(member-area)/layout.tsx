@@ -30,10 +30,10 @@ export default function RootLayout({
   ];
 
   return (
-    <main className="flex h-dvh max-h-dvh w-full flex-1 flex-col">
+    <main className="flex min-h-full w-full flex-1 flex-col">
       <div className="my-16 flex-1 overflow-y-auto">{children}</div>
 
-      <div className="absolute bottom-0 z-50 flex w-full flex-row items-center justify-around bg-content1 p-3">
+      <div className="fixed bottom-0 z-50 flex w-full flex-row items-center justify-around bg-content1 p-3">
         {tabs.map((tab) => (
           <div
             key={tab.href}

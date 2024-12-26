@@ -14,7 +14,7 @@ const convex = new ConvexReactClient(
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <NextUIProvider>
+      <NextUIProvider className="h-full min-h-full">
         <ClerkProvider
           publishableKey={
             process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY as string
