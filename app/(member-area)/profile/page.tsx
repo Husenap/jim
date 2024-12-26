@@ -20,7 +20,7 @@ function UserData() {
   return (
     <User
       avatarProps={{
-        src: user.image_url,
+        src: user.imageURL,
         className: "w-20 h-20",
       }}
       name={user.name}

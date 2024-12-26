@@ -31,7 +31,7 @@ export default async function Page({
     <div>
       <User
         avatarProps={{
-          src: user.image_url,
+          src: user.imageURL,
         }}
         name={user.name}
         description=<Link href={`/profile/u/${user.username}`} size="sm">

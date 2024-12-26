@@ -55,7 +55,6 @@ const schema = defineSchema({
   users: defineTable({
     username: v.string(),
     name: v.optional(v.string()),
-    image_url: v.optional(v.string()),
     imageURL: v.optional(v.string()),
     externalId: v.string(),
   })
