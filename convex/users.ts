@@ -1,6 +1,7 @@
 import { UserJSON } from "@clerk/backend";
 import { v, Validator } from "convex/values";
 import { internalMutation, query, QueryCtx } from "./_generated/server";
+import { getOneFrom } from "convex-helpers/server/relationships";
 
 export const current = query({
   args: {},
@@ -21,7 +22,7 @@ export const upsertFromClerk = internalMutation({
   async handler(ctx, { data }) {
     const userAttributes = {
       username: data.username as string,
-      image_url: data.image_url,
+      imageURL: data.image_url,
       name: `${data.first_name} ${data.last_name}`,
       externalId: data.id,
     };
@@ -65,15 +66,9 @@ export async function getCurrentUser(ctx: QueryCtx) {
 }
 
 async function userByExternalId(ctx: QueryCtx, externalId: string) {
-  return await ctx.db
-    .query("users")
-    .withIndex("byExternalId", (q) => q.eq("externalId", externalId))
-    .unique();
+  return await getOneFrom(ctx.db, "users", "externalId", externalId);
 }
 
 async function userByUsername(ctx: QueryCtx, username: string) {
-  return await ctx.db
-    .query("users")
-    .withIndex("byUsername", (q) => q.eq("username", username))
-    .unique();
+  return await getOneFrom(ctx.db, "users", "username", username);
 }

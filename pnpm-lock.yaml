@@ -44,6 +44,9 @@ dependencies:
   convex:
     specifier: ^1.17.4
     version: 1.17.4(@clerk/clerk-react@5.21.0)(react-dom@19.0.0)(react@19.0.0)
+  convex-helpers:
+    specifier: ^0.1.67
+    version: 0.1.67(convex@1.17.4)(react@19.0.0)
   framer-motion:
     specifier: ^11.15.0
     version: 11.15.0(react-dom@19.0.0)(react@19.0.0)
@@ -4057,6 +4060,26 @@ packages:
 
   /compute-scroll-into-view@3.1.0:
     resolution: {integrity: sha512-rj8l8pD4bJ1nx+dAkMhV1xB5RuZEyVysfxJqB1pRchh1KVvwOv9b7CGB8ZfjTImVv2oF+sYMUkMZq6Na5Ftmbg==}
+    dev: false
+
+  /convex-helpers@0.1.67(convex@1.17.4)(react@19.0.0):
+    resolution: {integrity: sha512-nnb0W2FYKbqJt00UH6raZ/J0A1+CbcFdqmFJTDvvSR1P4RhwBj1TBzS3/B1G1nMYebX3gguSwOWfO0s2rcB/wg==}
+    hasBin: true
+    peerDependencies:
+      convex: ^1.13.0
+      hono: ^4.0.5
+      react: ^17.0.2 || ^18.0.0 || ^19.0.0
+      zod: ^3.22.4
+    peerDependenciesMeta:
+      hono:
+        optional: true
+      react:
+        optional: true
+      zod:
+        optional: true
+    dependencies:
+      convex: 1.17.4(@clerk/clerk-react@5.21.0)(react-dom@19.0.0)(react@19.0.0)
+      react: 19.0.0
     dev: false
 
   /convex@1.17.4(@clerk/clerk-react@5.21.0)(react-dom@19.0.0)(react@19.0.0):
