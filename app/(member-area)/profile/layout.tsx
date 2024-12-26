@@ -6,9 +6,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <div>
       <Navbar />
-      {children}
-    </>
+      <div className="p-2">{children}</div>
+    </div>
   );
 }

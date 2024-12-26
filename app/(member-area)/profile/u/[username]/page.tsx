@@ -34,7 +34,7 @@ export default async function Page({
           src: user.image_url,
         }}
         name={user.name}
-        description=<Link href={`/profile/${user.username}`} size="sm">
+        description=<Link href={`/profile/u/${user.username}`} size="sm">
           @{user.username}
         </Link>
       />

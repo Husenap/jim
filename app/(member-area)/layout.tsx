@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Divider, Link } from "@nextui-org/react";
+import { Button, Link } from "@nextui-org/react";
 import { Dumbbell, Home, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -10,7 +10,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  console.log(pathname);
 
   const tabs = [
     {
@@ -32,11 +31,9 @@ export default function RootLayout({
 
   return (
     <main className="flex h-dvh max-h-dvh w-full flex-1 flex-col">
-      <div className="flex-1 overflow-y-auto">{children}</div>
+      <div className="my-16 flex-1 overflow-y-auto">{children}</div>
 
-      <Divider />
-
-      <div className="flex w-full flex-row items-center justify-around p-4">
+      <div className="absolute bottom-0 z-50 flex w-full flex-row items-center justify-around bg-content1 p-3">
         {tabs.map((tab) => (
           <div
             key={tab.href}
