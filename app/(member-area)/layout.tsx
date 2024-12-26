@@ -30,7 +30,7 @@ export default function RootLayout({
   ];
 
   return (
-    <main className="flex min-h-full w-full flex-1 flex-col">
+    <main className="flex max-h-full min-h-full w-full flex-1 flex-col">
       <div className="my-16 flex-1 overflow-y-auto">{children}</div>
 
       <div className="fixed bottom-0 z-50 flex w-full flex-row items-center justify-around bg-content1 p-3">
