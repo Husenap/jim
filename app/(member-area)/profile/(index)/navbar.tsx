@@ -21,14 +21,6 @@ export default function Navbar() {
       <div>
         <ThemeSwitcher />
       </div>
-      <div className="h-10 max-h-10">
-        <Authenticated>
-          <UserButton appearance={userButtonAppearance} />
-        </Authenticated>
-        <AuthLoading>
-          <Skeleton className="h-10 w-10 rounded-full" />
-        </AuthLoading>
-      </div>
     </nav>
   );
 }
