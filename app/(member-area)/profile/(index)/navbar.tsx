@@ -1,24 +1,30 @@
 "use client";
 
+import ShareButton from "@/components/share-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { UserButton } from "@clerk/clerk-react";
-import { Link, Skeleton } from "@nextui-org/react";
-import { Authenticated, AuthLoading } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Link } from "@nextui-org/react";
+import { useQuery } from "convex/react";
 
 export default function Navbar() {
-  const userButtonAppearance = {
-    elements: {
-      userButtonAvatarBox: "w-10 h-10",
-    },
-  };
+  const user = useQuery(api.users.current);
 
   return (
-    <nav className="fixed top-0 z-50 flex h-auto w-full items-center gap-2 bg-content1 p-3">
+    <nav className="sticky top-0 z-50 flex h-auto w-full items-center gap-2 bg-content1/70 p-3 backdrop-blur-lg">
       <div className="flex-1">
         <Link href="/profile/edit">Edit Profile</Link>
       </div>
 
-      <div>
+      <div className="flex gap-2">
+        {user && (
+          <ShareButton
+            data={{
+              title: `${user.name || user.username}'s Profile`,
+              text: `${user.name || user.username}'s Profile:\n`,
+              url: `/user/${user.username}`,
+            }}
+          />
+        )}
         <ThemeSwitcher />
       </div>
     </nav>

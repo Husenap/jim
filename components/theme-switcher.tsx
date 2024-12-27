@@ -22,13 +22,12 @@ export function ThemeSwitcher() {
       <Button
         isIconOnly
         aria-label="Set theme"
+        variant="light"
         onPress={() =>
           setTheme(
             theme == "light" ? "dark" : theme == "dark" ? "system" : "light",
           )
         }
-        radius="full"
-        size="md"
       >
         {theme == "light" ? <Sun /> : theme == "dark" ? <Moon /> : <Computer />}
       </Button>
