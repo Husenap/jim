@@ -57,6 +57,8 @@ const schema = defineSchema({
     name: v.optional(v.string()),
     imageURL: v.optional(v.string()),
     externalId: v.string(),
+    bio: v.optional(v.string()),
+    link: v.optional(v.string()),
   })
     .index("externalId", ["externalId"])
     .index("username", ["username"]),

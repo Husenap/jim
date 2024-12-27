@@ -1,6 +1,6 @@
 import { UserJSON } from "@clerk/backend";
 import { v, Validator } from "convex/values";
-import { internalMutation, query, QueryCtx } from "./_generated/server";
+import { internalMutation, mutation, query, QueryCtx } from "./_generated/server";
 import { getOneFrom } from "convex-helpers/server/relationships";
 
 export const current = query({
@@ -16,6 +16,19 @@ export const byUsername = query({
     return await userByUsername(ctx, username);
   }
 });
+
+export const updateProfile = mutation({
+  args: {
+    bio: v.optional(v.string()),
+    link: v.optional(v.string()),
+  },
+  handler: async (ctx, { bio, link }) => {
+    const user = await getCurrentUser(ctx);
+    if (user) {
+      await ctx.db.patch(user._id, { bio, link });
+    }
+  }
+})
 
 export const upsertFromClerk = internalMutation({
   args: { data: v.any() as Validator<UserJSON> }, // no runtime validation, trust Clerk
