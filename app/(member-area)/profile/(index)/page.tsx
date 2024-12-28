@@ -1,117 +1,246 @@
 "use client";
 
+import BottomNavbar from "@/app/(member-area)/bottom-navbar";
 import Navbar from "@/app/(member-area)/profile/(index)/navbar";
+import PageContainer from "@/components/page-container";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
-import { Avatar, Button, Link, Skeleton } from "@nextui-org/react";
+import {
+  Avatar,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  Link,
+  Skeleton,
+  User,
+} from "@nextui-org/react";
 import { useQuery } from "convex/react";
-import { Calendar, ChartLine, Dumbbell, PersonStanding } from "lucide-react";
+import {
+  Calendar,
+  ChartLine,
+  Dumbbell,
+  MessageCircle,
+  PersonStanding,
+  Share,
+  ThumbsUp,
+} from "lucide-react";
 
 export default function Page() {
   const user = useQuery(api.users.current);
 
   return (
-    <div>
-      <Navbar />
-      <div className="flex w-full flex-col gap-2 px-2 py-4">
-        {user ? <UserData user={user} /> : <UserDataSkeleton />}
-        {user?.bio && (
-          <p className="my-prose">
-            {user.bio.split("\n").map((text, i) => (
-              <span key={i}>
-                {text}
-                <br />
-              </span>
-            ))}
-          </p>
-        )}
-        {user?.link && (
-          <Link isExternal href={`https://${user.link}`}>
-            {user.link}
-          </Link>
-        )}
-        <div className="py-2">
-          <h3 className="text-default-400">Dashboard</h3>
-          <div className="grid grid-cols-2 grid-rows-2 gap-2">
-            <Button startContent={<ChartLine />}>Statistics</Button>
-            <Button
-              as={Link}
-              href="/profile/exercises"
-              startContent={<Dumbbell />}
-            >
-              Exercises
-            </Button>
-            <Button startContent={<PersonStanding />}>Measures</Button>
-            <Button startContent={<Calendar />}>Calendar</Button>
-          </div>
-        </div>
+    <PageContainer topNavbar={<Navbar />} bottomNavbar={<BottomNavbar />}>
+      {user ? <UserData user={user} /> : <UserDataSkeleton />}
+      {user?.bio && (
+        <p className="my-prose">
+          {user.bio.split("\n").map((text, i) => (
+            <span key={i}>
+              {text}
+              <br />
+            </span>
+          ))}
+        </p>
+      )}
+      {user?.link && (
+        <Link isExternal href={`https://${user.link}`}>
+          {user.link}
+        </Link>
+      )}
+
+      <h3 className="text-default-400">Dashboard</h3>
+      <div className="grid grid-cols-2 grid-rows-2 gap-2">
+        <Button isDisabled startContent={<ChartLine />}>
+          Statistics
+        </Button>
+        <Button as={Link} href="/profile/exercises" startContent={<Dumbbell />}>
+          Exercises
+        </Button>
+        <Button isDisabled startContent={<PersonStanding />}>
+          Measures
+        </Button>
+        <Button isDisabled startContent={<Calendar />}>
+          Calendar
+        </Button>
       </div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio nulla
-      asperiores molestias omnis aliquid. Amet non obcaecati blanditiis?
-      Quaerat, accusantium reiciendis vero earum architecto vel ad consectetur
-      modi harum id. Nemo dignissimos similique deleniti quae voluptates aut
-      molestias debitis, illum vero repellat ullam aliquam est nihil voluptas
-      reprehenderit exercitationem quam quas recusandae placeat iure. Impedit
-      obcaecati doloremque error et voluptate. Provident aut, dolore eum vitae
-      accusantium earum repudiandae eveniet consequuntur voluptatibus veritatis
-      voluptatem enim itaque tenetur excepturi iure nesciunt veniam facilis
-      dicta nam, quisquam repellendus? Quod unde quia consequuntur quis! Quo
-      repellat harum deserunt labore molestias? Consequatur dignissimos, dolore
-      quas fugit adipisci saepe illum quibusdam mollitia ex quasi provident?
-      Nostrum magni iste nemo deserunt, quisquam ad iure culpa dolorem mollitia!
-      Fugit ipsum vel blanditiis necessitatibus omnis? Placeat aspernatur,
-      cupiditate molestias amet provident magnam, ullam fuga, aperiam in nisi
-      exercitationem reprehenderit repudiandae tenetur inventore possimus
-      consequuntur reiciendis veniam. Eum, iusto delectus. Ipsam voluptas
-      dolores fugit alias sequi consectetur iste minus quibusdam, perferendis
-      libero numquam itaque molestiae cum repellat aspernatur vitae. Aspernatur
-      molestias amet magni minima nostrum iusto aliquid magnam similique a. Iste
-      doloribus ab veritatis ipsam saepe. Magnam molestias facere quam veniam
-      suscipit aperiam aliquid qui voluptatem ipsum quibusdam? Natus corrupti
-      hic non? Praesentium facilis voluptas aliquam, voluptates ea minus
-      distinctio! Delectus atque magni hic amet odit doloribus. Non commodi
-      sapiente velit, nobis ut rerum! Alias vero unde tempora fugit aliquam.
-      Omnis laudantium illo, doloremque atque magnam provident dolore cumque
-      necessitatibus? Vel, perspiciatis. Eaque cupiditate nisi reiciendis
-      cumque. Libero voluptatum minima odio. Vero commodi alias nulla numquam at
-      eius rerum, consectetur tempore dolores, est, deserunt recusandae qui
-      repellat delectus debitis odit. Incidunt, eum id optio dignissimos totam
-      eveniet repellendus delectus necessitatibus fuga est rerum error ea qui
-      voluptatem facere magni? Aspernatur dignissimos nobis pariatur eius minima
-      modi saepe amet quaerat corporis. A mollitia aperiam doloribus, non
-      possimus ipsam ad perferendis maiores temporibus minima tenetur quidem
-      maxime. Similique praesentium, nobis consectetur perferendis dolores nulla
-      beatae reprehenderit sequi, blanditiis unde, id cum modi. Maxime deserunt
-      alias nulla tenetur nemo labore, id itaque? Cumque voluptates nisi aliquid
-      soluta aspernatur eaque officiis magni? Expedita culpa nisi aperiam
-      cupiditate incidunt explicabo ipsum dolor non facilis vero? Reprehenderit
-      nisi saepe ipsa nobis consequuntur quas facilis nulla, praesentium quasi
-      voluptatibus, quaerat fuga libero, incidunt qui cupiditate dolorum iure
-      earum natus atque suscipit. Dolorum deserunt pariatur tempora doloremque
-      veniam. Modi possimus, iste sint libero quaerat ab? Ipsa quam corrupti
-      quisquam voluptatem quis tempora recusandae numquam illum minima id atque,
-      amet odio eius saepe. Fugit iure non ex aperiam a. Nostrum saepe
-      cupiditate ad tempora fuga distinctio dolore sunt veritatis delectus
-      soluta rem ut magni, perferendis consequuntur, obcaecati excepturi impedit
-      laudantium doloremque quidem deleniti illum? Autem sed reprehenderit minus
-      quae! Optio dignissimos dicta non nulla cumque iusto itaque asperiores
-      animi eius eos, quam ullam necessitatibus reiciendis officiis
-      reprehenderit natus sunt sequi. Enim vel blanditiis exercitationem
-      architecto eaque, ab provident. Fugiat! Assumenda accusantium velit
-      explicabo omnis iusto doloribus. Nisi, id. Odit itaque repellendus eius
-      autem voluptatem distinctio esse harum vero! Aliquam totam corporis eum?
-      Sed deserunt cupiditate fugiat optio maiores at? Necessitatibus,
-      voluptatibus repellat? Quod, nisi sit hic, excepturi odio non explicabo
-      est vel laborum mollitia, quos suscipit aliquid similique. Ullam sunt quia
-      harum repellendus. Dolorem odit dolor commodi error asperiores. Sit
-      quibusdam quas iusto laboriosam delectus itaque omnis, veritatis
-      consectetur doloribus odio tenetur ut distinctio mollitia quam quia quod
-      beatae maiores iure architecto perspiciatis possimus nobis. Nam, fugiat
-      unde. Exercitationem. Odit explicabo dolorum unde sit ipsam officia
-      repellat voluptas corrupti pariatur a, corporis ea quam nulla reiciendis,
-      vitae eaque necessitatibus ipsum, veritatis numquam placeat aliquid amet
-      excepturi. Veritatis, nisi earum.
-    </div>
+
+      <h3 className="text-default-400">Workouts</h3>
+      <div className="-mx-2 flex flex-col gap-4">
+        <Card radius="none">
+          <CardHeader>
+            <User
+              avatarProps={{
+                src: user?.imageURL,
+              }}
+              name={user?.name || user?.username}
+              description="Yesterday"
+            />
+          </CardHeader>
+          <Divider />
+          <CardBody>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit
+            incidunt quod harum quia at quo ut magni recusandae necessitatibus
+            quidem. Beatae nostrum delectus excepturi. Laboriosam, iusto sed.
+            Corporis, beatae at.
+          </CardBody>
+          <Divider />
+          <CardFooter className="grid grid-cols-3 gap-2">
+            <Button isIconOnly className="w-full" size="sm" variant="light">
+              <ThumbsUp />
+            </Button>
+            <Button isIconOnly className="w-full" size="sm" variant="light">
+              <MessageCircle />
+            </Button>
+            <Button isIconOnly className="w-full" size="sm" variant="light">
+              <Share />
+            </Button>
+          </CardFooter>
+        </Card>
+        <Card radius="none">
+          <CardHeader>
+            <User
+              avatarProps={{
+                src: user?.imageURL,
+              }}
+              name={user?.name || user?.username}
+              description="Yesterday"
+            />
+          </CardHeader>
+          <Divider />
+          <CardBody>
+            Modi assumenda ea cumque explicabo odio aperiam ut sit fuga
+            doloremque magni fugit praesentium deserunt cum, blanditiis rem
+            asperiores porro maiores. Soluta reiciendis ad quasi deleniti
+            doloremque necessitatibus saepe non!
+          </CardBody>
+          <Divider />
+          <CardFooter className="grid grid-cols-3 gap-2">
+            <Button isIconOnly className="w-full" size="sm" variant="light">
+              <ThumbsUp />
+            </Button>
+            <Button isIconOnly className="w-full" size="sm" variant="light">
+              <MessageCircle />
+            </Button>
+            <Button isIconOnly className="w-full" size="sm" variant="light">
+              <Share />
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+      <span>
+        Modi assumenda ea cumque explicabo odio aperiam ut sit fuga doloremque
+        magni fugit praesentium deserunt cum, blanditiis rem asperiores porro
+        maiores. Soluta reiciendis ad quasi deleniti doloremque necessitatibus
+        saepe non!
+      </span>
+      <span>
+        Suscipit atque deleniti tenetur ipsa! Est saepe adipisci debitis itaque,
+        vero eveniet odio sunt suscipit reiciendis accusamus dolorem explicabo
+        provident eos. Laborum dolorum ab dolore doloremque minima incidunt ad
+        pariatur.
+      </span>
+      <span>
+        Obcaecati recusandae, modi rem aliquam fugiat consequuntur nisi rerum,
+        officia minus eligendi vel, exercitationem earum aliquid doloribus
+        deleniti sequi neque quia quas nulla voluptatibus et. Sed delectus
+        aliquid voluptatem eius.
+      </span>
+      <span>
+        Quo accusantium commodi sunt? Asperiores itaque expedita perferendis aut
+        placeat officia minima autem est earum labore! Nihil ratione quis ea
+        neque blanditiis cupiditate. Animi eveniet quae quia fugit, sint harum?
+      </span>
+      <span>
+        In dignissimos officia obcaecati sint esse consequuntur ea maiores
+        voluptate quo, accusantium beatae ab distinctio sapiente id error
+        molestiae veniam. Velit deserunt nobis qui culpa? Id quis sunt nam
+        officiis.
+      </span>
+      <span>
+        Fuga nulla, asperiores dolorum necessitatibus expedita impedit modi
+        eveniet omnis quidem consequatur sint laudantium neque commodi
+        laboriosam doloribus veniam dolorem vero inventore consectetur totam
+        sequi iusto distinctio cupiditate nesciunt. Voluptatem.
+      </span>
+      <span>
+        Est nesciunt modi, ad dignissimos reprehenderit sapiente quo. Labore eos
+        quia quasi perspiciatis cupiditate debitis voluptate suscipit voluptatum
+        repellendus illum reprehenderit quod aliquam hic qui facere, ex
+        explicabo in! Nobis?
+      </span>
+      <span>
+        Sed molestiae minus consequatur enim dolores saepe quos, omnis laborum,
+        officiis ipsa, laboriosam magnam tempore deserunt vitae quidem
+        aspernatur corporis in nam doloremque possimus libero. Suscipit magni
+        consequatur ratione magnam.
+      </span>
+      <span>
+        Accusantium fugit voluptatum nostrum, odio aliquam numquam labore
+        cupiditate iste doloribus perferendis corrupti obcaecati itaque libero
+        natus dolorum, eligendi vero reiciendis vitae veniam culpa voluptatibus.
+        Iure voluptatibus laborum enim fuga?
+      </span>
+      <span>
+        Veniam autem iste nobis ipsam accusamus sint nesciunt quae quasi, eaque
+        eveniet obcaecati laborum aperiam praesentium soluta dolor omnis ut
+        beatae, quisquam debitis rerum alias harum rem. Officiis, dolores aut.
+      </span>
+      <span>
+        Delectus aliquid unde pariatur aspernatur eaque laudantium maiores illo
+        quod veritatis architecto in dignissimos repellat, eum ut error
+        inventore dolor ex et, quos vitae molestiae magnam. Similique beatae
+        molestias quos?
+      </span>
+      <span>
+        Doloribus doloremque autem ullam, dignissimos animi sapiente ea
+        laboriosam ipsa eum dolores, possimus deleniti tempore eaque. Ipsum
+        exercitationem mollitia dolor recusandae deserunt. Impedit adipisci
+        molestias laboriosam expedita, iste aut? Tempora!
+      </span>
+      <span>
+        Quam veritatis commodi quidem praesentium, molestias enim repudiandae
+        eius temporibus architecto voluptatibus et minus consequatur
+        exercitationem iure eos deserunt perferendis velit dignissimos quis
+        harum ex nostrum recusandae. Incidunt, vel. Natus?
+      </span>
+      <span>
+        Maiores quia incidunt amet mollitia quaerat possimus assumenda, nobis
+        fuga omnis eius quod quasi sequi animi, sint id eaque sed perferendis
+        repellat odio vitae. Temporibus perspiciatis tenetur placeat ut tempore.
+      </span>
+      <span>
+        Quo magnam molestiae vero ad temporibus. Non tenetur ut ratione eaque
+        voluptates placeat, cum mollitia exercitationem culpa libero alias
+        quisquam dolore dolorem pariatur eius consequuntur voluptatum vel,
+        eligendi temporibus repellendus!
+      </span>
+      <span>
+        Accusantium voluptatem aliquam, dolorum ratione, velit aliquid nostrum
+        provident, quibusdam deleniti deserunt similique saepe ex illo autem!
+        Laborum unde obcaecati aut dolore animi repudiandae! Totam laborum earum
+        unde voluptatibus quidem.
+      </span>
+      <span>
+        Voluptas error dolorem consectetur, in, incidunt culpa assumenda
+        dignissimos praesentium saepe quod at? Magni aliquam necessitatibus
+        dignissimos reiciendis rerum quaerat mollitia ab, maxime in quidem
+        nesciunt sed quis quia doloremque.
+      </span>
+      <span>
+        Dicta esse qui, cum expedita odit deserunt quisquam tempore rerum id
+        voluptas itaque accusantium sapiente repudiandae soluta omnis, quis aut
+        ex harum natus voluptatem accusamus alias molestiae nesciunt. Cumque,
+        eos?
+      </span>
+      <span>
+        Quam non optio reprehenderit distinctio dicta doloremque doloribus sit
+        sed, quibusdam quo architecto nisi, perferendis placeat ullam eos
+        incidunt assumenda? Praesentium quae sed hic dicta? Suscipit reiciendis
+        excepturi expedita praesentium!
+      </span>
+    </PageContainer>
   );
 }
 

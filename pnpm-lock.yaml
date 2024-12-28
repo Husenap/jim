@@ -54,7 +54,7 @@ dependencies:
     specifier: ^0.469.0
     version: 0.469.0(react@19.0.0)
   next:
-    specifier: latest
+    specifier: ^15.1.2
     version: 15.1.2(react-dom@19.0.0)(react@19.0.0)
   next-themes:
     specifier: ^0.4.4

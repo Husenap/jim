@@ -10,12 +10,12 @@ export default function Navbar() {
   const user = useQuery(api.users.current);
 
   return (
-    <nav className="sticky top-0 z-50 flex h-auto w-full items-center gap-2 bg-content1/70 p-3 backdrop-blur-lg">
-      <div className="flex-1">
-        <Link href="/profile/edit">Edit Profile</Link>
-      </div>
+    <div className="grid grid-cols-3 items-center p-3">
+      <Link href="/profile/edit">Edit Profile</Link>
 
-      <div className="flex gap-2">
+      <span className="text-center">{user?.username}</span>
+
+      <div className="flex justify-end gap-2">
         {user && (
           <ShareButton
             data={{
@@ -27,6 +27,6 @@ export default function Navbar() {
         )}
         <ThemeSwitcher />
       </div>
-    </nav>
+    </div>
   );
 }

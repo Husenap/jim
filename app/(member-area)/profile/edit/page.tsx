@@ -1,5 +1,7 @@
 "use client";
 
+import Navbar from "@/app/(member-area)/profile/edit/navbar";
+import PageContainer from "@/components/page-container";
 import { api } from "@/convex/_generated/api";
 import { UserProfile } from "@clerk/nextjs";
 import { Button, Form, Input, Textarea } from "@nextui-org/react";
@@ -27,8 +29,8 @@ export default function Page() {
   };
 
   return (
-    <>
-      <div className="prose dark:prose-invert flex w-full flex-col">
+    <PageContainer topNavbar={<Navbar />}>
+      <div className="prose flex w-full flex-col dark:prose-invert">
         <h2>Profile details</h2>
 
         <Form className="w-full" validationBehavior="aria" onSubmit={onSubmit}>
@@ -82,6 +84,6 @@ export default function Page() {
           />
         </div>
       </div>
-    </>
+    </PageContainer>
   );
 }

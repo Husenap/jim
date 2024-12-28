@@ -1,7 +1,7 @@
 import { defineSchema, defineTable } from "convex/server";
 import { Infer, v } from "convex/values";
 
-const EquipmentValidator = v.union(
+export const EquipmentValidator = v.union(
   v.literal("none"),
   v.literal("barbell"),
   v.literal("cable"),
@@ -15,7 +15,7 @@ const EquipmentValidator = v.union(
 );
 export type Equipment = Infer<typeof EquipmentValidator>;
 
-const MuscleGroupValidator = v.union(
+export const MuscleGroupValidator = v.union(
   v.literal("abdominals"),
   v.literal("abductors"),
   v.literal("adductors"),
@@ -39,7 +39,7 @@ const MuscleGroupValidator = v.union(
 );
 export type MuscleGroup = Infer<typeof MuscleGroupValidator>;
 
-const ExerciseTypeValidator = v.union(
+export const ExerciseTypeValidator = v.union(
   v.literal("weight & reps"),
   v.literal("bodyweight reps"),
   v.literal("weighted bodyweight"),
