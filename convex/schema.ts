@@ -54,7 +54,7 @@ export type ExerciseType = Infer<typeof ExerciseTypeValidator>;
 const schema = defineSchema({
   users: defineTable({
     username: v.string(),
-    name: v.optional(v.string()),
+    name: v.string(),
     imageURL: v.optional(v.string()),
     externalId: v.string(),
     bio: v.optional(v.string()),

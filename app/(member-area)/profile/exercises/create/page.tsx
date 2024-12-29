@@ -15,7 +15,13 @@ import { Button, Form, Input, Select, SelectItem } from "@nextui-org/react";
 import { useMutation } from "convex/react";
 import { Save } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useState,
+} from "react";
 
 export default function Page() {
   const [name, setName] = useState("");
@@ -38,10 +44,10 @@ export default function Page() {
 
     const data = {
       name,
-      equipment: Array.from(equipment).shift()!,
-      primaryMuscleGroup: Array.from(primaryMuscleGroup).shift()!,
+      equipment: Array.from(equipment).pop()!,
+      primaryMuscleGroup: Array.from(primaryMuscleGroup).pop()!,
       secondaryMuscleGroups: Array.from(secondaryMuscleGroups),
-      exerciseType: Array.from(exerciseType).shift()!,
+      exerciseType: Array.from(exerciseType).pop()!,
     };
 
     try {
@@ -52,6 +58,14 @@ export default function Page() {
       console.error("Failed to create custom exercise!");
     } finally {
     }
+  };
+
+  const handleSelectionChange = <T,>(
+    setValues: Dispatch<SetStateAction<Set<T>>>,
+  ) => {
+    return (e: ChangeEvent<HTMLSelectElement>) => {
+      setValues(new Set(e.target.value.split(",") as T[]));
+    };
   };
 
   return (
@@ -71,7 +85,7 @@ export default function Page() {
           label="Equipment"
           placeholder="Select"
           selectedKeys={equipment}
-          onSelectionChange={setEquipment}
+          onChange={handleSelectionChange(setEquipment)}
         >
           {EquipmentValidator.members.map((equipment) => (
             <SelectItem key={equipment.value}>{equipment.value}</SelectItem>
@@ -83,7 +97,7 @@ export default function Page() {
           label="Primary Muscle Group"
           placeholder="Select"
           selectedKeys={primaryMuscleGroup}
-          onSelectionChange={setPrimaryMuscleGroup}
+          onChange={handleSelectionChange(setPrimaryMuscleGroup)}
         >
           {MuscleGroupValidator.members.map((muscleGroup) => (
             <SelectItem key={muscleGroup.value}>{muscleGroup.value}</SelectItem>
@@ -95,7 +109,7 @@ export default function Page() {
           placeholder="Select (optional)"
           selectionMode="multiple"
           selectedKeys={secondaryMuscleGroups}
-          onSelectionChange={setSecondaryMuscleGroups}
+          onChange={handleSelectionChange(setSecondaryMuscleGroups)}
         >
           {MuscleGroupValidator.members.map((muscleGroup) => (
             <SelectItem key={muscleGroup.value}>{muscleGroup.value}</SelectItem>
@@ -107,7 +121,7 @@ export default function Page() {
           label="Exercise Type"
           placeholder="Select"
           selectedKeys={exerciseType}
-          onSelectionChange={setExerciseType}
+          onChange={handleSelectionChange(setExerciseType)}
         >
           {ExerciseTypeValidator.members.map((exercise) => (
             <SelectItem key={exercise.value}>{exercise.value}</SelectItem>
