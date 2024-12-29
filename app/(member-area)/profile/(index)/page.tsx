@@ -5,6 +5,7 @@ import Navbar from "@/app/(member-area)/profile/(index)/navbar";
 import PageContainer from "@/components/page-container";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
+import humanReadibleTimeDiff from "@/utils/time-diff";
 import {
   Avatar,
   Button,
@@ -78,7 +79,7 @@ export default function Page() {
                 src: user?.imageURL,
               }}
               name={user?.name || user?.username}
-              description="Yesterday"
+              description={humanReadibleTimeDiff(user?._creationTime)}
             />
           </CardHeader>
           <Divider />
@@ -108,7 +109,7 @@ export default function Page() {
                 src: user?.imageURL,
               }}
               name={user?.name || user?.username}
-              description="Yesterday"
+              description={humanReadibleTimeDiff(user?._creationTime)}
             />
           </CardHeader>
           <Divider />
