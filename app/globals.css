@@ -6,4 +6,8 @@
   .my-prose {
     @apply prose dark:prose-invert;
   }
+
+  .under-construction {
+    @apply bg-[repeating-linear-gradient(-45deg,_rgba(243,_104,_18,_0.07),_rgba(243,_104,_18,_0.07)_6px,_rgba(243,_104,_18,_0.21)_6px,_rgba(243,_104,_18,_0.21)_12px)];
+  }
 }

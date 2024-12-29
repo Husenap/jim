@@ -52,16 +52,28 @@ export default function Page() {
 
       <h3 className="text-default-400">Dashboard</h3>
       <div className="grid grid-cols-2 grid-rows-2 gap-2">
-        <Button isDisabled startContent={<ChartLine />}>
+        <Button
+          className="under-construction"
+          isDisabled
+          startContent={<ChartLine />}
+        >
           Statistics
         </Button>
         <Button as={Link} href="/profile/exercises" startContent={<Dumbbell />}>
           Exercises
         </Button>
-        <Button isDisabled startContent={<PersonStanding />}>
+        <Button
+          className="under-construction"
+          isDisabled
+          startContent={<PersonStanding />}
+        >
           Measures
         </Button>
-        <Button isDisabled startContent={<Calendar />}>
+        <Button
+          className="under-construction"
+          isDisabled
+          startContent={<Calendar />}
+        >
           Calendar
         </Button>
       </div>
@@ -250,7 +262,7 @@ function UserData({ user }: { user: Doc<"users"> }) {
       <Avatar src={user.imageURL} className="h-20 w-20" />
       <div className="flex flex-1 flex-col">
         <h2 className="text-lg">{user.name}</h2>
-        <div className="grid w-full grid-cols-3">
+        <div className="under-construction grid w-full grid-cols-3">
           <div className="flex flex-col">
             <span className="text-sm text-default-400">Workouts</span>
             <span>81</span>
