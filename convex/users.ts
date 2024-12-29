@@ -1,7 +1,7 @@
 import { UserJSON } from "@clerk/backend";
+import { getOneFrom } from "convex-helpers/server/relationships";
 import { v, Validator } from "convex/values";
 import { internalMutation, mutation, query, QueryCtx } from "./_generated/server";
-import { getOneFrom } from "convex-helpers/server/relationships";
 
 export const current = query({
   args: {},
@@ -36,7 +36,7 @@ export const upsertFromClerk = internalMutation({
     const userAttributes = {
       username: data.username as string,
       imageURL: data.image_url,
-      name: (data.first_name || data.last_name) ? [data.first_name ?? "", data.last_name ?? ""].filter(s => s.length > 0).join(" ") : data.username!,
+      name: (data.first_name || data.last_name) ? [data.first_name ?? "", data.last_name ?? ""].join(" ").trim() : data.username!,
       externalId: data.id,
     };
 
