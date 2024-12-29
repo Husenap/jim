@@ -6,6 +6,7 @@ export const EquipmentValidator = v.union(
   v.literal("barbell"),
   v.literal("cable"),
   v.literal("dumbbell"),
+  v.literal("high bar"),
   v.literal("kettlebell"),
   v.literal("machine"),
   v.literal("plate"),
