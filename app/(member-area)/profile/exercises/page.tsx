@@ -41,8 +41,9 @@ function ExerciseList({
 }) {
   return (
     <div className="flex flex-col gap-2 py-2">
-      {exercises?.map((exercise) => (
+      {exercises?.map((exercise, i) => (
         <div key={exercise._id} className="flex flex-col gap-2">
+          {i > 0 && <Divider />}
           <div className="flex flex-row items-center gap-2">
             <Avatar src="/favicon.ico" size="lg" />
             <div className="flex flex-col">
@@ -52,7 +53,6 @@ function ExerciseList({
               </span>
             </div>
           </div>
-          <Divider />
         </div>
       ))}
     </div>
