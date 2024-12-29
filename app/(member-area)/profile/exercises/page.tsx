@@ -15,7 +15,7 @@ export default function Page() {
 
   const filter = (exercise: Doc<"exercises">) => {
     if (search.length > 0) {
-      if (exercise.name.toLowerCase().indexOf(search) == -1) {
+      if (exercise.name.toLowerCase().indexOf(search.toLowerCase()) == -1) {
         return false;
       }
     }
