@@ -8,6 +8,20 @@
   }
 
   .under-construction {
-    @apply bg-[repeating-linear-gradient(-45deg,_rgba(243,_104,_18,_0.07),_rgba(243,_104,_18,_0.07)_6px,_rgba(243,_104,_18,_0.21)_6px,_rgba(243,_104,_18,_0.21)_12px)];
+    position: relative;
+  }
+  .under-construction::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      rgba(243, 104, 18, 0.07),
+      rgba(243, 104, 18, 0.07) 6px,
+      rgba(243, 104, 18, 0.31) 6px,
+      rgba(243, 104, 18, 0.31) 12px
+    );
+    pointer-events: none;
+    z-index: 999;
   }
 }

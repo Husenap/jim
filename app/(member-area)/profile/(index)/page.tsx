@@ -52,11 +52,7 @@ export default function Page() {
 
       <h3 className="text-default-400">Dashboard</h3>
       <div className="grid grid-cols-2 grid-rows-2 gap-2">
-        <Button
-          className="under-construction"
-          isDisabled
-          startContent={<ChartLine />}
-        >
+        <Button className="under-construction" startContent={<ChartLine />}>
           Statistics
         </Button>
         <Button as={Link} href="/profile/exercises" startContent={<Dumbbell />}>
@@ -64,16 +60,11 @@ export default function Page() {
         </Button>
         <Button
           className="under-construction"
-          isDisabled
           startContent={<PersonStanding />}
         >
           Measures
         </Button>
-        <Button
-          className="under-construction"
-          isDisabled
-          startContent={<Calendar />}
-        >
+        <Button className="under-construction" startContent={<Calendar />}>
           Calendar
         </Button>
       </div>

@@ -30,7 +30,6 @@ export default function Navbar({
       <Divider />
       <div className="flex flex-col gap-2 p-3">
         <Input
-          isClearable
           placeholder="Type to search..."
           size="sm"
           startContent={<Search size={18} />}
@@ -38,10 +37,10 @@ export default function Navbar({
           onChange={(e) => onSearch && onSearch(e.currentTarget.value)}
         />
         <div className="grid grid-cols-2 gap-2">
-          <Button size="sm" isDisabled>
+          <Button size="sm" className="under-construction">
             Equipment
           </Button>
-          <Button size="sm" isDisabled>
+          <Button size="sm" className="under-construction">
             Muscle Groups
           </Button>
         </div>
