@@ -43,7 +43,13 @@ export default function Page() {
       </div>
       <TypographyH3>My Routines</TypographyH3>
       {routines.map((r) => (
-        <Card key={r._id} fullWidth isPressable as="div">
+        <Card
+          key={r._id}
+          className="under-construction"
+          fullWidth
+          isPressable
+          as="div"
+        >
           <CardHeader className="items-start justify-between">
             <div>
               <TypographyH1>{r.name}</TypographyH1>
@@ -56,7 +62,7 @@ export default function Page() {
             </Button>
           </CardHeader>
           <CardFooter>
-            <Button fullWidth color="primary" className="under-construction">
+            <Button fullWidth color="primary">
               Start Routine
             </Button>
           </CardFooter>
