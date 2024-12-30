@@ -54,6 +54,19 @@ export const ExerciseTypeValidator = v.union(
 );
 export type ExerciseType = Infer<typeof ExerciseTypeValidator>;
 
+const exerciseFields = {
+  name: v.string(),
+  imageURL: v.optional(v.string()),
+  equipment: EquipmentValidator,
+  primaryMuscleGroup: MuscleGroupValidator,
+  secondaryMuscleGroups: v.array(MuscleGroupValidator),
+  muscleGroups: v.optional(v.array(v.object({
+    muscleGroup: MuscleGroupValidator,
+    weight: v.number(),
+  }))),
+  exerciseType: ExerciseTypeValidator,
+};
+
 const schema = defineEntSchema({
   users: defineEnt({
     username: v.string(),
@@ -69,12 +82,7 @@ const schema = defineEntSchema({
     .edges("routines", { ref: "ownerId" }),
 
   exercises: defineEnt({
-    name: v.string(),
-    imageURL: v.optional(v.string()),
-    equipment: EquipmentValidator,
-    primaryMuscleGroup: MuscleGroupValidator,
-    secondaryMuscleGroups: v.array(MuscleGroupValidator),
-    exerciseType: ExerciseTypeValidator,
+    ...exerciseFields
   })
     .edge("user", { to: "users", field: "ownerId", optional: true }),
 
