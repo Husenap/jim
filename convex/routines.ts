@@ -8,7 +8,7 @@ export const custom = query({
     const user = await getCurrentUser(ctx);
     if (!user) return [];
 
-    return await ctx.table("routines", "ownerId", q => q.eq("ownerId", user._id))
+    return user.edge("routines")
       .map(async (routine) => ({
         ...routine,
         exercises: await ctx.table("exercises").getMany(routine.exercises)

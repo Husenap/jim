@@ -64,25 +64,25 @@ const schema = defineEntSchema({
     link: v.optional(v.string()),
   })
     .index("externalId", ["externalId"])
-    .index("username", ["username"]),
+    .index("username", ["username"])
+    .edges("exercises", { ref: "ownerId" })
+    .edges("routines", { ref: "ownerId" }),
 
   exercises: defineEnt({
     name: v.string(),
-    ownerId: v.optional(v.id("users")),
     imageURL: v.optional(v.string()),
     equipment: EquipmentValidator,
     primaryMuscleGroup: MuscleGroupValidator,
     secondaryMuscleGroups: v.array(MuscleGroupValidator),
     exerciseType: ExerciseTypeValidator,
   })
-    .index("ownerId", ["ownerId"]),
+    .edge("user", { to: "users", field: "ownerId", optional: true }),
 
   routines: defineEnt({
     name: v.string(),
-    ownerId: v.optional(v.id("users")),
     exercises: v.array(v.id("exercises")),
   })
-    .index("ownerId", ["ownerId"]),
+    .edge("user", { to: "users", field: "ownerId" }),
 
   migrations: defineEntFromTable(migrationsTable),
 });

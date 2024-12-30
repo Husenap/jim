@@ -16,3 +16,4 @@
 - [ ] User should be able to follow another user.
 - [ ] User should be able to see other users workouts in their Home feed.
 - [ ] User should be able to edit/delete their own custom exercises.
+- [ ] User should be able to edit/delete their own routines.

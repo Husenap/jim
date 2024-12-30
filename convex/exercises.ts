@@ -15,7 +15,8 @@ export const custom = query({
   handler: async (ctx) => {
     const user = await getCurrentUser(ctx);
     if (!user) return [];
-    return ctx.table("exercises", "ownerId", q => q.eq("ownerId", user._id));
+
+    return user.edge("exercises");
   },
 });
 
