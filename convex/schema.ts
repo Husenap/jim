@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { Infer, v } from "convex/values";
+import { migrationsTable } from "convex-helpers/server/migrations";
 
 export const EquipmentValidator = v.union(
   v.literal("none"),
@@ -74,6 +75,15 @@ const schema = defineSchema({
     exerciseType: ExerciseTypeValidator,
   })
     .index("ownerId", ["ownerId"]),
+
+  routines: defineTable({
+    name: v.string(),
+    ownerId: v.optional(v.id("users")),
+    exercises: v.array(v.id("exercises")),
+  })
+    .index("ownerId", ["ownerId"]),
+
+  migrations: migrationsTable
 });
 
 export default schema;

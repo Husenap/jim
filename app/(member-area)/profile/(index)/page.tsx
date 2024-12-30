@@ -3,6 +3,11 @@
 import BottomNavbar from "@/app/(member-area)/bottom-navbar";
 import Navbar from "@/app/(member-area)/profile/(index)/navbar";
 import PageContainer from "@/components/page-container";
+import {
+  TypographyH1,
+  TypographyH2,
+  TypographyH4,
+} from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import humanReadibleTimeDiff from "@/utils/time-diff";
@@ -51,7 +56,7 @@ export default function Page() {
         </Link>
       )}
 
-      <h3 className="text-default-400">Dashboard</h3>
+      <TypographyH2>Dashboard</TypographyH2>
       <div className="grid grid-cols-2 grid-rows-2 gap-2">
         <Button className="under-construction" startContent={<ChartLine />}>
           Statistics
@@ -70,7 +75,7 @@ export default function Page() {
         </Button>
       </div>
 
-      <h3 className="text-default-400">Workouts</h3>
+      <TypographyH2>Workouts</TypographyH2>
       <div className="-mx-2 flex flex-col gap-4">
         <Card radius="none">
           <CardHeader>
@@ -253,18 +258,18 @@ function UserData({ user }: { user: Doc<"users"> }) {
     <div className="flex w-full flex-row items-center gap-4">
       <Avatar src={user.imageURL} className="h-20 w-20" />
       <div className="flex flex-1 flex-col">
-        <h2 className="text-lg">{user.name}</h2>
+        <TypographyH1>{user.name}</TypographyH1>
         <div className="under-construction grid w-full grid-cols-3">
           <div className="flex flex-col">
-            <span className="text-sm text-default-400">Workouts</span>
+            <TypographyH4>Workouts</TypographyH4>
             <span>81</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-sm text-default-400">Followers</span>
+            <TypographyH4>Followers</TypographyH4>
             <span>11</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-sm text-default-400">Following</span>
+            <TypographyH4>Following</TypographyH4>
             <span>10</span>
           </div>
         </div>

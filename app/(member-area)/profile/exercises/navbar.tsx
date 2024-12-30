@@ -1,14 +1,10 @@
 "use client";
 
 import BackButton from "@/components/back-button";
-import { Button, Divider, Input, Link } from "@nextui-org/react";
-import { Search } from "lucide-react";
+import ExercisesFilter from "@/components/exercise-list/exercises-filter";
+import { Button, Divider, Link } from "@nextui-org/react";
 
-export default function Navbar({
-  onSearch,
-}: {
-  onSearch?: (search: string) => void;
-}) {
+export default function Navbar() {
   return (
     <>
       <div className="grid grid-cols-3 items-center p-3">
@@ -28,23 +24,7 @@ export default function Navbar({
         </div>
       </div>
       <Divider />
-      <div className="flex flex-col gap-2 p-3">
-        <Input
-          placeholder="Type to search..."
-          size="sm"
-          startContent={<Search size={18} />}
-          type="search"
-          onChange={(e) => onSearch && onSearch(e.currentTarget.value)}
-        />
-        <div className="grid grid-cols-2 gap-2">
-          <Button size="sm" className="under-construction">
-            Equipment
-          </Button>
-          <Button size="sm" className="under-construction">
-            Muscle Groups
-          </Button>
-        </div>
-      </div>
+      <ExercisesFilter />
     </>
   );
 }
