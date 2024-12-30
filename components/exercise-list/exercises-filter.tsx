@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 export default function ExercisesFilter() {
   const { setSearch } = useExercisesContext();
   return (
-    <div className="flex flex-col gap-2 p-3">
+    <div className="flex flex-col gap-2 py-3">
       <Input
         placeholder="Type to search..."
         size="sm"

@@ -10,16 +10,18 @@ export default function PageContainer({
   bottomNavbar?: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-full flex-1 flex-col">
+    <div className="flex min-h-full flex-1 flex-col justify-center">
       {topNavbar && (
-        <nav className="sticky top-0 z-50 bg-content2/70 backdrop-blur-lg">
-          {topNavbar}
+        <nav className="sticky top-0 z-50 flex justify-center bg-content2/70 px-2 backdrop-blur-lg">
+          <div className="w-full max-w-5xl">{topNavbar}</div>
         </nav>
       )}
-      <main className="flex flex-1 flex-col gap-2 px-2 py-4">{children}</main>
+      <main className="flex w-full flex-1 justify-center px-2 py-4">
+        <div className="flex w-full max-w-5xl flex-col gap-2">{children}</div>
+      </main>
       {bottomNavbar && (
-        <nav className="sticky bottom-0 z-50 rounded-t-xl bg-content2/70 backdrop-blur-lg">
-          {bottomNavbar}
+        <nav className="sticky bottom-0 z-50 flex justify-center rounded-t-xl bg-content2/70 backdrop-blur-lg">
+          <div className="w-full max-w-5xl">{bottomNavbar}</div>
         </nav>
       )}
     </div>

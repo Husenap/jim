@@ -7,7 +7,7 @@ import { Button, Divider, Link } from "@nextui-org/react";
 export default function Navbar() {
   return (
     <>
-      <div className="grid grid-cols-3 items-center p-3">
+      <div className="grid grid-cols-3 items-center py-3">
         <BackButton />
 
         <span className="text-center">Exercises</span>

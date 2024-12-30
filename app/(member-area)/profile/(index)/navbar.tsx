@@ -3,15 +3,19 @@
 import ShareButton from "@/components/share-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { api } from "@/convex/_generated/api";
-import { Link } from "@nextui-org/react";
+import { Button, Link } from "@nextui-org/react";
 import { useQuery } from "convex/react";
 
 export default function Navbar() {
   const user = useQuery(api.users.current);
 
   return (
-    <div className="grid grid-cols-3 items-center p-3">
-      <Link href="/profile/edit">Edit Profile</Link>
+    <div className="grid grid-cols-3 items-center py-3">
+      <div>
+        <Button as={Link} variant="light" color="primary" href="/profile/edit">
+          Edit Profile
+        </Button>
+      </div>
 
       <span className="text-center">{user?.username}</span>
 

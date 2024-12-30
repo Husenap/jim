@@ -161,7 +161,7 @@ export default function Page() {
               <PageContainer
                 topNavbar={
                   <>
-                    <div className="grid grid-cols-3 items-center p-3">
+                    <div className="grid grid-cols-3 items-center py-3">
                       <div>
                         <Button
                           onPress={onClose}

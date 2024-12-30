@@ -2,6 +2,7 @@
 
 import Navbar from "@/app/(member-area)/profile/edit/navbar";
 import PageContainer from "@/components/page-container";
+import { TypographyH2 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { UserProfile } from "@clerk/nextjs";
 import { Button, Form, Input, Textarea } from "@nextui-org/react";
@@ -30,8 +31,8 @@ export default function Page() {
 
   return (
     <PageContainer topNavbar={<Navbar />}>
-      <div className="prose flex w-full flex-col dark:prose-invert">
-        <h2>Profile details</h2>
+      <div className="flex w-full flex-col gap-2">
+        <TypographyH2>Profile details</TypographyH2>
 
         <Form className="w-full" validationBehavior="aria" onSubmit={onSubmit}>
           <Textarea
@@ -70,7 +71,7 @@ export default function Page() {
           </Button>
         </Form>
 
-        <h2>Account details</h2>
+        <TypographyH2>Account details</TypographyH2>
 
         <div className="not-prose">
           <UserProfile
