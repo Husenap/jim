@@ -1,4 +1,5 @@
-import { defineSchema, defineTable } from "convex/server";
+import { defineEnt, defineEntSchema, getEntDefinitions, defineEntFromTable } from "convex-ents";
+
 import { Infer, v } from "convex/values";
 import { migrationsTable } from "convex-helpers/server/migrations";
 
@@ -53,8 +54,8 @@ export const ExerciseTypeValidator = v.union(
 );
 export type ExerciseType = Infer<typeof ExerciseTypeValidator>;
 
-const schema = defineSchema({
-  users: defineTable({
+const schema = defineEntSchema({
+  users: defineEnt({
     username: v.string(),
     name: v.string(),
     imageURL: v.optional(v.string()),
@@ -63,27 +64,29 @@ const schema = defineSchema({
     link: v.optional(v.string()),
   })
     .index("externalId", ["externalId"])
-    .index("username", ["username"]),
+    .index("username", ["username"])
+    .edges("exercises", { ref: "ownerId" })
+    .edges("routines", { ref: "ownerId" }),
 
-  exercises: defineTable({
+  exercises: defineEnt({
     name: v.string(),
-    ownerId: v.optional(v.id("users")),
     imageURL: v.optional(v.string()),
     equipment: EquipmentValidator,
     primaryMuscleGroup: MuscleGroupValidator,
     secondaryMuscleGroups: v.array(MuscleGroupValidator),
     exerciseType: ExerciseTypeValidator,
   })
-    .index("ownerId", ["ownerId"]),
+    .edge("user", { to: "users", field: "ownerId", optional: true }),
 
-  routines: defineTable({
+  routines: defineEnt({
     name: v.string(),
-    ownerId: v.optional(v.id("users")),
     exercises: v.array(v.id("exercises")),
   })
-    .index("ownerId", ["ownerId"]),
+    .edge("user", { to: "users", field: "ownerId" }),
 
-  migrations: migrationsTable
+  migrations: defineEntFromTable(migrationsTable),
 });
 
 export default schema;
+
+export const entDefinitions = getEntDefinitions(schema);

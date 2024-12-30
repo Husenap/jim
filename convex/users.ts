@@ -1,19 +1,19 @@
+import { internalMutation, mutation, query } from "@/convex/functions";
+import { QueryCtx } from "@/convex/types";
 import { UserJSON } from "@clerk/backend";
-import { getOneFrom } from "convex-helpers/server/relationships";
 import { v, Validator } from "convex/values";
-import { internalMutation, mutation, query, QueryCtx } from "./_generated/server";
 
 export const current = query({
   args: {},
   handler: async (ctx) => {
-    return await getCurrentUser(ctx);
+    return getCurrentUser(ctx);
   },
 });
 
 export const byUsername = query({
   args: { username: v.string() },
   handler: async (ctx, { username }) => {
-    return await userByUsername(ctx, username);
+    return userByUsername(ctx, username);
   }
 });
 
@@ -25,7 +25,7 @@ export const updateProfile = mutation({
   handler: async (ctx, { bio, link }) => {
     const user = await getCurrentUser(ctx);
     if (user) {
-      await ctx.db.patch(user._id, { bio, link });
+      await ctx.table("users").getX(user._id).patch({ bio, link });
     }
   }
 })
@@ -42,9 +42,9 @@ export const upsertFromClerk = internalMutation({
 
     const user = await userByExternalId(ctx, data.id);
     if (user === null) {
-      await ctx.db.insert("users", userAttributes);
+      await ctx.table("users").insert(userAttributes);
     } else {
-      await ctx.db.patch(user._id, userAttributes);
+      await ctx.table("users").getX(user._id).patch(userAttributes);
     }
   },
 });
@@ -55,7 +55,7 @@ export const deleteFromClerk = internalMutation({
     const user = await userByExternalId(ctx, clerkUserId);
 
     if (user !== null) {
-      await ctx.db.delete(user._id);
+      await ctx.table("users").getX(user._id).delete();
     } else {
       console.warn(
         `Can't delete user, there is none for Clerk user ID: ${clerkUserId}`,
@@ -67,7 +67,7 @@ export const deleteFromClerk = internalMutation({
 export async function getCurrentUserOrThrow(ctx: QueryCtx) {
   const userRecord = await getCurrentUser(ctx);
   if (!userRecord) throw new Error("Can't get current user");
-  return userRecord;
+  return await userRecord;
 }
 
 export async function getCurrentUser(ctx: QueryCtx) {
@@ -79,9 +79,9 @@ export async function getCurrentUser(ctx: QueryCtx) {
 }
 
 async function userByExternalId(ctx: QueryCtx, externalId: string) {
-  return await getOneFrom(ctx.db, "users", "externalId", externalId);
+  return await ctx.table("users").get("externalId", externalId);
 }
 
 async function userByUsername(ctx: QueryCtx, username: string) {
-  return await getOneFrom(ctx.db, "users", "username", username);
+  return await ctx.table("users").get("username", username);
 }

@@ -1,6 +1,5 @@
-import { mutation, query } from "@/convex/_generated/server";
+import { mutation, query } from "@/convex/functions";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
-import { getManyFrom } from "convex-helpers/server/relationships";
 import { v } from "convex/values";
 
 export const custom = query({
@@ -8,12 +7,12 @@ export const custom = query({
   handler: async (ctx) => {
     const user = await getCurrentUser(ctx);
     if (!user) return [];
-    const routines = await getManyFrom(ctx.db, "routines", "ownerId", user._id);
-    const routinesWithExercises = await Promise.all(routines.map(async (r) => {
-      const exercises = await Promise.all(r.exercises.map(ctx.db.get));
-      return { ...r, exercises };
-    }))
-    return routinesWithExercises;
+
+    return user.edge("routines")
+      .map(async (routine) => ({
+        ...routine,
+        exercises: await ctx.table("exercises").getMany(routine.exercises)
+      }));
   }
 });
 
@@ -24,7 +23,7 @@ export const create = mutation({
   },
   handler: async (ctx, { name, exercises }) => {
     const user = await getCurrentUserOrThrow(ctx);
-    return await ctx.db.insert("routines", {
+    return await ctx.table("routines").insert({
       name,
       exercises,
       ownerId: user._id,
