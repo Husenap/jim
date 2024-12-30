@@ -1,6 +1,6 @@
 import { httpRouter } from "convex/server";
-import { httpAction } from "./_generated/server";
-import { internal } from "./_generated/api";
+import { httpAction } from "@/convex/_generated/server";
+import { internal } from "@/convex/_generated/api";
 import type { WebhookEvent } from "@clerk/backend";
 import { Webhook } from "svix";
 
