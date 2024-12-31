@@ -16,7 +16,6 @@ export const addWeightedMuscleGroups = migration({
     ],
   }),
 });
-*/
 
 export const removeOldMuscleGroups = migration({
   table: "exercises",
@@ -26,3 +25,4 @@ export const removeOldMuscleGroups = migration({
     secondaryMuscleGroups: undefined,
   }),
 });
+*/
