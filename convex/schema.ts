@@ -64,8 +64,6 @@ const exerciseFields = {
   name: v.string(),
   imageURL: v.optional(v.string()),
   equipment: EquipmentValidator,
-  primaryMuscleGroup: v.optional(MuscleGroupValidator),
-  secondaryMuscleGroups: v.optional(v.array(MuscleGroupValidator)),
   muscleGroups: v.array(WeightedMuscleGroupValidator),
   exerciseType: ExerciseTypeValidator,
 };
