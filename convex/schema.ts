@@ -1,7 +1,7 @@
-import { defineEnt, defineEntSchema, getEntDefinitions, defineEntFromTable } from "convex-ents";
+import { defineEnt, defineEntFromTable, defineEntSchema, getEntDefinitions } from "convex-ents";
 
-import { Infer, v } from "convex/values";
 import { migrationsTable } from "convex-helpers/server/migrations";
+import { Infer, v } from "convex/values";
 
 export const EquipmentValidator = v.union(
   v.literal("none"),
@@ -54,16 +54,19 @@ export const ExerciseTypeValidator = v.union(
 );
 export type ExerciseType = Infer<typeof ExerciseTypeValidator>;
 
+export const WeightedMuscleGroupValidator = v.object({
+  muscleGroup: MuscleGroupValidator,
+  weight: v.number(),
+});
+export type WeightedMuscleGroup = Infer<typeof WeightedMuscleGroupValidator>;
+
 const exerciseFields = {
   name: v.string(),
   imageURL: v.optional(v.string()),
   equipment: EquipmentValidator,
-  primaryMuscleGroup: MuscleGroupValidator,
-  secondaryMuscleGroups: v.array(MuscleGroupValidator),
-  muscleGroups: v.optional(v.array(v.object({
-    muscleGroup: MuscleGroupValidator,
-    weight: v.number(),
-  }))),
+  primaryMuscleGroup: v.optional(MuscleGroupValidator),
+  secondaryMuscleGroups: v.optional(v.array(MuscleGroupValidator)),
+  muscleGroups: v.array(WeightedMuscleGroupValidator),
   exerciseType: ExerciseTypeValidator,
 };
 

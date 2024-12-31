@@ -105,7 +105,7 @@ export default function Page() {
               <div className="flex flex-col items-start">
                 <h2>{exercise.name}</h2>
                 <span className="text-default-400">
-                  {exercise.primaryMuscleGroup}
+                  {exercise.muscleGroups[0]?.muscleGroup}
                 </span>
               </div>
             </div>

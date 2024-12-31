@@ -5,6 +5,7 @@ const migration = makeMigration(internalMutation, {
   migrationTable: "migrations"
 });
 
+/*
 export const addWeightedMuscleGroups = migration({
   table: "exercises",
   migrateOne: async (_, exercise) => ({
@@ -15,4 +16,13 @@ export const addWeightedMuscleGroups = migration({
     ],
   }),
 });
+*/
 
+export const removeOldMuscleGroups = migration({
+  table: "exercises",
+  migrateOne: async (_, exercise) => ({
+    ...exercise,
+    primaryMuscleGroup: undefined,
+    secondaryMuscleGroups: undefined,
+  }),
+});

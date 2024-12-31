@@ -1,5 +1,5 @@
 import { mutation, query } from "@/convex/functions";
-import { EquipmentValidator, ExerciseTypeValidator, MuscleGroupValidator } from "@/convex/schema";
+import { EquipmentValidator, ExerciseTypeValidator, WeightedMuscleGroupValidator } from "@/convex/schema";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
 import { v } from "convex/values";
 
@@ -21,14 +21,18 @@ export const custom = query({
 });
 
 export const create = mutation({
-  args: { name: v.string(), equipment: EquipmentValidator, primaryMuscleGroup: MuscleGroupValidator, secondaryMuscleGroups: v.array(MuscleGroupValidator), exerciseType: ExerciseTypeValidator },
-  handler: async (ctx, { name, equipment, primaryMuscleGroup, secondaryMuscleGroups, exerciseType }) => {
+  args: {
+    name: v.string(),
+    equipment: EquipmentValidator,
+    muscleGroups: v.array(WeightedMuscleGroupValidator),
+    exerciseType: ExerciseTypeValidator
+  },
+  handler: async (ctx, { name, equipment, muscleGroups, exerciseType }) => {
     const user = await getCurrentUserOrThrow(ctx);
     return ctx.table("exercises").insert({
       name,
       equipment,
-      primaryMuscleGroup,
-      secondaryMuscleGroups,
+      muscleGroups,
       ownerId: user._id,
       exerciseType
     });

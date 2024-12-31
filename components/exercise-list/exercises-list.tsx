@@ -67,18 +67,25 @@ function ExerciseListCategory({
         <Button
           variant="light"
           key={exercise._id}
-          className="flex h-auto flex-row items-center justify-between gap-2 p-2"
+          className="flex h-auto justify-start p-2"
           radius="none"
           endContent={<ChevronRight />}
           onPress={() => onSelect && onSelect(exercise)}
         >
-          <div className="flex flex-row items-center gap-2">
-            <Avatar src={exercise.imageURL ?? "/favicon.ico"} size="lg" />
-            <div className="flex flex-col items-start">
-              <h2>{exercise.name}</h2>
-              <span className="text-default-400">
-                {exercise.primaryMuscleGroup}
-              </span>
+          <div className="w-full">
+            <div className="flex flex-row items-center gap-2">
+              <Avatar src={exercise.imageURL ?? "/favicon.ico"} size="lg" />
+              <div className="flex max-w-64 flex-col items-start text-left">
+                <h2 className="w-full overflow-hidden text-ellipsis">
+                  {exercise.name}
+                </h2>
+                <span className="w-full overflow-hidden text-ellipsis text-default-400">
+                  {exercise.muscleGroups
+                    .toSorted((a, b) => b.weight - a.weight)
+                    .map((mg) => mg.muscleGroup)
+                    .join(", ")}
+                </span>
+              </div>
             </div>
           </div>
         </Button>
