@@ -19,6 +19,16 @@ export const viewport: Viewport = {
   minimumScale: 1.0,
   maximumScale: 1.0,
   userScalable: false,
+  themeColor: [
+    {
+      color: "#1b1b1d",
+      media: "(prefers-color-scheme: dark)",
+    },
+    {
+      color: "#f7f7f7",
+      media: "(prefers-color-scheme: light)",
+    },
+  ],
 };
 
 const geistSans = Geist({
