@@ -16,6 +16,8 @@ export const metadata = {
 
 export const viewport: Viewport = {
   viewportFit: "cover",
+  minimumScale: 1.0,
+  maximumScale: 1.0,
 };
 
 const geistSans = Geist({
@@ -31,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(geistSans.className, "h-full min-h-full")}
+      className={cn(geistSans.className, "h-full min-h-full overscroll-none")}
       suppressHydrationWarning
     >
       <body className="relative h-full min-h-full w-full bg-background text-foreground">
