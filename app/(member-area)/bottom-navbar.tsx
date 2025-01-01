@@ -55,7 +55,7 @@ export default function BottomNavbar() {
           <Divider />
         </>
       )}
-      <div className="flex w-full flex-row items-center justify-around">
+      <div className="iphone-safe-inset flex w-full flex-row items-center justify-around">
         {tabs.map((tab) => (
           <div
             key={tab.href}

@@ -7,6 +7,10 @@
     @apply prose dark:prose-invert;
   }
 
+  .iphone-safe-inset {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
   .under-construction {
     position: relative;
   }
