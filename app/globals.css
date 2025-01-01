@@ -8,6 +8,7 @@
   }
 
   .iphone-safe-inset {
+    padding-bottom: 0;
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
 
