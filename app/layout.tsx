@@ -34,7 +34,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(geistSans.className, "h-full min-h-full overscroll-none")}
+      className={cn(
+        geistSans.className,
+        "h-full min-h-full overflow-x-hidden overscroll-none",
+      )}
       suppressHydrationWarning
     >
       <body className="relative h-full min-h-full w-full bg-background text-foreground">
