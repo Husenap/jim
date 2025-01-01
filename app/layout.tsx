@@ -21,11 +21,11 @@ export const viewport: Viewport = {
   userScalable: false,
   themeColor: [
     {
-      color: "#1b1b1d",
+      color: "#18181b",
       media: "(prefers-color-scheme: dark)",
     },
     {
-      color: "#f7f7f7",
+      color: "#f4f4f5",
       media: "(prefers-color-scheme: light)",
     },
   ],
@@ -46,7 +46,7 @@ export default function RootLayout({
       lang="en"
       className={cn(
         geistSans.className,
-        "h-full min-h-full overflow-x-hidden bg-content1",
+        "h-full min-h-full overflow-x-hidden bg-content2",
       )}
       suppressHydrationWarning
     >
