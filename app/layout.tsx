@@ -1,7 +1,8 @@
 import { Providers } from "@/app/providers";
+import { cn } from "@nextui-org/react";
+import { Viewport } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import { cn } from "@nextui-org/react";
 
 const defaultUrl = process.env.VERCEL
   ? "https://jim.husseintaher.com"
@@ -11,6 +12,10 @@ export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Jim",
   description: "The best and fastest way to track your gym progress!",
+};
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
 };
 
 const geistSans = Geist({
