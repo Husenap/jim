@@ -18,6 +18,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
   minimumScale: 1.0,
   maximumScale: 1.0,
+  userScalable: false,
 };
 
 const geistSans = Geist({
