@@ -53,6 +53,9 @@ dependencies:
   framer-motion:
     specifier: ^11.15.0
     version: 11.15.0(react-dom@19.0.0)(react@19.0.0)
+  immer:
+    specifier: ^10.1.1
+    version: 10.1.1
   lucide-react:
     specifier: ^0.469.0
     version: 0.469.0(react@19.0.0)
@@ -77,6 +80,9 @@ dependencies:
   svix:
     specifier: ^1.44.0
     version: 1.44.0
+  use-immer:
+    specifier: ^0.11.0
+    version: 0.11.0(immer@10.1.1)(react@19.0.0)
   uuid:
     specifier: ^11.0.3
     version: 11.0.3
@@ -4385,6 +4391,10 @@ packages:
     dependencies:
       function-bind: 1.1.2
 
+  /immer@10.1.1:
+    resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
+    dev: false
+
   /input-otp@1.4.1(react-dom@19.0.0)(react@19.0.0):
     resolution: {integrity: sha512-+yvpmKYKHi9jIGngxagY9oWiiblPB7+nEO75F2l2o4vs+6vpPZZmUl4tBNYuTCvQjhvEIbdNeJu70bhfYP2nbw==}
     peerDependencies:
@@ -5309,6 +5319,16 @@ packages:
         optional: true
     dependencies:
       '@types/react': 19.0.2
+      react: 19.0.0
+    dev: false
+
+  /use-immer@0.11.0(immer@10.1.1)(react@19.0.0):
+    resolution: {integrity: sha512-RNAqi3GqsWJ4bcCd4LMBgdzvPmTABam24DUaFiKfX9s3MSorNRz9RDZYJkllJoMHUxVLMDetwAuCDeyWNrp1yA==}
+    peerDependencies:
+      immer: '>=8.0.0'
+      react: ^16.8.0 || ^17.0.1 || ^18.0.0 || ^19.0.0
+    dependencies:
+      immer: 10.1.1
       react: 19.0.0
     dev: false
 

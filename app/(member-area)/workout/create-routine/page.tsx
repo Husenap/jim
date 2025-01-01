@@ -6,6 +6,7 @@ import ExercisesList from "@/components/exercise-list/exercises-list";
 import PageContainer from "@/components/page-container";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
+import useLocalStorage from "@/utils/use-local-storage";
 import {
   Avatar,
   Button,
@@ -23,7 +24,6 @@ import {
 import { useMutation } from "convex/react";
 import { Dumbbell, EllipsisVertical, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { v4 as uuidv4 } from "uuid";
 
@@ -31,12 +31,19 @@ export default function Page() {
   const { back } = useRouter();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [title, setTitle] = useState("");
-  const [exercises, setExercises] = useState(
+  const [title, setTitle] = useLocalStorage("jim-create-routine-title", "");
+  const [exercises, setExercises] = useLocalStorage(
+    "jim-create-routine-exercises",
     [] as { exercise: Doc<"exercises">; id: string }[],
   );
-  const [errors, setErrors] = useState({} as Record<string, string>);
-  const [replaceId, setReplaceId] = useState<string | null>(null);
+  const [errors, setErrors] = useLocalStorage(
+    "jim-create-routine-errors",
+    {} as Record<string, string>,
+  );
+  const [replaceId, setReplaceId] = useLocalStorage<string | null>(
+    "jim-create-routine-replaceId",
+    null,
+  );
 
   const createRoutine = useMutation(api.routines.create);
 
