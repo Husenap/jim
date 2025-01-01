@@ -59,7 +59,7 @@ export default function BottomNavbar() {
         {tabs.map((tab) => (
           <div
             key={tab.href}
-            className="flex flex-1 items-center justify-center gap-2 p-3"
+            className="flex flex-1 items-center justify-center gap-2 p-2"
           >
             <Button
               color="primary"

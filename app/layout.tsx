@@ -46,7 +46,7 @@ export default function RootLayout({
       lang="en"
       className={cn(
         geistSans.className,
-        "h-full min-h-full overflow-x-hidden overscroll-none",
+        "h-full min-h-full overflow-x-hidden bg-content1",
       )}
       suppressHydrationWarning
     >

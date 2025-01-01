@@ -12,8 +12,10 @@ export default function PageContainer({
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center">
       {topNavbar && (
-        <nav className="sticky top-0 z-50 flex justify-center bg-content2/70 px-2 backdrop-blur-lg">
-          <div className="w-full max-w-5xl">{topNavbar}</div>
+        <nav className="sticky top-0 z-50 flex justify-center bg-content2/70 backdrop-blur-lg">
+          <div className="w-full bg-gradient-to-b from-content1 to-transparent px-2">
+            <div className="w-full max-w-5xl">{topNavbar}</div>
+          </div>
         </nav>
       )}
       <main className="flex w-full flex-1 justify-center px-2 py-4">
@@ -21,7 +23,9 @@ export default function PageContainer({
       </main>
       {bottomNavbar && (
         <nav className="sticky bottom-0 z-50 flex justify-center rounded-t-xl bg-content2/70 backdrop-blur-lg">
-          <div className="w-full max-w-5xl">{bottomNavbar}</div>
+          <div className="w-full bg-gradient-to-t from-content1 to-transparent">
+            <div className="w-full max-w-5xl">{bottomNavbar}</div>
+          </div>
         </nav>
       )}
     </div>
