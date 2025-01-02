@@ -73,17 +73,15 @@ export default function Page() {
 
         <TypographyH2>Account details</TypographyH2>
 
-        <div className="not-prose">
-          <UserProfile
-            appearance={{
-              elements: {
-                rootBox: "w-full",
-                cardBox: "w-full h-auto",
-              },
-            }}
-            routing="hash"
-          />
-        </div>
+        <UserProfile
+          appearance={{
+            elements: {
+              rootBox: "w-full",
+              cardBox: "max-w-none w-full h-auto",
+            },
+          }}
+          routing="hash"
+        />
       </div>
     </PageContainer>
   );
