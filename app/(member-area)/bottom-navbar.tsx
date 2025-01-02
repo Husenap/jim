@@ -1,8 +1,16 @@
 "use client";
 
-import { Button, Divider, Link } from "@nextui-org/react";
+import {
+  Button,
+  Divider,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  useDisclosure,
+} from "@nextui-org/react";
 import { Dumbbell, Home, Play, User, X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function BottomNavbar() {
   const pathname = usePathname();
