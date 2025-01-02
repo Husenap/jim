@@ -48,19 +48,19 @@ export default function PageContainer({
             </div>
           </nav>
         )}
-        {bottomNavbar && (
-          <nav
-            className="fixed bottom-0 z-50 w-full rounded-t-xl bg-content2/70 backdrop-blur-lg"
-            style={{
-              viewTransitionName: "jim-bottom-navbar",
-            }}
-          >
-            <div className="flex w-full justify-center bg-gradient-to-t from-content2 to-transparent">
-              <div className="w-full max-w-5xl">{bottomNavbar}</div>
-            </div>
-          </nav>
-        )}
       </div>
+      {bottomNavbar && (
+        <nav
+          className="fixed bottom-0 z-50 w-full rounded-t-xl bg-content2/70 backdrop-blur-lg"
+          style={{
+            viewTransitionName: "jim-bottom-navbar",
+          }}
+        >
+          <div className="iphone-safe-inset flex w-full justify-center bg-gradient-to-t from-content2 to-transparent">
+            <div className="w-full max-w-5xl">{bottomNavbar}</div>
+          </div>
+        </nav>
+      )}
     </div>
   );
 }
