@@ -2,6 +2,7 @@ import { Providers } from "@/app/providers";
 import { cn } from "@nextui-org/react";
 import { Viewport } from "next";
 import { Geist } from "next/font/google";
+import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL
@@ -42,14 +43,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={cn(geistSans.className, "h-full min-h-full overflow-x-hidden")}
-      suppressHydrationWarning
-    >
-      <body className="relative h-full min-h-full w-full bg-background text-foreground">
-        <Providers>{children}</Providers>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html
+        lang="en"
+        className={cn(
+          geistSans.className,
+          "h-full min-h-full overflow-x-hidden",
+        )}
+        suppressHydrationWarning
+      >
+        <body className="relative h-full min-h-full w-full bg-background text-foreground">
+          <Providers>{children}</Providers>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }
