@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import { Dumbbell, Home, Play, User, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function BottomNavbar() {
   const pathname = usePathname();
