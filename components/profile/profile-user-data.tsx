@@ -99,7 +99,7 @@ function FollowerDrawer({
                   <div className="grid w-full grid-cols-3 items-center py-3">
                     <div>
                       <Button onPress={onClose} variant="light" color="danger">
-                        Cancel
+                        Close
                       </Button>
                     </div>
                     <span className="text-center">{title}</span>
@@ -107,52 +107,22 @@ function FollowerDrawer({
                 }
               >
                 <div className="-mx-2 flex flex-col justify-start">
-                  {followers
-                    .flatMap((u) => [
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                      u,
-                    ])
-                    .map((u, i) => (
-                      <Button
-                        key={u._id + i}
-                        radius="none"
-                        className="h-auto justify-start p-2"
-                        as={Link}
-                        href={`/user/${u.username}`}
-                        variant="light"
-                      >
-                        <User
-                          name={u.name}
-                          description={`@${u.username}`}
-                          avatarProps={{ src: u.imageURL }}
-                        />
-                      </Button>
-                    ))}
+                  {followers.map((u, i) => (
+                    <Button
+                      key={u._id + i}
+                      radius="none"
+                      className="h-auto justify-start p-2"
+                      as={Link}
+                      href={`/user/${u.username}`}
+                      variant="light"
+                    >
+                      <User
+                        name={u.name}
+                        description={`@${u.username}`}
+                        avatarProps={{ src: u.imageURL }}
+                      />
+                    </Button>
+                  ))}
                 </div>
               </PageContainer>
             </DrawerBody>
