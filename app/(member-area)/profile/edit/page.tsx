@@ -14,19 +14,25 @@ export default function Page() {
 
   const [bio, setBio] = useState(user?.bio ?? "");
   const [link, setLink] = useState(user?.link ?? "");
+  const [bodyweight, setBodyweight] = useState(user?.bodyweight ?? "");
   const updateProfile = useMutation(api.users.updateProfile);
 
   useEffect(() => {
     setBio(user?.bio ?? "");
     setLink(user?.link ?? "");
+    setBodyweight(user?.bodyweight ?? "");
   }, [user]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
-    if (data.link === "") delete data.link;
-    if (data.bio === "") delete data.bio;
-    updateProfile(data);
+    const link = data.link === "" ? undefined : data.link.toString();
+    const bio = data.bio === "" ? undefined : data.bio.toString();
+    const bodyweight =
+      data.bodyweight === ""
+        ? undefined
+        : parseFloat(data.bodyweight.toString());
+    updateProfile({ link, bio, bodyweight });
   };
 
   return (
@@ -60,9 +66,28 @@ export default function Page() {
             onChange={(e) => setLink(e.target.value)}
             isDisabled={!user}
           />
+          <Input
+            label="Bodyweight (hidden)"
+            labelPlacement="outside"
+            name="bodyweight"
+            placeholder="Your bodyweight"
+            endContent={
+              <div className="pointer-events-none flex items-center">
+                <span className="text-small text-default-400">kg</span>
+              </div>
+            }
+            type="number"
+            min={0}
+            step={0.1}
+            value={bodyweight.toString()}
+            onChange={(e) => setBodyweight(e.target.value)}
+            isDisabled={!user}
+          />
           <Button
             isDisabled={
-              (user?.link ?? "") === link && (user?.bio ?? "") === bio
+              (user?.link ?? "") === link &&
+              (user?.bio ?? "") === bio &&
+              (user?.bodyweight ?? "") === bodyweight
             }
             color="primary"
             type="submit"

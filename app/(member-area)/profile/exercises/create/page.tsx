@@ -47,6 +47,7 @@ export default function Page() {
   const [muscleGroupWeight, setMuscleGroupWeight] = useState<
     Partial<Record<MuscleGroup, number>>
   >({});
+  const [bodyweightFactor, setBodyweightFactor] = useState(1.0);
 
   const filteredSecondaryMuscleGroups = MuscleGroupValidator.members.filter(
     (mg) => !primaryMuscleGroup.has(mg.value),
@@ -70,6 +71,7 @@ export default function Page() {
         weight: muscleGroupWeight[mg] ?? 0.5,
       })),
       exerciseType: Array.from(exerciseType).pop()!,
+      bodyweightFactor,
     };
 
     try {
@@ -198,14 +200,18 @@ export default function Page() {
           Save
         </Button>
 
-        <Accordion>
-          <AccordionItem title="Muscle Group Coefficients">
+        <Accordion selectionMode="multiple">
+          <AccordionItem
+            isDisabled={allMuscleGroups.length === 0}
+            title="Muscle Group Coefficients"
+          >
             {allMuscleGroups.map((mg) => (
               <Slider
                 key={mg}
                 name={mg}
                 maxValue={1.0}
                 minValue={0.1}
+                step={0.1}
                 value={muscleGroupWeight[mg]}
                 onChange={(weight) =>
                   setMuscleGroupWeight({
@@ -213,12 +219,36 @@ export default function Page() {
                     [mg]: weight,
                   })
                 }
-                step={0.1}
                 label={mg}
                 color="secondary"
                 showSteps
               />
             ))}
+          </AccordionItem>
+          <AccordionItem
+            isDisabled={
+              exerciseType.intersection(
+                new Set([
+                  "bodyweight reps",
+                  "weighted bodyweight",
+                  "assisted bodyweight",
+                ] as ExerciseType[]),
+              ).size === 0
+            }
+            title="Bodyweight Factor"
+          >
+            <Slider
+              name={"bodyweightFactor"}
+              maxValue={1}
+              minValue={0.05}
+              value={bodyweightFactor}
+              getValue={(v) => `${Math.round((v as number) * 100)}%`}
+              step={0.05}
+              onChange={(value) => setBodyweightFactor(value as number)}
+              label="Bodyweight Factor"
+              color="secondary"
+              showSteps
+            />
           </AccordionItem>
         </Accordion>
       </Form>
