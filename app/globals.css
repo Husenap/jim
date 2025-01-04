@@ -29,10 +29,9 @@
     pointer-events: none;
     z-index: 49;
   }
-  
-  html::before{
-    content: "";
-    @apply fixed w-full h-full bg-background;
-  }
 
+  html::before {
+    content: "";
+    @apply fixed h-full w-full bg-background;
+  }
 }
