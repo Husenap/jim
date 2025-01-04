@@ -1,4 +1,4 @@
-export default function humanReadibleTimeDiff(startTime?: number | Date, endTime?: number | Date): string {
+export function humanReadibleTimeDiff(startTime?: number | Date, endTime?: number | Date): string {
   startTime = startTime ?? new Date();
   if (startTime instanceof Date) {
     startTime = startTime.getTime();
@@ -67,3 +67,28 @@ export default function humanReadibleTimeDiff(startTime?: number | Date, endTime
   }
   return "Now";
 };
+
+export function humanReadiableDuration(startTime?: number | Date, endTime?: number | Date) {
+  startTime = startTime ?? new Date();
+  if (startTime instanceof Date) {
+    startTime = startTime.getTime();
+  }
+  endTime = endTime ?? new Date();
+  if (endTime instanceof Date) {
+    endTime = endTime.getTime();
+  }
+
+  const timeDifference = Math.abs(endTime - startTime);
+
+  const hours = Math.floor(timeDifference / (3600 * 1000));
+  const minutes = Math.floor((timeDifference % (3600 * 1000)) / (60 * 1000));
+  const seconds = Math.floor((timeDifference % (60 * 1000)) / 1000);
+
+  if (hours >= 1) {
+    return `${hours}h ${minutes}min ${seconds}s`;
+  } else if (minutes >= 1) {
+    return `${minutes}min ${seconds}s`;
+  } else {
+    return `${seconds}s`;
+  }
+}
