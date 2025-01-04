@@ -161,7 +161,13 @@ export default function Page() {
         Add exercise
       </Button>
 
-      <Drawer size="full" placement="bottom" isOpen={isOpen} onClose={onClose}>
+      <Drawer
+        size="full"
+        placement="bottom"
+        isOpen={isOpen}
+        onClose={onClose}
+        hideCloseButton
+      >
         <DrawerContent>
           {(onClose) => (
             <Exercises>
