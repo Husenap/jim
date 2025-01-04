@@ -1,5 +1,6 @@
 "use client";
 
+import { api } from "@/convex/_generated/api";
 import {
   Button,
   Divider,
@@ -9,12 +10,15 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
+import { useMutation, useQuery } from "convex/react";
 import { Dumbbell, Home, Play, User, X } from "lucide-react";
 import { Link, useTransitionRouter } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 
 export default function BottomNavbar() {
   const pathname = usePathname();
+  const activeWorkout = useQuery(api.activeWorkouts.current);
+  const { push } = useTransitionRouter();
 
   const tabs = [
     {
@@ -34,11 +38,9 @@ export default function BottomNavbar() {
     },
   ];
 
-  const workoutInProgress = false;
-
   return (
     <>
-      {workoutInProgress && (
+      {activeWorkout && (
         <>
           <div className="flex flex-col gap-2 p-2">
             <span className="text-center">Workout in progress</span>
@@ -48,17 +50,11 @@ export default function BottomNavbar() {
                 variant="light"
                 startContent={<Play size={20} />}
                 size="lg"
+                onPress={() => push(`/workout/live/${activeWorkout?._id}`)}
               >
                 Resume
               </Button>
-              <Button
-                color="danger"
-                variant="light"
-                size="lg"
-                startContent={<X size={20} />}
-              >
-                Discard
-              </Button>
+              <WorkoutDiscardButton />
             </div>
           </div>
           <Divider />
@@ -76,12 +72,60 @@ export default function BottomNavbar() {
               variant={pathname.startsWith(tab.href) ? "shadow" : "light"}
               as={Link}
               href={tab.href}
+              prefetch
             >
               {tab.title}
             </Button>
           </div>
         ))}
       </div>
+    </>
+  );
+}
+
+function WorkoutDiscardButton() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const removeActiveWorkout = useMutation(api.activeWorkouts.remove);
+
+  return (
+    <>
+      <Button
+        color="danger"
+        variant="light"
+        size="lg"
+        startContent={<X size={20} />}
+        onPress={onOpen}
+      >
+        Discard
+      </Button>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="center"
+        backdrop="blur"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>
+                Are you sure you want to discard the active workout?
+              </ModalHeader>
+              <ModalBody>
+                <Button
+                  color="danger"
+                  onPress={() => {
+                    removeActiveWorkout();
+                    onClose();
+                  }}
+                >
+                  Discard workout
+                </Button>
+                <Button onPress={onClose}>Cancel</Button>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 }
