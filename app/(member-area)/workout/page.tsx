@@ -44,12 +44,7 @@ export default function Page() {
   return (
     <PageContainer bottomNavbar={<BottomNavbar />}>
       <TypographyH2>Quick Start</TypographyH2>
-      <Button
-        size="lg"
-        className="under-construction"
-        startContent={<Plus />}
-        onPress={() => startWorkout()}
-      >
+      <Button size="lg" startContent={<Plus />} onPress={() => startWorkout()}>
         Start Empty Workout
       </Button>
       <TypographyH2>Routines</TypographyH2>
