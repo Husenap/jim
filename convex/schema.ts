@@ -1,5 +1,4 @@
 import { defineEnt, defineEntFromTable, defineEntSchema, getEntDefinitions } from "convex-ents";
-
 import { migrationsTable } from "convex-helpers/server/migrations";
 import { Infer, v } from "convex/values";
 
@@ -47,10 +46,6 @@ export const ExerciseTypeValidator = v.union(
   v.literal("bodyweight reps"),
   v.literal("weighted bodyweight"),
   v.literal("assisted bodyweight"),
-  v.literal("duration"),
-  v.literal("duration & weight"),
-  v.literal("duration & distance"),
-  v.literal("weight & distance"),
 );
 export type ExerciseType = Infer<typeof ExerciseTypeValidator>;
 
@@ -60,15 +55,42 @@ export const WeightedMuscleGroupValidator = v.object({
 });
 export type WeightedMuscleGroup = Infer<typeof WeightedMuscleGroupValidator>;
 
-const exerciseFields = {
+export const ExerciseFields = {
   name: v.string(),
   imageURL: v.optional(v.string()),
   equipment: EquipmentValidator,
   muscleGroups: v.array(WeightedMuscleGroupValidator),
   exerciseType: ExerciseTypeValidator,
+  bodyweightFactor: v.optional(v.number()),
 };
+export const ExerciseFieldsValidator = v.object(ExerciseFields);
+export type ExerciseFieldsType = Infer<typeof ExerciseFieldsValidator>;
+
+export const SetTypeValidator = v.union(
+  v.literal("normal"),
+  v.literal("warmup"),
+  v.literal("failure"),
+  v.literal("drop")
+);
+export type SetType = Infer<typeof SetTypeValidator>;
+
+export const SetDataValidator = v.object({
+  type: SetTypeValidator,
+  reps: v.optional(v.number()),
+  weight: v.optional(v.number()),
+  done: v.boolean(),
+});
+export type SetDataType = Infer<typeof SetDataValidator>;
+
+export const ExerciseSetValidator = v.object({
+  exercise: v.id("immutableExercises"),
+  sets: v.array(SetDataValidator)
+});
+export type ExerciseSetType = Infer<typeof ExerciseSetValidator>;
 
 const schema = defineEntSchema({
+  migrations: defineEntFromTable(migrationsTable),
+
   users: defineEnt({
     username: v.string(),
     name: v.string(),
@@ -76,16 +98,16 @@ const schema = defineEntSchema({
     externalId: v.string(),
     bio: v.optional(v.string()),
     link: v.optional(v.string()),
+    bodyweight: v.optional(v.number())
   })
     .index("externalId", ["externalId"])
     .index("username", ["username"])
+    .searchIndex("search_username", { searchField: "username" })
+    .edges("followers", { to: "users", inverse: "followees" })
     .edges("exercises", { ref: "ownerId" })
-    .edges("routines", { ref: "ownerId" }),
-
-  exercises: defineEnt({
-    ...exerciseFields
-  })
-    .edge("user", { to: "users", field: "ownerId", optional: true }),
+    .edges("routines", { ref: "ownerId" })
+    .edges("workouts", { ref: true })
+    .edge("activeWorkout", { ref: true }),
 
   routines: defineEnt({
     name: v.string(),
@@ -93,7 +115,26 @@ const schema = defineEntSchema({
   })
     .edge("user", { to: "users", field: "ownerId" }),
 
-  migrations: defineEntFromTable(migrationsTable),
+  exercises: defineEnt(ExerciseFields)
+    .edge("user", { to: "users", field: "ownerId", optional: true }),
+
+  immutableExercises: defineEnt({
+    exercise: ExerciseFieldsValidator,
+    refCount: v.number(),
+  })
+    .index("exercise", ["exercise"]),
+
+  workouts: defineEnt({
+    exercises: v.array(ExerciseSetValidator),
+    bodyweight: v.optional(v.number())
+  })
+    .edge("user"),
+
+  activeWorkouts: defineEnt({
+    exercises: v.array(ExerciseSetValidator),
+    bodyweight: v.optional(v.number())
+  })
+    .edge("user"),
 });
 
 export default schema;

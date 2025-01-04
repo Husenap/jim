@@ -25,16 +25,18 @@ export const create = mutation({
     name: v.string(),
     equipment: EquipmentValidator,
     muscleGroups: v.array(WeightedMuscleGroupValidator),
-    exerciseType: ExerciseTypeValidator
+    exerciseType: ExerciseTypeValidator,
+    bodyweightFactor: v.optional(v.number()),
   },
-  handler: async (ctx, { name, equipment, muscleGroups, exerciseType }) => {
+  handler: async (ctx, { name, equipment, muscleGroups, exerciseType, bodyweightFactor }) => {
     const user = await getCurrentUserOrThrow(ctx);
     return ctx.table("exercises").insert({
       name,
       equipment,
       muscleGroups,
       ownerId: user._id,
-      exerciseType
+      exerciseType,
+      bodyweightFactor
     });
   }
 })

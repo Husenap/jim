@@ -11,10 +11,11 @@ export const custom = query({
     return user.edge("routines")
       .map(async (routine) => ({
         ...routine,
-        exercises: await ctx.table("exercises").getMany(routine.exercises)
+        exercises: (await ctx.table("exercises").getMany(routine.exercises)).filter(e => e !== null)
       }));
   }
 });
+
 
 export const create = mutation({
   args: {
@@ -28,5 +29,18 @@ export const create = mutation({
       exercises,
       ownerId: user._id,
     });
+  }
+});
+
+export const remove = mutation({
+  args: {
+    id: v.id("routines"),
+  },
+  handler: async (ctx, { id }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const routine = await ctx.table("routines").getX(id);
+    if (routine.ownerId === user._id) {
+      await routine.delete();
+    }
   }
 });

@@ -6,14 +6,73 @@ import { v, Validator } from "convex/values";
 export const current = query({
   args: {},
   handler: async (ctx) => {
-    return getCurrentUser(ctx);
+    return (await getCurrentUser(ctx))?.doc();
   },
 });
 
 export const byUsername = query({
   args: { username: v.string() },
   handler: async (ctx, { username }) => {
-    return userByUsername(ctx, username);
+    return (await userByUsername(ctx, username))?.doc();
+  }
+});
+
+export const toggleFollow = mutation({
+  args: { userId: v.id("users") },
+  handler: async (ctx, { userId }) => {
+    const user = await getCurrentUser(ctx);
+
+    if (!user) return;
+
+    if (await user.edge("followees").has(userId)) {
+      await ctx.table("users").getX(user._id).patch({
+        followees: { remove: [userId] }
+      });
+    } else {
+      await ctx.table("users").getX(user._id).patch({
+        followees: { add: [userId] }
+      });
+    }
+  }
+});
+
+export const isFollower = query({
+  args: { userId: v.optional(v.id("users")) },
+  handler: async (ctx, { userId }) => {
+    if (!userId) return false;
+    const user = await getCurrentUser(ctx);
+    if (!user) return false;
+    return await user.edge("followers").has(userId);
+  }
+});
+export const isFollowee = query({
+  args: { userId: v.optional(v.id("users")) },
+  handler: async (ctx, { userId }) => {
+    if (!userId) return false;
+    const user = await getCurrentUser(ctx);
+    if (!user) return false;
+    return await user.edge("followees").has(userId);
+  }
+});
+export const followers = query({
+  args: { userId: v.optional(v.id("users")) },
+  handler: async (ctx, { userId }) => {
+    if (!userId) return [];
+    return await ctx.table("users").getX(userId).edge("followers").docs();
+  }
+});
+export const followees = query({
+  args: { userId: v.optional(v.id("users")) },
+  handler: async (ctx, { userId }) => {
+    if (!userId) return [];
+    return await ctx.table("users").getX(userId).edge("followees").docs();
+  }
+});
+
+export const search = query({
+  args: { search: v.string() },
+  handler: async (ctx, { search }) => {
+    return await ctx.table("users").search("search_username", q => q.search("username", search)).take(15).docs();
   }
 });
 
@@ -21,14 +80,15 @@ export const updateProfile = mutation({
   args: {
     bio: v.optional(v.string()),
     link: v.optional(v.string()),
+    bodyweight: v.optional(v.number()),
   },
-  handler: async (ctx, { bio, link }) => {
+  handler: async (ctx, { bio, link, bodyweight }) => {
     const user = await getCurrentUser(ctx);
     if (user) {
-      await ctx.table("users").getX(user._id).patch({ bio, link });
+      await ctx.table("users").getX(user._id).patch({ bio, link, bodyweight });
     }
   }
-})
+});
 
 export const upsertFromClerk = internalMutation({
   args: { data: v.any() as Validator<UserJSON> }, // no runtime validation, trust Clerk
@@ -75,13 +135,21 @@ export async function getCurrentUser(ctx: QueryCtx) {
   if (identity === null) {
     return null;
   }
-  return await userByExternalId(ctx, identity.subject);
+  try {
+    return await userByExternalId(ctx, identity.subject);
+  } catch {
+    return null;
+  }
 }
 
 async function userByExternalId(ctx: QueryCtx, externalId: string) {
-  return await ctx.table("users").get("externalId", externalId);
+  return await ctx.table("users").getX("externalId", externalId);
 }
 
-async function userByUsername(ctx: QueryCtx, username: string) {
-  return await ctx.table("users").get("username", username);
+export async function userByUsername(ctx: QueryCtx, username: string) {
+  try {
+    return await ctx.table("users").getX("username", username);
+  } catch {
+    return null;
+  }
 }
