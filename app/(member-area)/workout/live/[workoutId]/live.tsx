@@ -251,7 +251,6 @@ function ExerciseSet({
             <DebouncedInput
               type="number"
               step={1}
-              pattern="[0-9]"
               validationBehavior="aria"
               isReadOnly={!isMutable}
               onValueChange={
@@ -261,7 +260,10 @@ function ExerciseSet({
                         id: activeWorkout!._id,
                         exerciseIndex,
                         setIndex: item.index,
-                        setData: { ...item.set, [columnKey]: parseFloat(v) },
+                        setData: {
+                          ...item.set,
+                          [columnKey]: parseInt(v) || 0,
+                        },
                       })
                   : undefined
               }
@@ -282,7 +284,10 @@ function ExerciseSet({
                         id: activeWorkout!._id,
                         exerciseIndex,
                         setIndex: item.index,
-                        setData: { ...item.set, [columnKey]: parseFloat(v) },
+                        setData: {
+                          ...item.set,
+                          [columnKey]: parseFloat(v) || 0,
+                        },
                       })
                   : undefined
               }
