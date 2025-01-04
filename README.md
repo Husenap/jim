@@ -4,7 +4,7 @@
 
 ## Your favourite gym tracker!
 
-### MVP - Milestone 1
+### Milestone 1 - MVP
 
 - [x] User should be able to create their own custom exercises.
 - [x] User should be able to create workout routines.
