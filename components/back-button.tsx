@@ -4,10 +4,10 @@ import { Button } from "@nextui-org/react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function BackButton() {
+export default function BackButton({ onPress }: { onPress?: () => void }) {
   const { back } = useRouter();
   return (
-    <Button onPress={back} isIconOnly variant="light">
+    <Button onPress={onPress ? onPress : back} isIconOnly variant="light">
       <ArrowLeft />
     </Button>
   );

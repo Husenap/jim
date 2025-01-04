@@ -1,5 +1,5 @@
 import { useProfileContext } from "@/components/profile/profile-context";
-import { TypographyH2 } from "@/components/typography";
+import { TypographyH1, TypographyH2 } from "@/components/typography";
 import { humanReadibleTimeDiff } from "@/utils/time-diff";
 import {
   Button,
@@ -20,7 +20,7 @@ export default function ProfileWorkouts() {
       <TypographyH2>Workouts</TypographyH2>
       <div className="-mx-2 flex flex-col gap-4">
         {workouts.map((workout) => (
-          <Card className="under-construction" radius="none">
+          <Card key={workout._id} radius="none">
             <CardHeader>
               <User
                 avatarProps={{ src: profileUser?.imageURL }}
@@ -30,10 +30,8 @@ export default function ProfileWorkouts() {
             </CardHeader>
             <Divider />
             <CardBody>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit
-              incidunt quod harum quia at quo ut magni recusandae necessitatibus
-              quidem. Beatae nostrum delectus excepturi. Laboriosam, iusto sed.
-              Corporis, beatae at.
+              <TypographyH1>{workout.title}</TypographyH1>
+              <TypographyH2>{workout.description}</TypographyH2>
             </CardBody>
             <Divider />
             <CardFooter className="grid grid-cols-3 gap-2">

@@ -18,9 +18,12 @@ export const create = mutation({
 
     const exercises: Id<"immutableExercises">[] = [];
 
+    let title = "Workout";
+
     if (id) {
-      const routine = await ctx.table("routines").get(id);
-      const routineExercises = await ctx.table("exercises").getMany(routine?.exercises ?? []);
+      const routine = await ctx.table("routines").getX(id);
+      title = routine.name;
+      const routineExercises = await ctx.table("exercises").getMany(routine.exercises);
       for (const re of routineExercises) {
         if (re) {
           const immutableExerciseId =
@@ -41,6 +44,7 @@ export const create = mutation({
     }
 
     return await ctx.table("activeWorkouts").insert({
+      title,
       userId: user._id,
       bodyweight: user.bodyweight,
       exercises: exercises.map(e => ({

@@ -125,12 +125,15 @@ const schema = defineEntSchema({
     .index("exercise", ["exercise"]),
 
   workouts: defineEnt({
+    title: v.string(),
+    description: v.optional(v.string()),
     exercises: v.array(ExerciseSetValidator),
     bodyweight: v.optional(v.number())
   })
     .edge("user"),
 
   activeWorkouts: defineEnt({
+    title: v.string(),
     exercises: v.array(ExerciseSetValidator),
     bodyweight: v.optional(v.number())
   })
