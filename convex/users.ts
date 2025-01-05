@@ -100,11 +100,11 @@ export const upsertFromClerk = internalMutation({
       externalId: data.id,
     };
 
-    const user = await userByExternalId(ctx, data.id);
-    if (user === null) {
-      await ctx.table("users").insert(userAttributes);
-    } else {
+    try {
+      const user = await userByExternalId(ctx, data.id);
       await ctx.table("users").getX(user._id).patch(userAttributes);
+    } catch {
+      await ctx.table("users").insert(userAttributes);
     }
   },
 });
