@@ -129,7 +129,8 @@ const schema = defineEntSchema({
     title: v.string(),
     description: v.optional(v.string()),
     exercises: v.array(ExerciseSetValidator),
-    bodyweight: v.optional(v.number())
+    bodyweight: v.optional(v.number()),
+    startTime: v.optional(v.number()),
   })
     .edge("user"),
 

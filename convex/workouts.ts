@@ -31,7 +31,8 @@ export const create = mutation({
       description,
       exercises: activeWorkout.exercises,
       userId: activeWorkout.userId,
-      bodyweight: activeWorkout.bodyweight
+      bodyweight: activeWorkout.bodyweight,
+      startTime: activeWorkout._creationTime,
     });
     await activeWorkout.delete();
   }
@@ -70,7 +71,13 @@ export const paginatedWorkouts = query({
       return {
         ...results,
         page: await Promise.all(results.page.map(async workout => ({
-          workout,
+          workout: {
+            ...workout,
+            exercises: await Promise.all(workout.exercises.map(async e => ({
+              ...e,
+              exercise: (await ctx.table("immutableExercises").getX(e.exercise)).exercise
+            })))
+          },
           user: await ctx.table("users").getX(workout.userId).doc()
         })))
       };
@@ -78,7 +85,7 @@ export const paginatedWorkouts = query({
       return {
         page: [],
         isDone: false,
-        continueCursor: ""
+        continueCursor: "",
       } satisfies PaginationResult<{
         workout: Doc<"workouts">,
         user: Doc<"users">,
@@ -86,3 +93,4 @@ export const paginatedWorkouts = query({
     }
   }
 });
+export type PaginatedWorkoutsReturnType = Awaited<ReturnType<typeof paginatedWorkouts>>["page"][0]["workout"];

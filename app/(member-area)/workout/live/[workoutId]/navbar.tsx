@@ -67,7 +67,7 @@ function WorkoutDetails({ disableAnimation }: { disableAnimation?: boolean }) {
         </div>
         <div className="flex flex-col">
           <TypographyH4>Volume</TypographyH4>
-          <span className="text-nowrap">{volume}kg</span>
+          <span className="text-nowrap">{volume} kg</span>
         </div>
         <div className="flex flex-col">
           <TypographyH4>Sets</TypographyH4>

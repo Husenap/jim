@@ -76,17 +76,17 @@ export default function Live() {
               <DebouncedInput
                 size="sm"
                 placeholder="Add a note..."
-                value={e.note}
+                value={e.note ?? ""}
                 onValueChange={(v) =>
                   updateNote({
                     id: activeWorkout!._id,
                     exerciseIndex: i,
-                    note: v,
+                    note: v.length > 0 ? v : undefined,
                   })
                 }
               />
             ) : (
-              <span className="text-sm">{e.note}</span>
+              e.note && <span className="text-sm">{e.note}</span>
             )}
             <ExerciseSet
               exerciseIndex={i}
