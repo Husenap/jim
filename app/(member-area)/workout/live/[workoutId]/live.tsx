@@ -31,7 +31,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useImmer } from "use-immer";
 
 export default function Live() {
-  const { activeWorkout, exercises, isOwner } = useActiveWorkoutContext();
+  const { activeWorkout, exercises, isOwner, updateNote } =
+    useActiveWorkoutContext();
   const { back } = useRouter();
 
   if (activeWorkout === undefined) {
@@ -71,6 +72,22 @@ export default function Live() {
               <Avatar size="sm" src={e.exercise.imageURL} />
               <span>{e.exercise.name}</span>
             </div>
+            {isOwner ? (
+              <DebouncedInput
+                size="sm"
+                placeholder="Add a note..."
+                value={e.note}
+                onValueChange={(v) =>
+                  updateNote({
+                    id: activeWorkout!._id,
+                    exerciseIndex: i,
+                    note: v,
+                  })
+                }
+              />
+            ) : (
+              <span className="text-sm">{e.note}</span>
+            )}
             <ExerciseSet
               exerciseIndex={i}
               isMutable={isOwner}

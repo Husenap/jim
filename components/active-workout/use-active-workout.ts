@@ -12,6 +12,7 @@ export function useActiveWorkout({ workoutId }: {
   const activeWorkout = useQuery(api.activeWorkouts.get, { id: workoutId });
   const exercises = useQuery(api.activeWorkouts.exercises, { id: workoutId });
 
+  const updateNote = useMutation(api.activeWorkouts.updateNote);
   const updateSet = useMutation(api.activeWorkouts.updateSet);
   const addSet = useMutation(api.activeWorkouts.addSet);
   const removeSet = useMutation(api.activeWorkouts.removeSet);
@@ -28,12 +29,13 @@ export function useActiveWorkout({ workoutId }: {
       isOwner,
       isSpectate: !isOwner,
       exercises,
+      updateNote,
       updateSet,
       addSet,
       removeSet,
       volume,
       finishedSets
-    }), [activeWorkout, user, exercises, updateSet, addSet, removeSet]);
+    }), [activeWorkout, user, exercises, updateNote, updateSet, addSet, removeSet]);
 
   return context;
 };

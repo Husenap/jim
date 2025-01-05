@@ -82,6 +82,7 @@ export const exercises = query({
     if (!activeWorkout) return [];
     return await Promise.all(activeWorkout.exercises.map(async e => ({
       sets: e.sets,
+      note: e.note,
       exercise: (await ctx.table("immutableExercises").getX(e.exercise)).exercise,
     })));
   }
@@ -111,6 +112,23 @@ export const followees = query({
         user: typeof aw.user;
         activeWorkout: NonNullable<typeof aw.activeWorkout>;
       } => aw.activeWorkout !== null)
+  }
+});
+
+export const updateNote = mutation({
+  args: {
+    id: v.id("activeWorkouts"),
+    exerciseIndex: v.number(),
+    note: v.optional(v.string()),
+  },
+  handler: async (ctx, { id, exerciseIndex, note }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const activeWorkout = await ctx.table("activeWorkouts").getX(id);
+    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+
+    activeWorkout.exercises[exerciseIndex].note = note;
+
+    await activeWorkout.patch(activeWorkout);
   }
 });
 

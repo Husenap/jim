@@ -84,6 +84,7 @@ export type SetDataType = Infer<typeof SetDataValidator>;
 
 export const ExerciseSetValidator = v.object({
   exercise: v.id("immutableExercises"),
+  note: v.optional(v.string()),
   sets: v.array(SetDataValidator)
 });
 export type ExerciseSetType = Infer<typeof ExerciseSetValidator>;
