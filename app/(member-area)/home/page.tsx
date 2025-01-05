@@ -3,6 +3,7 @@
 import BottomNavbar from "@/app/(member-area)/bottom-navbar";
 import Navbar from "@/app/(member-area)/home/navbar";
 import PageContainer from "@/components/page-container";
+import WorkoutFeed from "@/components/workout/workout-feed";
 import { api } from "@/convex/_generated/api";
 import { Avatar, Badge, ScrollShadow } from "@nextui-org/react";
 import { useQuery } from "convex/react";
@@ -58,6 +59,10 @@ export default function Page() {
           </ScrollShadow>
         </>
       )}
+
+      <div className="-mx-2">
+        <WorkoutFeed />
+      </div>
     </PageContainer>
   );
 }

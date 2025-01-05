@@ -74,6 +74,9 @@ dependencies:
   react-dom:
     specifier: 19.0.0
     version: 19.0.0(react@19.0.0)
+  react-intersection-observer:
+    specifier: ^9.14.1
+    version: 9.14.1(react-dom@19.0.0)(react@19.0.0)
   react-sortablejs:
     specifier: ^6.1.4
     version: 6.1.4(@types/sortablejs@1.15.8)(react-dom@19.0.0)(react@19.0.0)(sortablejs@1.15.6)
@@ -4860,6 +4863,19 @@ packages:
     dependencies:
       react: 19.0.0
       scheduler: 0.25.0
+    dev: false
+
+  /react-intersection-observer@9.14.1(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-k1xIUn3sCQi3ugNeF64FJb3zwve5mcetvAUR9JazXeOmtap4IP2evN8rs+yf6SQ7F1QydsOGiqTmt+lySKZ9uA==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
     dev: false
 
   /react-remove-scroll-bar@2.3.8(@types/react@19.0.2)(react@19.0.0):
