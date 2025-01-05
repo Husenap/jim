@@ -6,7 +6,7 @@ import { usePaginatedQuery } from "convex/react";
 import { InView } from "react-intersection-observer";
 
 export default function WorkoutFeed({ userId }: { userId?: Id<"users"> }) {
-  const itemsPerPage = 1;
+  const itemsPerPage = 5;
 
   const { results, status, loadMore, isLoading } = usePaginatedQuery(
     api.workouts.paginatedWorkouts,
