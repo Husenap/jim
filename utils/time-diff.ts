@@ -1,4 +1,4 @@
-export function humanReadibleTimeDiff(startTime?: number | Date, endTime?: number | Date): string {
+function calculateTimeDiff({ startTime, endTime }: { startTime?: number | Date, endTime?: number | Date }) {
   startTime = startTime ?? new Date();
   if (startTime instanceof Date) {
     startTime = startTime.getTime();
@@ -8,8 +8,13 @@ export function humanReadibleTimeDiff(startTime?: number | Date, endTime?: numbe
     endTime = endTime.getTime();
   }
 
-  const timeDifference = Math.abs(endTime - startTime);
-  const tense = endTime > startTime ? 'ago' : 'from now';
+  return endTime - startTime;
+}
+
+export function humanReadibleTimeDiff({ startTime, endTime }: { startTime?: number | Date, endTime?: number | Date }): string {
+  let timeDifference = calculateTimeDiff({ startTime, endTime })
+  const tense = timeDifference > 0 ? 'ago' : 'from now';
+  timeDifference = Math.abs(timeDifference);
 
   const secondsAgo = timeDifference / 1000;
   const minutesAgo = secondsAgo / 60;
@@ -68,7 +73,7 @@ export function humanReadibleTimeDiff(startTime?: number | Date, endTime?: numbe
   return "Now";
 };
 
-export function humanReadiableDuration(startTime?: number | Date, endTime?: number | Date) {
+export function humanReadiableDuration({ startTime, endTime, includeSeconds = true }: { startTime?: number | Date, endTime?: number | Date, includeSeconds?: boolean }) {
   startTime = startTime ?? new Date();
   if (startTime instanceof Date) {
     startTime = startTime.getTime();
@@ -78,17 +83,21 @@ export function humanReadiableDuration(startTime?: number | Date, endTime?: numb
     endTime = endTime.getTime();
   }
 
-  const timeDifference = Math.abs(endTime - startTime);
+  const timeDifference = Math.abs(calculateTimeDiff({ startTime, endTime }));
 
   const hours = Math.floor(timeDifference / (3600 * 1000));
   const minutes = Math.floor((timeDifference % (3600 * 1000)) / (60 * 1000));
   const seconds = Math.floor((timeDifference % (60 * 1000)) / 1000);
 
+  const parts = [];
   if (hours >= 1) {
-    return `${hours}h ${minutes}min ${seconds}s`;
-  } else if (minutes >= 1) {
-    return `${minutes}min ${seconds}s`;
-  } else {
-    return `${seconds}s`;
+    parts.push(`${hours}h`);
   }
+  if (minutes >= 1) {
+    parts.push(`${minutes}min`);
+  }
+  if (includeSeconds || parts.length === 0) {
+    parts.push(`${seconds}s`);
+  }
+  return parts.join(" ");
 }

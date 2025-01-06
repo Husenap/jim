@@ -38,7 +38,11 @@ export default function WorkoutPost({
   const time = useMemo(
     () =>
       workout.startTime
-        ? humanReadiableDuration(workout.startTime, workout._creationTime)
+        ? humanReadiableDuration({
+            startTime: workout.startTime,
+            endTime: workout._creationTime,
+            includeSeconds: false,
+          })
         : undefined,
     [workout],
   );
@@ -56,7 +60,9 @@ export default function WorkoutPost({
           href={`/user/${user.username}`}
           avatarProps={{ src: user.imageURL }}
           name={user.name}
-          description={humanReadibleTimeDiff(workout._creationTime)}
+          description={humanReadibleTimeDiff({
+            startTime: workout._creationTime,
+          })}
         />
         <div>
           <TypographyH1>{workout.title}</TypographyH1>

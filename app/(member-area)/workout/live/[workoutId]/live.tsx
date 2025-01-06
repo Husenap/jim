@@ -257,6 +257,8 @@ function ExerciseSet({
               type="number"
               step={1}
               validationBehavior="aria"
+              inputMode="numeric"
+              pattern="[0-9]*"
               isReadOnly={!isMutable}
               onValueChange={
                 isMutable
@@ -281,6 +283,8 @@ function ExerciseSet({
               type="number"
               step={0.1}
               validationBehavior="aria"
+              inputMode="decimal"
+              pattern="[0-9]*\.[0-9]*"
               isReadOnly={!isMutable}
               onValueChange={
                 isMutable

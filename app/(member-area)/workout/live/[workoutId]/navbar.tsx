@@ -42,14 +42,18 @@ export default function Navbar() {
 function WorkoutDetails({ disableAnimation }: { disableAnimation?: boolean }) {
   const { activeWorkout, volume, finishedSets } = useActiveWorkoutContext();
   const [timeString, setTimeString] = useState(
-    humanReadiableDuration(activeWorkout?._creationTime),
+    humanReadiableDuration({ startTime: activeWorkout?._creationTime }),
   );
   if (!disableAnimation) {
     useEffect(() => {
-      setTimeString(humanReadiableDuration(activeWorkout?._creationTime));
+      setTimeString(
+        humanReadiableDuration({ startTime: activeWorkout?._creationTime }),
+      );
       const interval = setInterval(
         () =>
-          setTimeString(humanReadiableDuration(activeWorkout?._creationTime)),
+          setTimeString(
+            humanReadiableDuration({ startTime: activeWorkout?._creationTime }),
+          ),
         1000,
       );
       return () => {
