@@ -24,6 +24,7 @@ import {
 import { useMutation } from "convex/react";
 import { Dumbbell, EllipsisVertical, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { v4 as uuidv4 } from "uuid";
 
@@ -36,10 +37,7 @@ export default function Page() {
     "jim-create-routine-exercises",
     [] as { exercise: Doc<"exercises">; id: string }[],
   );
-  const [errors, setErrors] = useLocalStorage(
-    "jim-create-routine-errors",
-    {} as Record<string, string>,
-  );
+  const [errors, setErrors] = useState({} as Record<string, string>);
   const [replaceId, setReplaceId] = useLocalStorage<string | null>(
     "jim-create-routine-replaceId",
     null,
