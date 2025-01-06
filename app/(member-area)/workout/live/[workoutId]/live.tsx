@@ -144,22 +144,10 @@ function ExerciseSet({
     ),
   });
 
-  const [rows, setRows] = useImmer(
-    sets.map((set, i) => ({
-      set,
-      index: i,
-    })),
-  );
-
-  useEffect(() => {
-    setRows(
-      sets.map((set, i) => ({
-        set,
-        index: i,
-      })),
-    );
-  }, [sets, isMutable]);
-
+  const rows = sets.map((set, i) => ({
+    set,
+    index: i,
+  }));
   type Item = (typeof rows)[0];
 
   const setTypeButtons: {
