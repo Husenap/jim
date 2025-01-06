@@ -13,6 +13,7 @@ import countSets from "@/utils/workout/sets";
 import calculateVolume from "@/utils/workout/volume";
 import {
   Avatar,
+  AvatarGroup,
   Button,
   Card,
   CardBody,
@@ -28,9 +29,11 @@ import { useMemo } from "react";
 export default function WorkoutPost({
   workout,
   user,
+  onToggleLike,
 }: {
   workout: PaginatedWorkoutsReturnType;
   user: Doc<"users">;
+  onToggleLike?: () => void;
 }) {
   const time = useMemo(
     () =>
@@ -85,14 +88,25 @@ export default function WorkoutPost({
             {w.sets.length} sets of {w.exercise.name}
           </div>
         ))}
+        <div className="flex flex-row items-center">
+          <AvatarGroup max={3} size="sm">
+            {workout.likers.map((l) => (
+              <Avatar key={l._id} src={l.imageURL} />
+            ))}
+          </AvatarGroup>
+          <span className="ms-2 text-small font-medium text-foreground">
+            {workout.likers.length} likes
+          </span>
+        </div>
       </CardBody>
       <Divider />
       <CardFooter className="grid grid-cols-3 gap-2">
         <Button
           isIconOnly
-          className="under-construction w-full"
+          className="w-full"
           size="sm"
           variant="light"
+          onPress={onToggleLike}
         >
           <ThumbsUp />
         </Button>

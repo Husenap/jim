@@ -108,6 +108,7 @@ const schema = defineEntSchema({
     .edges("exercises", { ref: "ownerId" })
     .edges("routines", { ref: "ownerId" })
     .edges("workouts", { ref: true })
+    .edges("likedWorkouts", { to: "workouts", field: "likedWorkoutsId", table: "users_to_workouts_likers" })
     .edge("activeWorkout", { ref: true }),
 
   routines: defineEnt({
@@ -132,7 +133,8 @@ const schema = defineEntSchema({
     bodyweight: v.optional(v.number()),
     startTime: v.optional(v.number()),
   })
-    .edge("user"),
+    .edge("user")
+    .edges("likers", { to: "users", field: "likersId", table: "users_to_workouts_likers" }),
 
   activeWorkouts: defineEnt({
     title: v.string(),

@@ -64,19 +64,19 @@ export const paginatedWorkouts = query({
               ...followees.map(id => q.eq(q.field("userId"), id))
             ))
             .order("desc")
-            .paginate(paginationOpts)
-            .docs();
+            .paginate(paginationOpts);
       }
 
       return {
         ...results,
         page: await Promise.all(results.page.map(async workout => ({
           workout: {
-            ...workout,
+            ...workout.doc(),
             exercises: await Promise.all(workout.exercises.map(async e => ({
               ...e,
               exercise: (await ctx.table("immutableExercises").getX(e.exercise)).exercise
-            })))
+            }))),
+            likers: await workout.edgeX("likers").docs(),
           },
           user: await ctx.table("users").getX(workout.userId).doc()
         })))
@@ -94,3 +94,20 @@ export const paginatedWorkouts = query({
   }
 });
 export type PaginatedWorkoutsReturnType = Awaited<ReturnType<typeof paginatedWorkouts>>["page"][0]["workout"];
+
+export const toggleLike = mutation({
+  args: { workoutId: v.id("workouts") },
+  handler: async (ctx, { workoutId }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const workout = await ctx.table("workouts").getX(workoutId);
+    if (await workout.edge("likers").has(user._id)) {
+      await workout.patch({
+        likers: { remove: [user._id] }
+      });
+    } else {
+      await workout.patch({
+        likers: { add: [user._id] }
+      });
+    }
+  }
+});
