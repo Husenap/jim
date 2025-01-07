@@ -12,8 +12,8 @@
 - [x] User should be able to follow another user.
 - [x] User should be able to exit an active workout and resume/discard it later.
 - [x] User should be able to log sets/reps/etc on the exercises while in a workout.
-- [ ] User should be able to create a post of their workout when they're finished.
-- [ ] User should be able to see other users workouts in their Home feed.
+- [x] User should be able to create a post of their workout when they're finished.
+- [x] User should be able to see other users workouts in their Home feed.
 
 ### Milestone 2
 

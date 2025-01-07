@@ -5,13 +5,19 @@ import { Spinner } from "@nextui-org/react";
 import { useMutation, usePaginatedQuery, useQuery } from "convex/react";
 import { InView } from "react-intersection-observer";
 
-export default function WorkoutFeed({ userId }: { userId?: Id<"users"> }) {
+export default function WorkoutFeed({
+  userId,
+  discovery,
+}: {
+  userId?: Id<"users">;
+  discovery?: boolean;
+}) {
   const itemsPerPage = 5;
 
   const user = useQuery(api.users.current);
   const { results, status, loadMore, isLoading } = usePaginatedQuery(
     api.workouts.paginatedWorkouts,
-    { userId },
+    { userId, discovery },
     {
       initialNumItems: itemsPerPage,
     },

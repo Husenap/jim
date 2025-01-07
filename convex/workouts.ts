@@ -41,9 +41,10 @@ export const create = mutation({
 export const paginatedWorkouts = query({
   args: {
     userId: v.optional(v.id("users")),
+    discovery: v.optional(v.boolean()),
     paginationOpts: paginationOptsValidator
   },
-  handler: async (ctx, { userId, paginationOpts }) => {
+  handler: async (ctx, { userId, paginationOpts, discovery }) => {
     try {
       const user = await getCurrentUserOrThrow(ctx);
 
@@ -53,6 +54,10 @@ export const paginatedWorkouts = query({
         results = await ctx.table("users")
           .getX(userId)
           .edgeX("workouts")
+          .order("desc")
+          .paginate(paginationOpts);
+      } else if (discovery) {
+        results = await ctx.table("workouts")
           .order("desc")
           .paginate(paginationOpts);
       } else {
