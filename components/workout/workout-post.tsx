@@ -20,6 +20,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  cn,
   Divider,
   Dropdown,
   DropdownItem,
@@ -82,8 +83,9 @@ export default function WorkoutPost({
   return (
     <Card radius="none">
       <CardHeader className="flex flex-col items-start gap-2">
-        <div className="flex w-full flex-row justify-between">
+        <div className="flex w-full flex-row">
           <User
+            className="flex-1 justify-start"
             as={Link}
             href={`/user/${user.username}`}
             avatarProps={{ src: user.imageURL }}
@@ -136,7 +138,10 @@ export default function WorkoutPost({
         </div>
       </CardHeader>
       <Divider />
-      <CardBody className="flex flex-col gap-2">
+      <CardBody
+        className="flex flex-col gap-2"
+        onClick={() => console.log("Clicked body")}
+      >
         <TypographyH2>Workout</TypographyH2>
         {workout.exercises.slice(0, 3).map((w, i) => (
           <div key={i} className="flex flex-row items-center gap-2">
@@ -170,7 +175,13 @@ export default function WorkoutPost({
           variant="light"
           onPress={onToggleLike}
         >
-          <ThumbsUp />
+          <ThumbsUp
+            className={cn({
+              "text-primary": workout.likers.some(
+                (l) => l._id === currentUser?._id,
+              ),
+            })}
+          />
         </Button>
         <Button
           isIconOnly
