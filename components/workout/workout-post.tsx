@@ -3,6 +3,7 @@ import {
   TypographyH2,
   TypographyH4,
 } from "@/components/typography";
+import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { PaginatedWorkoutsReturnType } from "@/convex/workouts";
 import {
@@ -20,9 +21,14 @@ import {
   CardFooter,
   CardHeader,
   Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   User,
 } from "@nextui-org/react";
-import { MessageCircle, Share, ThumbsUp } from "lucide-react";
+import { useMutation, useQuery } from "convex/react";
+import { Ellipsis, MessageCircle, Share, ThumbsUp } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { useMemo } from "react";
 
@@ -52,18 +58,62 @@ export default function WorkoutPost({
   );
   const sets = useMemo(() => countSets(workout.exercises), [workout]);
 
+  const currentUser = useQuery(api.users.current);
+  const removeWorkout = useMutation(api.workouts.remove).withOptimisticUpdate(
+    (localStore, { workoutId }) => {
+      if (!currentUser) return;
+      for (const query of localStore.getAllQueries(
+        api.workouts.paginatedWorkouts,
+      )) {
+        if (query.value) {
+          query.value.page = query.value.page.filter(
+            (r) => r.workout._id !== workoutId,
+          );
+          localStore.setQuery(
+            api.workouts.paginatedWorkouts,
+            query.args,
+            query.value,
+          );
+        }
+      }
+    },
+  );
+
   return (
     <Card radius="none">
       <CardHeader className="flex flex-col items-start gap-2">
-        <User
-          as={Link}
-          href={`/user/${user.username}`}
-          avatarProps={{ src: user.imageURL }}
-          name={user.name}
-          description={humanReadibleTimeDiff({
-            startTime: workout._creationTime,
-          })}
-        />
+        <div className="flex w-full flex-row justify-between">
+          <User
+            as={Link}
+            href={`/user/${user.username}`}
+            avatarProps={{ src: user.imageURL }}
+            name={user.name}
+            description={humanReadibleTimeDiff({
+              startTime: workout._creationTime,
+            })}
+          />
+          {workout.userId === currentUser?._id && (
+            <Dropdown placement="left">
+              <DropdownTrigger>
+                <Button isIconOnly variant="light" size="md">
+                  <Ellipsis size={20} />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem
+                  key="delete"
+                  color="danger"
+                  className="text-danger"
+                  onPress={() => {
+                    removeWorkout({ workoutId: workout._id });
+                  }}
+                >
+                  Remove routine
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          )}
+        </div>
         <div>
           <TypographyH1>{workout.title}</TypographyH1>
           <TypographyH2>{workout.description}</TypographyH2>

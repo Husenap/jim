@@ -1,5 +1,6 @@
 import { Doc } from "@/convex/_generated/dataModel";
 import { mutation, query } from "@/convex/functions";
+import { removeOrReturn } from "@/convex/immutableExercises";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
 import { paginationOptsValidator, PaginationResult } from "convex/server";
 import { v } from "convex/values";
@@ -37,6 +38,18 @@ export const create = mutation({
     await activeWorkout.delete();
   }
 });
+
+export const remove = mutation({
+  args: { workoutId: v.id("workouts") },
+  handler: async (ctx, { workoutId }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const workout = await ctx.table("workouts").getX(workoutId);
+    if (user._id == workout.userId) {
+      await Promise.all(workout.exercises.map(async e => removeOrReturn(ctx, e.exercise)));
+      await workout.delete();
+    }
+  }
+})
 
 export const paginatedWorkouts = query({
   args: {

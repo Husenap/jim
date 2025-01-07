@@ -99,7 +99,7 @@ function FinishButton() {
         title,
         description,
       });
-      replace("/home");
+      replace("/profile");
     }
   };
 
