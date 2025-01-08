@@ -60,11 +60,9 @@ export const remove = mutation({
   args: {},
   handler: async (ctx) => {
     const user = await getCurrentUserOrThrow(ctx);
-    const activeWorkout = await user.edge("activeWorkout");
-    if (activeWorkout) {
-      await Promise.all(activeWorkout.exercises.map(async e => removeOrReturn(ctx, e.exercise)));
-      await ctx.table("activeWorkouts").getX(activeWorkout._id).delete();
-    }
+    const activeWorkout = await user.edgeX("activeWorkout");
+    await Promise.all(activeWorkout.exercises.map(async e => removeOrReturn(ctx, e.exercise)));
+    await ctx.table("activeWorkouts").getX(activeWorkout._id).delete();
   }
 });
 

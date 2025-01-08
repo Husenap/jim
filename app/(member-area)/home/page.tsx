@@ -5,15 +5,21 @@ import Navbar from "@/app/(member-area)/home/navbar";
 import PageContainer from "@/components/page-container";
 import WorkoutFeed from "@/components/workout/workout-feed";
 import { api } from "@/convex/_generated/api";
+import type { Selection } from "@nextui-org/react";
 import { Avatar, Badge, ScrollShadow } from "@nextui-org/react";
 import { useQuery } from "convex/react";
 import { Link } from "next-view-transitions";
+import { useState } from "react";
 
 export default function Page() {
   const activeFollowees = useQuery(api.activeWorkouts.followees) ?? [];
+  const [page, setPage] = useState<Selection>(new Set(["home"]));
 
   return (
-    <PageContainer topNavbar={<Navbar />} bottomNavbar={<BottomNavbar />}>
+    <PageContainer
+      topNavbar={<Navbar page={page} setPage={setPage} />}
+      bottomNavbar={<BottomNavbar />}
+    >
       {activeFollowees.length > 0 && (
         <>
           <ScrollShadow
@@ -61,7 +67,7 @@ export default function Page() {
       )}
 
       <div className="-mx-2">
-        <WorkoutFeed />
+        <WorkoutFeed discovery={page instanceof Set && page.has("discovery")} />
       </div>
     </PageContainer>
   );

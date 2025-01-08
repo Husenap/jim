@@ -3,6 +3,7 @@ import {
   TypographyH2,
   TypographyH4,
 } from "@/components/typography";
+import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { PaginatedWorkoutsReturnType } from "@/convex/workouts";
 import {
@@ -19,10 +20,16 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  cn,
   Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   User,
 } from "@nextui-org/react";
-import { MessageCircle, Share, ThumbsUp } from "lucide-react";
+import { useMutation, useQuery } from "convex/react";
+import { Ellipsis, MessageCircle, Share, ThumbsUp } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { useMemo } from "react";
 
@@ -52,18 +59,63 @@ export default function WorkoutPost({
   );
   const sets = useMemo(() => countSets(workout.exercises), [workout]);
 
+  const currentUser = useQuery(api.users.current);
+  const removeWorkout = useMutation(api.workouts.remove).withOptimisticUpdate(
+    (localStore, { workoutId }) => {
+      if (!currentUser) return;
+      for (const query of localStore.getAllQueries(
+        api.workouts.paginatedWorkouts,
+      )) {
+        if (query.value) {
+          query.value.page = query.value.page.filter(
+            (r) => r.workout._id !== workoutId,
+          );
+          localStore.setQuery(
+            api.workouts.paginatedWorkouts,
+            query.args,
+            query.value,
+          );
+        }
+      }
+    },
+  );
+
   return (
     <Card radius="none">
       <CardHeader className="flex flex-col items-start gap-2">
-        <User
-          as={Link}
-          href={`/user/${user.username}`}
-          avatarProps={{ src: user.imageURL }}
-          name={user.name}
-          description={humanReadibleTimeDiff({
-            startTime: workout._creationTime,
-          })}
-        />
+        <div className="flex w-full flex-row">
+          <User
+            className="flex-1 justify-start"
+            as={Link}
+            href={`/user/${user.username}`}
+            avatarProps={{ src: user.imageURL }}
+            name={user.name}
+            description={humanReadibleTimeDiff({
+              startTime: workout._creationTime,
+            })}
+          />
+          {workout.userId === currentUser?._id && (
+            <Dropdown placement="left">
+              <DropdownTrigger>
+                <Button isIconOnly variant="light" size="md">
+                  <Ellipsis size={20} />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem
+                  key="delete"
+                  color="danger"
+                  className="text-danger"
+                  onPress={() => {
+                    removeWorkout({ workoutId: workout._id });
+                  }}
+                >
+                  Remove routine
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          )}
+        </div>
         <div>
           <TypographyH1>{workout.title}</TypographyH1>
           <TypographyH2>{workout.description}</TypographyH2>
@@ -86,23 +138,32 @@ export default function WorkoutPost({
         </div>
       </CardHeader>
       <Divider />
-      <CardBody className="flex flex-col gap-2">
+      <CardBody
+        className="flex flex-col gap-2"
+        onClick={() => console.log("Clicked body")}
+      >
         <TypographyH2>Workout</TypographyH2>
         {workout.exercises.slice(0, 3).map((w, i) => (
           <div key={i} className="flex flex-row items-center gap-2">
-            <Avatar src={w.exercise.imageURL} size="sm" />
+            <Avatar src={w.exercise.imageURL} size="md" />
             {w.sets.length} sets of {w.exercise.name}
           </div>
         ))}
+        {workout.exercises.length > 3 && (
+          <>
+            <div className="text-center text-sm text-default-400">
+              See {workout.exercises.length - 3} more exercises
+            </div>
+          </>
+        )}
         <div className="flex flex-row items-center">
           <AvatarGroup max={3} size="sm">
             {workout.likers.map((l) => (
               <Avatar key={l._id} src={l.imageURL} />
             ))}
           </AvatarGroup>
-          <span className="ms-2 text-small font-medium text-foreground">
-            {workout.likers.length} likes
-          </span>
+          <span className="ms-2 text-sm">{workout.likers.length} likes</span>
+          <span className="flex-1 text-right text-sm">0 comments</span>
         </div>
       </CardBody>
       <Divider />
@@ -114,7 +175,13 @@ export default function WorkoutPost({
           variant="light"
           onPress={onToggleLike}
         >
-          <ThumbsUp />
+          <ThumbsUp
+            className={cn({
+              "text-primary": workout.likers.some(
+                (l) => l._id === currentUser?._id,
+              ),
+            })}
+          />
         </Button>
         <Button
           isIconOnly
