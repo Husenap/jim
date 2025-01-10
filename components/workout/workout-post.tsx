@@ -150,11 +150,9 @@ export default function WorkoutPost({
           </div>
         ))}
         {workout.exercises.length > 3 && (
-          <>
-            <div className="text-center text-sm text-default-400">
-              See {workout.exercises.length - 3} more exercises
-            </div>
-          </>
+          <div className="text-center text-sm text-default-400">
+            See {workout.exercises.length - 3} more exercises
+          </div>
         )}
         <div className="flex flex-row items-center">
           <AvatarGroup max={3} size="sm">
