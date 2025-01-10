@@ -26,13 +26,19 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { Check, Plus, X } from "lucide-react";
+import { Check, Ellipsis, Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 export default function Live() {
-  const { activeWorkout, exercises, isOwner, updateNote, addExercise } =
-    useActiveWorkoutContext();
+  const {
+    activeWorkout,
+    exercises,
+    isOwner,
+    updateNote,
+    addExercise,
+    removeExercise,
+  } = useActiveWorkoutContext();
   const { back } = useRouter();
 
   if (activeWorkout === undefined) {
@@ -70,7 +76,31 @@ export default function Live() {
           <div className="flex flex-col gap-2">
             <div className="flex flex-row items-center gap-2">
               <Avatar size="sm" src={e.exercise.imageURL} />
-              <span>{e.exercise.name}</span>
+              <span className="flex-1">{e.exercise.name}</span>
+              {isOwner && (
+                <Dropdown placement="left">
+                  <DropdownTrigger>
+                    <Button isIconOnly variant="light" size="md">
+                      <Ellipsis size={20} />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu>
+                    <DropdownItem
+                      key="delete"
+                      color="danger"
+                      className="text-danger"
+                      onPress={() => {
+                        removeExercise({
+                          workoutId: activeWorkout._id,
+                          exerciseIndex: i,
+                        });
+                      }}
+                    >
+                      Remove exercise
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              )}
             </div>
             {isOwner ? (
               <DebouncedInput
@@ -78,6 +108,7 @@ export default function Live() {
                 placeholder="Add a note..."
                 value={e.note ?? ""}
                 onValueChange={(v) =>
+                  v !== (e.note ?? "") &&
                   updateNote({
                     id: activeWorkout!._id,
                     exerciseIndex: i,

@@ -41,6 +41,7 @@ export function useActiveWorkout({ workoutId }: {
     }
   });
   const addExercise = useMutation(api.activeWorkouts.addExercise);
+  const removeExercise = useMutation(api.activeWorkouts.removeExercise);
 
   const isOwner = !!(user && activeWorkout && user._id === activeWorkout.userId);
 
@@ -59,9 +60,10 @@ export function useActiveWorkout({ workoutId }: {
       addSet,
       removeSet,
       addExercise,
+      removeExercise,
       volume,
       finishedSets
-    }), [activeWorkout, user, exercises, updateNote, updateSet, addSet, removeSet, addExercise]);
+    }), [activeWorkout, user, exercises, updateNote, updateSet, addSet, removeSet, addExercise, removeExercise]);
 
   return context;
 };

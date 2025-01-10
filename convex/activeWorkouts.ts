@@ -212,3 +212,22 @@ export const addExercise = mutation({
     await activeWorkout.patch(activeWorkout);
   }
 });
+
+export const removeExercise = mutation({
+  args: {
+    workoutId: v.id("activeWorkouts"),
+    exerciseIndex: v.number(),
+  },
+  handler: async (ctx, { workoutId, exerciseIndex }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
+    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+
+    await Promise.all(
+      activeWorkout.exercises
+        .splice(exerciseIndex, 1)
+        .map(async e => removeOrReturn(ctx, e.exercise)));
+
+    await activeWorkout.patch(activeWorkout);
+  }
+});
