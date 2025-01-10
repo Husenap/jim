@@ -182,3 +182,33 @@ export const removeSet = mutation({
     await activeWorkout.patch(activeWorkout);
   }
 });
+
+export const addExercise = mutation({
+  args: {
+    workoutId: v.id("activeWorkouts"),
+    exerciseId: v.id("exercises"),
+  },
+  handler: async (ctx, { workoutId, exerciseId }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
+    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+
+    const exercise = await ctx.table("exercises").getX(exerciseId);
+
+    const immutableExerciseId = await createOrTake(ctx,
+      {
+        name: exercise.name,
+        imageURL: exercise.imageURL,
+        equipment: exercise.equipment,
+        muscleGroups: exercise.muscleGroups,
+        exerciseType: exercise.exerciseType,
+        bodyweightFactor: exercise.bodyweightFactor,
+      }
+    );
+    activeWorkout.exercises.push({
+      exercise: immutableExerciseId,
+      sets: [],
+    });
+    await activeWorkout.patch(activeWorkout);
+  }
+});

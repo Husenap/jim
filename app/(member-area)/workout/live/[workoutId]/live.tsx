@@ -1,6 +1,7 @@
 "use client";
 
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
+import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import { ExerciseFieldsType, ExerciseSetType, SetType } from "@/convex/schema";
 import {
@@ -28,10 +29,9 @@ import {
 import { Check, Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { useImmer } from "use-immer";
 
 export default function Live() {
-  const { activeWorkout, exercises, isOwner, updateNote } =
+  const { activeWorkout, exercises, isOwner, updateNote, addExercise } =
     useActiveWorkoutContext();
   const { back } = useRouter();
 
@@ -97,6 +97,27 @@ export default function Live() {
           </div>
         </div>
       ))}
+      {isOwner && (
+        <ExercisesDrawer
+          title="Add Exercise"
+          onSelect={(e, onClose) => {
+            addExercise({ workoutId: activeWorkout._id, exerciseId: e._id });
+            onClose();
+          }}
+        >
+          {(onOpen) => (
+            <Button
+              onPress={() => {
+                onOpen();
+              }}
+              color="primary"
+              startContent={<Plus />}
+            >
+              Add exercise
+            </Button>
+          )}
+        </ExercisesDrawer>
+      )}
     </div>
   );
 }

@@ -40,6 +40,7 @@ export function useActiveWorkout({ workoutId }: {
       localStore.setQuery(api.activeWorkouts.exercises, { id }, exercises);
     }
   });
+  const addExercise = useMutation(api.activeWorkouts.addExercise);
 
   const isOwner = !!(user && activeWorkout && user._id === activeWorkout.userId);
 
@@ -57,9 +58,10 @@ export function useActiveWorkout({ workoutId }: {
       updateSet,
       addSet,
       removeSet,
+      addExercise,
       volume,
       finishedSets
-    }), [activeWorkout, user, exercises, updateNote, updateSet, addSet, removeSet]);
+    }), [activeWorkout, user, exercises, updateNote, updateSet, addSet, removeSet, addExercise]);
 
   return context;
 };
