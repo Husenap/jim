@@ -34,7 +34,7 @@ export default function ExercisesList({
     <>
       {filteredCustomExercises.length > 0 && (
         <>
-          <TypographyH2>Custom Exercises</TypographyH2>
+          <TypographyH2>Custom exercises</TypographyH2>
           <ExerciseListCategory
             exercises={filteredCustomExercises}
             onSelect={onSelect}
@@ -43,7 +43,7 @@ export default function ExercisesList({
       )}
       {filteredBuiltinExercises.length > 0 && (
         <>
-          <TypographyH2>All Exercises</TypographyH2>
+          <TypographyH2>Built in exercises</TypographyH2>
           <ExerciseListCategory
             exercises={filteredBuiltinExercises}
             onSelect={onSelect}

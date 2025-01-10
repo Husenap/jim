@@ -1,8 +1,6 @@
 "use client";
 import Navbar from "@/app/(member-area)/workout/create-routine/navbar";
-import Exercises from "@/components/exercise-list/exercises";
-import ExercisesFilter from "@/components/exercise-list/exercises-filter";
-import ExercisesList from "@/components/exercise-list/exercises-list";
+import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import PageContainer from "@/components/page-container";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
@@ -11,8 +9,6 @@ import {
   Avatar,
   Button,
   Divider,
-  Drawer,
-  DrawerContent,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -31,7 +27,8 @@ import { v4 as uuidv4 } from "uuid";
 export default function Page() {
   const { back } = useRouter();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const replaceDisclosure = useDisclosure();
+
   const [title, setTitle] = useLocalStorage("jim-create-routine-title", "");
   const [exercises, setExercises] = useLocalStorage(
     "jim-create-routine-exercises",
@@ -69,6 +66,19 @@ export default function Page() {
       console.error("Failed to create routine!");
     } finally {
     }
+  };
+
+  const onSelect = (e: Doc<"exercises">, onClose: () => void) => {
+    if (replaceId) {
+      setExercises(
+        exercises.map(({ exercise, id }) =>
+          id === replaceId ? { exercise: e, id: uuidv4() } : { exercise, id },
+        ),
+      );
+    } else {
+      setExercises([...exercises, { exercise: e, id: uuidv4() }]);
+    }
+    onClose();
   };
 
   return (
@@ -125,7 +135,7 @@ export default function Page() {
                   key="replace"
                   onPress={() => {
                     setReplaceId(id);
-                    onOpen();
+                    replaceDisclosure.onOpen();
                   }}
                 >
                   Replace exercise
@@ -148,71 +158,26 @@ export default function Page() {
         ))}
       </ReactSortable>
 
-      <Button
-        onPress={() => {
-          setReplaceId(null);
-          onOpen();
-        }}
-        color="primary"
-        startContent={<Plus />}
-      >
-        Add exercise
-      </Button>
+      <ExercisesDrawer
+        title="Replace Exercise"
+        onSelect={onSelect}
+        disclosure={replaceDisclosure}
+      />
 
-      <Drawer
-        size="full"
-        placement="bottom"
-        isOpen={isOpen}
-        onClose={onClose}
-        hideCloseButton
-      >
-        <DrawerContent>
-          {(onClose) => (
-            <Exercises>
-              <PageContainer
-                topNavbar={
-                  <>
-                    <div className="grid grid-cols-3 items-center py-3">
-                      <div>
-                        <Button
-                          onPress={onClose}
-                          variant="light"
-                          color="danger"
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                      <span className="text-center">Add Exercise</span>
-                    </div>
-                    <Divider />
-                    <ExercisesFilter />
-                  </>
-                }
-              >
-                <ExercisesList
-                  onSelect={(e) => {
-                    if (replaceId) {
-                      setExercises(
-                        exercises.map(({ exercise, id }) =>
-                          id === replaceId
-                            ? { exercise: e, id: uuidv4() }
-                            : { exercise, id },
-                        ),
-                      );
-                    } else {
-                      setExercises([
-                        ...exercises,
-                        { exercise: e, id: uuidv4() },
-                      ]);
-                    }
-                    onClose();
-                  }}
-                />
-              </PageContainer>
-            </Exercises>
-          )}
-        </DrawerContent>
-      </Drawer>
+      <ExercisesDrawer title="Add Exercise" onSelect={onSelect}>
+        {(onOpen) => (
+          <Button
+            onPress={() => {
+              setReplaceId(null);
+              onOpen();
+            }}
+            color="primary"
+            startContent={<Plus />}
+          >
+            Add exercise
+          </Button>
+        )}
+      </ExercisesDrawer>
     </PageContainer>
   );
 }

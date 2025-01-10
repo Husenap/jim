@@ -1,7 +1,7 @@
+import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import { TypographyH2 } from "@/components/typography";
 import { Button } from "@nextui-org/react";
 import { Calendar, ChartLine, Dumbbell, PersonStanding } from "lucide-react";
-import { Link } from "next-view-transitions";
 
 export default function ProfileDashboard() {
   return (
@@ -11,9 +11,15 @@ export default function ProfileDashboard() {
         <Button className="under-construction" startContent={<ChartLine />}>
           Statistics
         </Button>
-        <Button as={Link} href="/profile/exercises" startContent={<Dumbbell />}>
-          Exercises
-        </Button>
+
+        <ExercisesDrawer>
+          {(onOpen) => (
+            <Button onPress={onOpen} startContent={<Dumbbell />}>
+              Exercises
+            </Button>
+          )}
+        </ExercisesDrawer>
+
         <Button
           className="under-construction"
           startContent={<PersonStanding />}
