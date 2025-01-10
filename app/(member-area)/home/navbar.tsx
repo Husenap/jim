@@ -12,9 +12,14 @@ export default function Navbar({
 }) {
   return (
     <div className="grid grid-cols-3 items-center py-3">
-      <Select selectedKeys={page} onSelectionChange={setPage}>
+      <Select
+        selectedKeys={page}
+        onSelectionChange={(s) => Array.from(s).length !== 0 && setPage(s)}
+        aria-label="Feed selection"
+        defaultSelectedKeys={["home"]}
+      >
         <SelectItem key="home">Home</SelectItem>
-        <SelectItem key="discovery">Discovery</SelectItem>
+        <SelectItem key="discovery">Discover</SelectItem>
       </Select>
       <div className="col-start-4 text-right">
         <Button as={Link} href="/home/search" variant="light" isIconOnly>
