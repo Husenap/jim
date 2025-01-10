@@ -26,12 +26,15 @@ export const MuscleGroupValidator = v.union(
   v.literal("calves"),
   v.literal("cardio"),
   v.literal("chest"),
+  v.literal("lower chest"),
+  v.literal("upper chest"),
   v.literal("forearms"),
   v.literal("fullbody"),
   v.literal("glutes"),
   v.literal("hamstrings"),
   v.literal("lats"),
   v.literal("lower back"),
+  v.literal("upper back"),
   v.literal("neck"),
   v.literal("quadriceps"),
   v.literal("shoulders"),
@@ -40,7 +43,6 @@ export const MuscleGroupValidator = v.union(
   v.literal("rear delts"),
   v.literal("traps"),
   v.literal("triceps"),
-  v.literal("upper back"),
   v.literal("other"),
 );
 export type MuscleGroup = Infer<typeof MuscleGroupValidator>;
