@@ -193,12 +193,12 @@ export default function CreateExerciseForm({
 
       <Button
         type="submit"
-        startContent={<Save />}
+        startContent={isSaving ? undefined : <Save />}
         className="w-full"
         color="primary"
-        isDisabled={isSaving}
+        isLoading={isSaving}
       >
-        Save
+        {isSaving ? "Saving..." : "Save"}
       </Button>
 
       <Accordion selectionMode="multiple">
