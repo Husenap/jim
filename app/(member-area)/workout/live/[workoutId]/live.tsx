@@ -304,40 +304,19 @@ function ExerciseSet({
             </Dropdown>
           );
         case "reps":
-          return (
-            <DebouncedInput
-              type="number"
-              step={1}
-              validationBehavior="aria"
-              inputMode="numeric"
-              numberOnly
-              isReadOnly={!isMutable}
-              onValueChange={
-                isMutable
-                  ? (v) =>
-                      updateSet({
-                        id: activeWorkout!._id,
-                        exerciseIndex,
-                        setIndex: item.index,
-                        setData: {
-                          [columnKey]: parseInt(v) || undefined,
-                        },
-                      })
-                  : undefined
-              }
-              value={item.set[columnKey]?.toString() ?? ""}
-              placeholder="0"
-            />
-          );
         case "weight":
+          console.log(
+            item.index > 0
+              ? (rows[item.index - 1]?.set[columnKey]?.toString() ?? "0")
+              : "0",
+          );
           return (
             <DebouncedInput
               type="number"
-              step={0.1}
               validationBehavior="aria"
-              inputMode="decimal"
+              inputMode={columnKey === "reps" ? "numeric" : "decimal"}
               numberOnly
-              allowDecimals
+              allowDecimals={columnKey === "weight"}
               isReadOnly={!isMutable}
               onValueChange={
                 isMutable
@@ -347,13 +326,20 @@ function ExerciseSet({
                         exerciseIndex,
                         setIndex: item.index,
                         setData: {
-                          [columnKey]: parseFloat(v) || undefined,
+                          [columnKey]:
+                            (columnKey === "reps"
+                              ? parseInt(v)
+                              : parseFloat(v)) || undefined,
                         },
                       })
                   : undefined
               }
               value={item.set[columnKey]?.toString() ?? ""}
-              placeholder="0"
+              placeholder={
+                item.index > 0
+                  ? (rows[item.index - 1]?.set[columnKey]?.toString() ?? "0")
+                  : "0"
+              }
             />
           );
         case "done":
@@ -372,7 +358,9 @@ function ExerciseSet({
                           id: activeWorkout!._id,
                           exerciseIndex,
                           setIndex: item.index,
-                          setData: { done: v },
+                          setData: {
+                            done: v,
+                          },
                         })
                     : undefined
                 }
@@ -383,7 +371,7 @@ function ExerciseSet({
           return item[columnKey];
       }
     },
-    [isMutable],
+    [isMutable, rows],
   );
 
   const classNames = {
@@ -411,8 +399,8 @@ function ExerciseSet({
             <TableColumn key={column.key}>{column.label}</TableColumn>
           ))}
         </TableHeader>
-        <TableBody items={rows}>
-          {(item) => (
+        <TableBody>
+          {rows.map((item) => (
             <TableRow
               className={cn({
                 "bg-success-200": item.set.done,
@@ -425,7 +413,7 @@ function ExerciseSet({
                 </TableCell>
               )}
             </TableRow>
-          )}
+          ))}
         </TableBody>
       </Table>
       {isMutable && (

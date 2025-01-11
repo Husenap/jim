@@ -147,10 +147,17 @@ export const updateSet = mutation({
     const activeWorkout = await ctx.table("activeWorkouts").getX(id);
     if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
 
-    activeWorkout.exercises[exerciseIndex].sets[setIndex] = {
+    const sets = activeWorkout.exercises[exerciseIndex].sets;
+    sets[setIndex] = {
       ...activeWorkout.exercises[exerciseIndex].sets[setIndex],
       ...setData
     };
+    if (setData.done === true && sets[setIndex].weight === undefined && setIndex > 0) {
+      sets[setIndex].weight = sets[setIndex - 1].weight ?? 0;
+    }
+    if (setData.done === true && sets[setIndex].reps === undefined && setIndex > 0) {
+      sets[setIndex].reps = sets[setIndex - 1].reps ?? 0;
+    }
 
     await activeWorkout.patch(activeWorkout);
   }
