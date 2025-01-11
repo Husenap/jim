@@ -70,7 +70,7 @@ export default function Live() {
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 pb-32">
       {exercises?.map((e, i) => (
         <div key={i}>
           <div className="flex flex-col gap-2">
@@ -275,7 +275,7 @@ function ExerciseSet({
                                 id: activeWorkout!._id,
                                 exerciseIndex,
                                 setIndex: item.index,
-                                setData: { ...item.set, type: value },
+                                setData: { type: value },
                               })
                           : undefined
                       }
@@ -320,13 +320,13 @@ function ExerciseSet({
                         exerciseIndex,
                         setIndex: item.index,
                         setData: {
-                          ...item.set,
-                          [columnKey]: parseInt(v) || 0,
+                          [columnKey]: parseInt(v) || undefined,
                         },
                       })
                   : undefined
               }
-              value={`${item.set[columnKey] ?? 0}`}
+              value={item.set[columnKey]?.toString() ?? ""}
+              placeholder="0"
             />
           );
         case "weight":
@@ -347,13 +347,13 @@ function ExerciseSet({
                         exerciseIndex,
                         setIndex: item.index,
                         setData: {
-                          ...item.set,
-                          [columnKey]: parseFloat(v) || 0,
+                          [columnKey]: parseFloat(v) || undefined,
                         },
                       })
                   : undefined
               }
-              value={`${item.set[columnKey] ?? 0}`}
+              value={item.set[columnKey]?.toString() ?? ""}
+              placeholder="0"
             />
           );
         case "done":
@@ -372,7 +372,7 @@ function ExerciseSet({
                           id: activeWorkout!._id,
                           exerciseIndex,
                           setIndex: item.index,
-                          setData: { ...item.set, done: v },
+                          setData: { done: v },
                         })
                     : undefined
                 }

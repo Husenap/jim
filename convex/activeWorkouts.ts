@@ -2,7 +2,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { mutation, query } from "@/convex/functions";
 import { createOrTake, removeOrReturn } from "@/convex/immutableExercises";
-import { SetDataValidator } from "@/convex/schema";
+import { SetTypeValidator } from "@/convex/schema";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
 import { v } from "convex/values";
 
@@ -135,14 +135,22 @@ export const updateSet = mutation({
     id: v.id("activeWorkouts"),
     exerciseIndex: v.number(),
     setIndex: v.number(),
-    setData: SetDataValidator
+    setData: v.object({
+      type: v.optional(SetTypeValidator),
+      reps: v.optional(v.number()),
+      weight: v.optional(v.number()),
+      done: v.optional(v.boolean())
+    })
   },
   handler: async (ctx, { id, exerciseIndex, setIndex, setData }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await ctx.table("activeWorkouts").getX(id);
     if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
 
-    activeWorkout.exercises[exerciseIndex].sets[setIndex] = setData;
+    activeWorkout.exercises[exerciseIndex].sets[setIndex] = {
+      ...activeWorkout.exercises[exerciseIndex].sets[setIndex],
+      ...setData
+    };
 
     await activeWorkout.patch(activeWorkout);
   }
