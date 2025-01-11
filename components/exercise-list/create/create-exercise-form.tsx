@@ -126,6 +126,8 @@ export default function CreateExerciseForm({
         placeholder="Exercise Name"
         value={name}
         onValueChange={setName}
+        type="search"
+        autoComplete="off"
       />
       <Select
         name="equipment"

@@ -464,6 +464,8 @@ function DebouncedInput(props: DebouncedInputProps) {
   return (
     <Input
       {...props}
+      type="search"
+      autoComplete="none"
       value={isReadOnly ? value : inputValue}
       onValueChange={setInputValue}
     />
