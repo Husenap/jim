@@ -310,7 +310,7 @@ function ExerciseSet({
               step={1}
               validationBehavior="aria"
               inputMode="numeric"
-              pattern="[0-9]*"
+              numberOnly
               isReadOnly={!isMutable}
               onValueChange={
                 isMutable
@@ -336,7 +336,8 @@ function ExerciseSet({
               step={0.1}
               validationBehavior="aria"
               inputMode="decimal"
-              pattern="[0-9]*\.[0-9]*"
+              numberOnly
+              allowDecimals
               isReadOnly={!isMutable}
               onValueChange={
                 isMutable
@@ -441,33 +442,32 @@ function ExerciseSet({
 }
 
 interface DebouncedInputProps extends InputProps {
-  bounceDelay?: number;
+  numberOnly?: boolean;
+  allowDecimals?: boolean;
 }
 function DebouncedInput(props: DebouncedInputProps) {
-  const { value, bounceDelay, onValueChange, isReadOnly } = props;
+  const { value, onValueChange, numberOnly, allowDecimals } = props;
   const [inputValue, setInputValue] = useState(value);
 
   useEffect(() => {
     setInputValue(value);
   }, [value]);
 
-  useEffect(() => {
-    const delayInputTimeoutId = setTimeout(() => {
-      onValueChange && onValueChange(inputValue ?? "");
-    }, bounceDelay ?? 500);
-
-    return () => {
-      clearTimeout(delayInputTimeoutId);
-    };
-  }, [inputValue]);
-
   return (
     <Input
       {...props}
       type="search"
       autoComplete="none"
-      value={isReadOnly ? value : inputValue}
-      onValueChange={setInputValue}
+      value={inputValue}
+      onValueChange={(v) => {
+        if (numberOnly) v = v.replaceAll(/[a-zA-z]/g, "");
+        if (allowDecimals) v = v.replaceAll(",", ".");
+        else v = v.replaceAll(/[,.]/g, "");
+        setInputValue(v);
+      }}
+      onFocusChange={(isFocused) =>
+        isFocused || (onValueChange && onValueChange(inputValue ?? ""))
+      }
     />
   );
 }
