@@ -28,7 +28,7 @@ import {
 } from "@nextui-org/react";
 import { Check, Ellipsis, Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Live() {
   const {
@@ -305,17 +305,13 @@ function ExerciseSet({
           );
         case "reps":
         case "weight":
-          console.log(
-            item.index > 0
-              ? (rows[item.index - 1]?.set[columnKey]?.toString() ?? "0")
-              : "0",
-          );
           return (
             <DebouncedInput
               type="number"
               validationBehavior="aria"
               inputMode={columnKey === "reps" ? "numeric" : "decimal"}
               numberOnly
+              autoSelect
               allowDecimals={columnKey === "weight"}
               isReadOnly={!isMutable}
               onValueChange={
@@ -432,10 +428,12 @@ function ExerciseSet({
 interface DebouncedInputProps extends InputProps {
   numberOnly?: boolean;
   allowDecimals?: boolean;
+  autoSelect?: boolean;
 }
 function DebouncedInput(props: DebouncedInputProps) {
-  const { value, onValueChange, numberOnly, allowDecimals } = props;
+  const { value, onValueChange, numberOnly, allowDecimals, autoSelect } = props;
   const [inputValue, setInputValue] = useState(value);
+  const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     setInputValue(value);
@@ -444,6 +442,7 @@ function DebouncedInput(props: DebouncedInputProps) {
   return (
     <Input
       {...props}
+      ref={ref}
       type="search"
       autoComplete="none"
       value={inputValue}
@@ -453,9 +452,13 @@ function DebouncedInput(props: DebouncedInputProps) {
         else v = v.replaceAll(/[,.]/g, "");
         setInputValue(v);
       }}
-      onFocusChange={(isFocused) =>
-        isFocused || (onValueChange && onValueChange(inputValue ?? ""))
-      }
+      onFocusChange={(isFocused) => {
+        if (isFocused) {
+          if (autoSelect) ref.current?.setSelectionRange(0, -1);
+        } else {
+          onValueChange && onValueChange(inputValue ?? "");
+        }
+      }}
     />
   );
 }

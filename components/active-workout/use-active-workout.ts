@@ -16,10 +16,17 @@ export function useActiveWorkout({ workoutId }: {
   const updateSet = useMutation(api.activeWorkouts.updateSet).withOptimisticUpdate((localStore, { id, exerciseIndex, setIndex, setData }) => {
     const exercises = localStore.getQuery(api.activeWorkouts.exercises, { id });
     if (exercises) {
-      exercises[exerciseIndex].sets[setIndex] = {
-        ...exercises[exerciseIndex].sets[setIndex],
+      const sets = exercises[exerciseIndex].sets;
+      sets[setIndex] = {
+        ...sets[setIndex],
         ...setData
       };
+      if (setData.done === true && sets[setIndex].weight === undefined && setIndex > 0) {
+        sets[setIndex].weight = sets[setIndex - 1].weight ?? 0;
+      }
+      if (setData.done === true && sets[setIndex].reps === undefined && setIndex > 0) {
+        sets[setIndex].reps = sets[setIndex - 1].reps ?? 0;
+      }
       localStore.setQuery(api.activeWorkouts.exercises, { id }, exercises);
     }
   });
