@@ -2,7 +2,7 @@ import DrawerPageContainer from "@/components/drawer-page-container";
 import CreateExerciseForm from "@/components/exercise-list/create/create-exercise-form";
 import CreateExerciseNavbar from "@/components/exercise-list/create/create-exercise-navbar";
 import Exercises from "@/components/exercise-list/exercises";
-import { Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, useDisclosure } from "@nextui-org/react";
 
 export default function CreateExerciseDrawer({
   children,
@@ -15,14 +15,15 @@ export default function CreateExerciseDrawer({
     <>
       {children && children(onOpen)}
       <Exercises>
-        <Drawer
-          placement="bottom"
+        <Modal
+          placement="top"
           hideCloseButton
           size="full"
           isOpen={isOpen}
           onOpenChange={onOpenChange}
+          disableAnimation
         >
-          <DrawerContent>
+          <ModalContent>
             {(onClose) => (
               <DrawerPageContainer
                 topNavbar={<CreateExerciseNavbar onClose={onClose} />}
@@ -30,8 +31,8 @@ export default function CreateExerciseDrawer({
                 <CreateExerciseForm onClose={onClose} />
               </DrawerPageContainer>
             )}
-          </DrawerContent>
-        </Drawer>
+          </ModalContent>
+        </Modal>
       </Exercises>
     </>
   );
