@@ -413,8 +413,8 @@ function ExerciseSet({
             <TableColumn key={column.key}>{column.label}</TableColumn>
           ))}
         </TableHeader>
-        <TableBody>
-          {rows.map((item) => (
+        <TableBody items={rows}>
+          {(item) => (
             <TableRow
               className={cn({
                 "bg-success-200": item.set.done,
@@ -427,7 +427,7 @@ function ExerciseSet({
                 </TableCell>
               )}
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
       {isMutable && (
