@@ -1,6 +1,7 @@
 "use client";
 
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
+import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import { ExerciseFieldsType, ExerciseSetType, SetType } from "@/convex/schema";
 import {
@@ -25,14 +26,19 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { Check, Plus, X } from "lucide-react";
+import { Check, Ellipsis, Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { useImmer } from "use-immer";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Live() {
-  const { activeWorkout, exercises, isOwner, updateNote } =
-    useActiveWorkoutContext();
+  const {
+    activeWorkout,
+    exercises,
+    isOwner,
+    updateNote,
+    addExercise,
+    removeExercise,
+  } = useActiveWorkoutContext();
   const { back } = useRouter();
 
   if (activeWorkout === undefined) {
@@ -64,13 +70,37 @@ export default function Live() {
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 pb-32">
       {exercises?.map((e, i) => (
         <div key={i}>
           <div className="flex flex-col gap-2">
             <div className="flex flex-row items-center gap-2">
               <Avatar size="sm" src={e.exercise.imageURL} />
-              <span>{e.exercise.name}</span>
+              <span className="flex-1">{e.exercise.name}</span>
+              {isOwner && (
+                <Dropdown placement="left">
+                  <DropdownTrigger>
+                    <Button isIconOnly variant="light" size="md">
+                      <Ellipsis size={20} />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu>
+                    <DropdownItem
+                      key="delete"
+                      color="danger"
+                      className="text-danger"
+                      onPress={() => {
+                        removeExercise({
+                          workoutId: activeWorkout._id,
+                          exerciseIndex: i,
+                        });
+                      }}
+                    >
+                      Remove exercise
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              )}
             </div>
             {isOwner ? (
               <DebouncedInput
@@ -78,6 +108,7 @@ export default function Live() {
                 placeholder="Add a note..."
                 value={e.note ?? ""}
                 onValueChange={(v) =>
+                  v !== (e.note ?? "") &&
                   updateNote({
                     id: activeWorkout!._id,
                     exerciseIndex: i,
@@ -97,6 +128,27 @@ export default function Live() {
           </div>
         </div>
       ))}
+      {isOwner && (
+        <ExercisesDrawer
+          title="Add Exercise"
+          onSelect={(e, onClose) => {
+            addExercise({ workoutId: activeWorkout._id, exerciseId: e._id });
+            onClose();
+          }}
+        >
+          {(onOpen) => (
+            <Button
+              onPress={() => {
+                onOpen();
+              }}
+              color="primary"
+              startContent={<Plus />}
+            >
+              Add exercise
+            </Button>
+          )}
+        </ExercisesDrawer>
+      )}
     </div>
   );
 }
@@ -187,17 +239,30 @@ function ExerciseSet({
       switch (columnKey) {
         case "type":
           return (
-            <Dropdown shouldBlockScroll={false}>
+            <Dropdown
+              isOpen={isMutable ? undefined : false}
+              shouldBlockScroll={false}
+            >
               <DropdownTrigger>
                 <div
-                  className={cn("min-w-6 text-center text-lg font-bold", {
-                    "text-[#eeaa00]": item.set.type === "warmup",
-                    "text-[#36baff]": item.set.type === "drop",
-                    "text-[#e34b37]": item.set.type === "failure",
-                  })}
+                  className={cn(
+                    "-m-3 min-w-6 cursor-pointer p-3 text-center text-lg font-bold",
+                    {
+                      "text-[#eeaa00]": item.set.type === "warmup",
+                      "text-[#36baff]": item.set.type === "drop",
+                      "text-[#e34b37]": item.set.type === "failure",
+                    },
+                  )}
                 >
                   {item.set.type === "normal"
-                    ? item.index + 1
+                    ? rows.reduce(
+                        (acc, cur, ind) =>
+                          acc +
+                          Number(
+                            ind <= item.index && cur.set.type !== "warmup",
+                          ),
+                        0,
+                      )
                     : item.set.type[0].toUpperCase()}
                 </div>
               </DropdownTrigger>
@@ -223,7 +288,7 @@ function ExerciseSet({
                                 id: activeWorkout!._id,
                                 exerciseIndex,
                                 setIndex: item.index,
-                                setData: { ...item.set, type: value },
+                                setData: { type: value },
                               })
                           : undefined
                       }
@@ -252,39 +317,18 @@ function ExerciseSet({
             </Dropdown>
           );
         case "reps":
-          return (
-            <DebouncedInput
-              type="number"
-              step={1}
-              validationBehavior="aria"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              isReadOnly={!isMutable}
-              onValueChange={
-                isMutable
-                  ? (v) =>
-                      updateSet({
-                        id: activeWorkout!._id,
-                        exerciseIndex,
-                        setIndex: item.index,
-                        setData: {
-                          ...item.set,
-                          [columnKey]: parseInt(v) || 0,
-                        },
-                      })
-                  : undefined
-              }
-              value={`${item.set[columnKey] ?? 0}`}
-            />
-          );
         case "weight":
           return (
             <DebouncedInput
               type="number"
-              step={0.1}
+              classNames={{
+                input: "font-black",
+              }}
               validationBehavior="aria"
-              inputMode="decimal"
-              pattern="[0-9]*\.[0-9]*"
+              inputMode={columnKey === "reps" ? "numeric" : "decimal"}
+              numberOnly
+              autoSelect
+              allowDecimals={columnKey === "weight"}
               isReadOnly={!isMutable}
               onValueChange={
                 isMutable
@@ -294,13 +338,20 @@ function ExerciseSet({
                         exerciseIndex,
                         setIndex: item.index,
                         setData: {
-                          ...item.set,
-                          [columnKey]: parseFloat(v) || 0,
+                          [columnKey]:
+                            (columnKey === "reps"
+                              ? parseInt(v)
+                              : parseFloat(v)) || undefined,
                         },
                       })
                   : undefined
               }
-              value={`${item.set[columnKey] ?? 0}`}
+              value={item.set[columnKey]?.toString() ?? ""}
+              placeholder={
+                item.index > 0
+                  ? (rows[item.index - 1]?.set[columnKey]?.toString() ?? "0")
+                  : "0"
+              }
             />
           );
         case "done":
@@ -319,7 +370,9 @@ function ExerciseSet({
                           id: activeWorkout!._id,
                           exerciseIndex,
                           setIndex: item.index,
-                          setData: { ...item.set, done: v },
+                          setData: {
+                            done: v,
+                          },
                         })
                     : undefined
                 }
@@ -330,7 +383,7 @@ function ExerciseSet({
           return item[columnKey];
       }
     },
-    [isMutable],
+    [isMutable, rows],
   );
 
   const classNames = {
@@ -341,6 +394,7 @@ function ExerciseSet({
       "group-data-[middle=true]/tr:before:rounded-none",
       "group-data-[last=true]/tr:first:before:rounded-none",
       "group-data-[last=true]/tr:last:before:rounded-none",
+      "group-data-[odd=true]/tr:before:bg-default/40",
     ],
   };
 
@@ -352,6 +406,7 @@ function ExerciseSet({
         removeWrapper
         radius="none"
         aria-label="Sets"
+        isStriped
       >
         <TableHeader>
           {columns.map((column) => (
@@ -389,31 +444,39 @@ function ExerciseSet({
 }
 
 interface DebouncedInputProps extends InputProps {
-  bounceDelay?: number;
+  numberOnly?: boolean;
+  allowDecimals?: boolean;
+  autoSelect?: boolean;
 }
 function DebouncedInput(props: DebouncedInputProps) {
-  const { value, bounceDelay, onValueChange, isReadOnly } = props;
+  const { value, onValueChange, numberOnly, allowDecimals, autoSelect } = props;
   const [inputValue, setInputValue] = useState(value);
+  const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     setInputValue(value);
   }, [value]);
 
-  useEffect(() => {
-    const delayInputTimeoutId = setTimeout(() => {
-      onValueChange && onValueChange(inputValue ?? "");
-    }, bounceDelay ?? 500);
-
-    return () => {
-      clearTimeout(delayInputTimeoutId);
-    };
-  }, [inputValue]);
-
   return (
     <Input
       {...props}
-      value={isReadOnly ? value : inputValue}
-      onValueChange={setInputValue}
+      ref={ref}
+      type="search"
+      autoComplete="none"
+      value={inputValue}
+      onValueChange={(v) => {
+        if (numberOnly) v = v.replaceAll(/[a-zA-z]/g, "");
+        if (allowDecimals) v = v.replaceAll(",", ".");
+        else v = v.replaceAll(/[,.]/g, "");
+        setInputValue(v);
+      }}
+      onFocusChange={(isFocused) => {
+        if (isFocused) {
+          if (autoSelect) ref.current?.setSelectionRange(0, -1);
+        } else {
+          onValueChange && onValueChange(inputValue ?? "");
+        }
+      }}
     />
   );
 }

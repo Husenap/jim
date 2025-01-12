@@ -75,6 +75,7 @@ export const paginatedWorkouts = query({
           .paginate(paginationOpts);
       } else {
         const followees = await user.edgeX("followees").map(f => f._id);
+        followees.push(user._id);
 
         results =
           await ctx.table("workouts")

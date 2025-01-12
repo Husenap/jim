@@ -58,7 +58,7 @@ export default function PageContainer({
       )}
 
       <main
-        className="flex w-full flex-1 justify-center px-2 py-4"
+        className="flex w-full flex-1 justify-center overflow-x-hidden overscroll-x-none px-2 py-4"
         style={
           disableViewTransitions
             ? undefined
@@ -81,7 +81,7 @@ export default function PageContainer({
       </div>
       {bottomNavbar && (
         <nav
-          className="fixed bottom-0 z-50 w-full rounded-t-xl bg-content2/70 backdrop-blur-lg"
+          className="fixed bottom-0 left-0 right-0 z-50 w-full rounded-t-xl bg-content2/70 backdrop-blur-lg"
           style={
             disableViewTransitions
               ? undefined

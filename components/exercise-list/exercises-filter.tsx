@@ -11,6 +11,7 @@ export default function ExercisesFilter() {
         size="sm"
         startContent={<Search size={18} />}
         type="search"
+        autoComplete="off"
         onChange={(e) => setSearch(e.currentTarget.value)}
       />
       <div className="grid grid-cols-2 gap-2">
