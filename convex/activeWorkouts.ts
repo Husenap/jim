@@ -225,7 +225,10 @@ export const addExercise = mutation({
     );
     activeWorkout.exercises.push({
       exercise: immutableExerciseId,
-      sets: [],
+      sets: [{
+        type: "normal",
+        done: false
+      }]
     });
     await activeWorkout.patch(activeWorkout);
   }
