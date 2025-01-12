@@ -239,17 +239,30 @@ function ExerciseSet({
       switch (columnKey) {
         case "type":
           return (
-            <Dropdown shouldBlockScroll={false}>
+            <Dropdown
+              isOpen={isMutable ? undefined : false}
+              shouldBlockScroll={false}
+            >
               <DropdownTrigger>
                 <div
-                  className={cn("min-w-6 text-center text-lg font-bold", {
-                    "text-[#eeaa00]": item.set.type === "warmup",
-                    "text-[#36baff]": item.set.type === "drop",
-                    "text-[#e34b37]": item.set.type === "failure",
-                  })}
+                  className={cn(
+                    "-m-3 min-w-6 cursor-pointer p-3 text-center text-lg font-bold",
+                    {
+                      "text-[#eeaa00]": item.set.type === "warmup",
+                      "text-[#36baff]": item.set.type === "drop",
+                      "text-[#e34b37]": item.set.type === "failure",
+                    },
+                  )}
                 >
                   {item.set.type === "normal"
-                    ? item.index + 1
+                    ? rows.reduce(
+                        (acc, cur, ind) =>
+                          acc +
+                          Number(
+                            ind <= item.index && cur.set.type !== "warmup",
+                          ),
+                        0,
+                      )
                     : item.set.type[0].toUpperCase()}
                 </div>
               </DropdownTrigger>
