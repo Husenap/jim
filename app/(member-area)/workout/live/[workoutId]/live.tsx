@@ -321,6 +321,9 @@ function ExerciseSet({
           return (
             <DebouncedInput
               type="number"
+              classNames={{
+                input: "font-black",
+              }}
               validationBehavior="aria"
               inputMode={columnKey === "reps" ? "numeric" : "decimal"}
               numberOnly
@@ -391,6 +394,7 @@ function ExerciseSet({
       "group-data-[middle=true]/tr:before:rounded-none",
       "group-data-[last=true]/tr:first:before:rounded-none",
       "group-data-[last=true]/tr:last:before:rounded-none",
+      "group-data-[odd=true]/tr:before:bg-default/40",
     ],
   };
 
@@ -402,6 +406,7 @@ function ExerciseSet({
         removeWrapper
         radius="none"
         aria-label="Sets"
+        isStriped
       >
         <TableHeader>
           {columns.map((column) => (
