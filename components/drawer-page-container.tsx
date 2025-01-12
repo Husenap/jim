@@ -17,7 +17,7 @@ export default function DrawerPageContainer({
         </nav>
       )}
 
-      <main className="flex w-full flex-1 justify-center overflow-y-auto px-2 py-4">
+      <main className="flex w-full flex-1 justify-center overflow-y-auto overflow-x-hidden overscroll-x-none px-2 py-4">
         <div className="flex w-full max-w-5xl flex-col gap-2">{children}</div>
       </main>
 

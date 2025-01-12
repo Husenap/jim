@@ -49,11 +49,11 @@ export default function RootLayout({
         lang="en"
         className={cn(
           geistSans.className,
-          "h-full min-h-full overflow-x-hidden",
+          "h-full min-h-full overflow-x-hidden overscroll-x-none",
         )}
         suppressHydrationWarning
       >
-        <body className="relative h-full min-h-full w-full bg-background text-foreground">
+        <body className="relative h-full min-h-full w-full overflow-x-hidden overscroll-x-none bg-background text-foreground">
           <Providers>
             <Tooltip content="Report Github Issue" color="danger">
               <a
