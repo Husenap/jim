@@ -49,7 +49,10 @@ export const create = mutation({
       bodyweight: user.bodyweight,
       exercises: exercises.map(e => ({
         exercise: e,
-        sets: []
+        sets: [{
+          type: "normal",
+          done: false
+        }]
       }))
     });
   }
