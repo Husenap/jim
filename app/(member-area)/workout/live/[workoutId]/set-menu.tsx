@@ -101,6 +101,7 @@ export default function SetMenu({
                   onClose={onClose}
                   closeOnSelect
                   className="iphone-safe-inset"
+                  aria-label="Set Menu"
                 >
                   <>
                     {setTypeButtons.map(

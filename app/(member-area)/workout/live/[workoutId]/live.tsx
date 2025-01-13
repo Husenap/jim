@@ -1,6 +1,5 @@
 "use client";
 
-import DebouncedInput from "@/app/(member-area)/workout/live/[workoutId]/debounced-input";
 import ExerciseMenu from "@/app/(member-area)/workout/live/[workoutId]/exercise-menu";
 import SetMenu from "@/app/(member-area)/workout/live/[workoutId]/set-menu";
 import {
@@ -10,6 +9,7 @@ import {
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
 import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
+import DebouncedInput from "@/components/input/debounced-input";
 import { ExerciseFieldsType, ExerciseSetType } from "@/convex/schema";
 import { isBodyweightExercise } from "@/utils/workout/exercise";
 import {
