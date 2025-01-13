@@ -187,14 +187,16 @@ function ExerciseSet({
       break;
   }
 
-  columns.push({
-    key: "done",
-    label: (
-      <div className="flex justify-end">
-        <Check />
-      </div>
-    ),
-  });
+  if (isMutable) {
+    columns.push({
+      key: "done",
+      label: (
+        <div className="flex justify-end">
+          <Check />
+        </div>
+      ),
+    });
+  }
 
   const rows = sets.map((set, i) => ({
     set,
