@@ -252,3 +252,17 @@ export const removeExercise = mutation({
     await activeWorkout.patch(activeWorkout);
   }
 });
+
+export const setBodyweight = mutation({
+  args: {
+    workoutId: v.id("activeWorkouts"),
+    bodyweight: v.optional(v.number()),
+  },
+  handler: async (ctx, { workoutId, bodyweight }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
+    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    await activeWorkout.patch({ bodyweight });
+    await ctx.table("users").getX(user._id).patch({ bodyweight });
+  }
+})

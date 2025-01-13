@@ -55,6 +55,7 @@ export function useActiveWorkout({ workoutId }: {
       localStore.setQuery(api.activeWorkouts.exercises, { id: workoutId }, exercises);
     }
   });
+  const setBodyweight = useMutation(api.activeWorkouts.setBodyweight);
 
   const isOwner = !!(user && activeWorkout && user._id === activeWorkout.userId);
 
@@ -74,9 +75,10 @@ export function useActiveWorkout({ workoutId }: {
       removeSet,
       addExercise,
       removeExercise,
+      setBodyweight,
       volume,
       finishedSets
-    }), [activeWorkout, user, exercises, updateNote, updateSet, addSet, removeSet, addExercise, removeExercise]);
+    }), [activeWorkout, user, exercises, updateNote, updateSet, addSet, removeSet, addExercise, removeExercise, setBodyweight]);
 
   return context;
 };
