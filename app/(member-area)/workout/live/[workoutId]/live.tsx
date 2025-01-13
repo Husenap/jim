@@ -1,20 +1,22 @@
 "use client";
 
+import DebouncedInput from "@/app/(member-area)/workout/live/[workoutId]/debounced-input";
+import ExerciseMenu from "@/app/(member-area)/workout/live/[workoutId]/exercise-menu";
+import SetMenu from "@/app/(member-area)/workout/live/[workoutId]/set-menu";
+import {
+  SetRowColumnKey,
+  SetRowType,
+} from "@/app/(member-area)/workout/live/[workoutId]/types";
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
 import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
-import { ExerciseFieldsType, ExerciseSetType, SetType } from "@/convex/schema";
+import { ExerciseFieldsType, ExerciseSetType } from "@/convex/schema";
+import { isBodyweightExercise } from "@/utils/workout/exercise";
 import {
   Avatar,
   Button,
   Checkbox,
   cn,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Input,
-  InputProps,
   Modal,
   ModalBody,
   ModalContent,
@@ -25,21 +27,16 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  Tooltip,
 } from "@nextui-org/react";
-import { Check, Ellipsis, Plus, X } from "lucide-react";
+import { Check, Plus, TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 
 export default function Live() {
-  const {
-    activeWorkout,
-    exercises,
-    isOwner,
-    updateNote,
-    addExercise,
-    removeExercise,
-  } = useActiveWorkoutContext();
-  const { back } = useRouter();
+  const { activeWorkout, exercises, isOwner, updateNote, addExercise } =
+    useActiveWorkoutContext();
+  const { replace } = useRouter();
 
   if (activeWorkout === undefined) {
     return <FullscreenSpinner />;
@@ -58,7 +55,7 @@ export default function Live() {
             <>
               <ModalHeader>Workout is finished!</ModalHeader>
               <ModalBody>
-                <Button onPress={back} color="primary">
+                <Button onPress={() => replace("/home")} color="primary">
                   Exit
                 </Button>
               </ModalBody>
@@ -77,30 +74,18 @@ export default function Live() {
             <div className="flex flex-row items-center gap-2">
               <Avatar size="sm" src={e.exercise.imageURL} />
               <span className="flex-1">{e.exercise.name}</span>
-              {isOwner && (
-                <Dropdown placement="left">
-                  <DropdownTrigger>
-                    <Button isIconOnly variant="light" size="md">
-                      <Ellipsis size={20} />
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu>
-                    <DropdownItem
-                      key="delete"
-                      color="danger"
-                      className="text-danger"
-                      onPress={() => {
-                        removeExercise({
-                          workoutId: activeWorkout._id,
-                          exerciseIndex: i,
-                        });
-                      }}
-                    >
-                      Remove exercise
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              )}
+              {isBodyweightExercise(e.exercise.exerciseType) &&
+                (!activeWorkout.bodyweight ||
+                  activeWorkout.bodyweight <= 0) && (
+                  <Tooltip
+                    color="warning"
+                    placement="left"
+                    content="No Bodyweight"
+                  >
+                    <TriangleAlert className="text-warning" />
+                  </Tooltip>
+                )}
+              {isOwner && <ExerciseMenu exerciseIndex={i} />}
             </div>
             {isOwner ? (
               <DebouncedInput
@@ -117,7 +102,11 @@ export default function Live() {
                 }
               />
             ) : (
-              e.note && <span className="text-sm">{e.note}</span>
+              e.note && (
+                <span className="text-sm font-semibold text-default-500">
+                  {e.note}
+                </span>
+              )
             )}
             <ExerciseSet
               exerciseIndex={i}
@@ -164,8 +153,7 @@ function ExerciseSet({
   isMutable?: boolean;
   exerciseIndex: number;
 }) {
-  const { activeWorkout, updateSet, addSet, removeSet } =
-    useActiveWorkoutContext();
+  const { activeWorkout, updateSet, addSet } = useActiveWorkoutContext();
 
   const columns = [];
   columns.push({ key: "type", label: "SET" });
@@ -202,121 +190,13 @@ function ExerciseSet({
     set,
     index: i,
   }));
-  type Item = (typeof rows)[0];
-
-  const setTypeButtons: {
-    color: string;
-    shortLabel: string;
-    label: string;
-    value: SetType;
-  }[] = [
-    {
-      color: "text-warning",
-      shortLabel: "W",
-      label: "Warm Up Set",
-      value: "warmup",
-    },
-    {
-      color: "text-foreground",
-      shortLabel: "1",
-      label: "Normal Set",
-      value: "normal",
-    },
-    {
-      color: "text-danger",
-      shortLabel: "F",
-      label: "Failure Set",
-      value: "failure",
-    },
-    {
-      color: "text-primary",
-      shortLabel: "D",
-      label: "Drop Set",
-      value: "drop",
-    },
-  ];
 
   const renderCell = useCallback(
-    (item: Item, columnKey: keyof Item["set"]) => {
+    (item: SetRowType, columnKey: SetRowColumnKey) => {
       switch (columnKey) {
         case "type":
           return (
-            <Dropdown
-              isOpen={isMutable ? undefined : false}
-              shouldBlockScroll={false}
-            >
-              <DropdownTrigger>
-                <div
-                  className={cn(
-                    "-m-3 min-w-6 cursor-pointer p-3 text-center text-lg font-bold",
-                    {
-                      "text-[#eeaa00]": item.set.type === "warmup",
-                      "text-[#36baff]": item.set.type === "drop",
-                      "text-[#e34b37]": item.set.type === "failure",
-                    },
-                  )}
-                >
-                  {item.set.type === "normal"
-                    ? rows.reduce(
-                        (acc, cur, ind) =>
-                          acc +
-                          Number(
-                            ind <= item.index && cur.set.type !== "warmup",
-                          ),
-                        0,
-                      )
-                    : item.set.type[0].toUpperCase()}
-                </div>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <>
-                  {setTypeButtons.map(({ color, shortLabel, label, value }) => (
-                    <DropdownItem
-                      key={value}
-                      startContent={
-                        <span
-                          className={cn(
-                            "w-6 text-center text-lg font-bold",
-                            color,
-                          )}
-                        >
-                          {shortLabel}
-                        </span>
-                      }
-                      onPress={
-                        isMutable
-                          ? () =>
-                              updateSet({
-                                id: activeWorkout!._id,
-                                exerciseIndex,
-                                setIndex: item.index,
-                                setData: { type: value },
-                              })
-                          : undefined
-                      }
-                    >
-                      {label}
-                    </DropdownItem>
-                  ))}
-                  <DropdownItem
-                    key="delete"
-                    startContent={<X className="text-danger" />}
-                    onPress={
-                      isMutable
-                        ? () =>
-                            removeSet({
-                              id: activeWorkout!._id,
-                              exerciseIndex,
-                              setIndex: item.index,
-                            })
-                        : undefined
-                    }
-                  >
-                    Remove Set
-                  </DropdownItem>
-                </>
-              </DropdownMenu>
-            </Dropdown>
+            <SetMenu item={item} rows={rows} exerciseIndex={exerciseIndex} />
           );
         case "reps":
         case "weight":
@@ -361,22 +241,18 @@ function ExerciseSet({
             <div className="flex justify-end">
               <Checkbox
                 isSelected={item.set.done}
-                isReadOnly={!isMutable}
                 size="lg"
                 color="success"
                 classNames={{ icon: "text-background" }}
-                onValueChange={
-                  isMutable
-                    ? (v) =>
-                        updateSet({
-                          id: activeWorkout!._id,
-                          exerciseIndex,
-                          setIndex: item.index,
-                          setData: {
-                            done: v,
-                          },
-                        })
-                    : undefined
+                onValueChange={(v) =>
+                  updateSet({
+                    id: activeWorkout!._id,
+                    exerciseIndex,
+                    setIndex: item.index,
+                    setData: {
+                      done: v,
+                    },
+                  })
                 }
               />
             </div>
@@ -425,7 +301,7 @@ function ExerciseSet({
             >
               {(columnKey) => (
                 <TableCell>
-                  {renderCell(item, columnKey as keyof Item["set"])}
+                  {renderCell(item, columnKey as SetRowColumnKey)}
                 </TableCell>
               )}
             </TableRow>
@@ -442,43 +318,5 @@ function ExerciseSet({
         </Button>
       )}
     </>
-  );
-}
-
-interface DebouncedInputProps extends InputProps {
-  numberOnly?: boolean;
-  allowDecimals?: boolean;
-  autoSelect?: boolean;
-}
-function DebouncedInput(props: DebouncedInputProps) {
-  const { value, onValueChange, numberOnly, allowDecimals, autoSelect } = props;
-  const [inputValue, setInputValue] = useState(value);
-  const ref = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    setInputValue(value);
-  }, [value]);
-
-  return (
-    <Input
-      {...props}
-      ref={ref}
-      type="search"
-      autoComplete="none"
-      value={inputValue}
-      onValueChange={(v) => {
-        if (numberOnly) v = v.replaceAll(/[a-zA-z]/g, "");
-        if (allowDecimals) v = v.replaceAll(",", ".");
-        else v = v.replaceAll(/[,.]/g, "");
-        setInputValue(v);
-      }}
-      onFocusChange={(isFocused) => {
-        if (isFocused) {
-          if (autoSelect) ref.current?.setSelectionRange(0, -1);
-        } else {
-          onValueChange && onValueChange(inputValue ?? "");
-        }
-      }}
-    />
   );
 }
