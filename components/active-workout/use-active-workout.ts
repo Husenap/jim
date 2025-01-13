@@ -48,7 +48,13 @@ export function useActiveWorkout({ workoutId }: {
     }
   });
   const addExercise = useMutation(api.activeWorkouts.addExercise);
-  const removeExercise = useMutation(api.activeWorkouts.removeExercise);
+  const removeExercise = useMutation(api.activeWorkouts.removeExercise).withOptimisticUpdate((localStore, { workoutId, exerciseIndex }) => {
+    const exercises = localStore.getQuery(api.activeWorkouts.exercises, { id: workoutId });
+    if (exercises) {
+      exercises.splice(exerciseIndex, 1);
+      localStore.setQuery(api.activeWorkouts.exercises, { id: workoutId }, exercises);
+    }
+  });
 
   const isOwner = !!(user && activeWorkout && user._id === activeWorkout.userId);
 
