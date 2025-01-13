@@ -1,13 +1,11 @@
-import { Input, InputProps } from "@nextui-org/react";
+import InputField, { InputFieldProps } from "@/components/input/input-field";
 import { useEffect, useRef, useState } from "react";
 
-interface DebouncedInputProps extends InputProps {
-  numberOnly?: boolean;
-  allowDecimals?: boolean;
+interface DebouncedInputProps extends InputFieldProps {
   autoSelect?: boolean;
 }
 export default function DebouncedInput(props: DebouncedInputProps) {
-  const { value, onValueChange, numberOnly, allowDecimals, autoSelect } = props;
+  const { value, onValueChange, autoSelect, isReadOnly } = props;
   const [inputValue, setInputValue] = useState(value);
   const ref = useRef<HTMLInputElement | null>(null);
 
@@ -16,21 +14,16 @@ export default function DebouncedInput(props: DebouncedInputProps) {
   }, [value]);
 
   return (
-    <Input
+    <InputField
       {...props}
       ref={ref}
       type="search"
       autoComplete="none"
       value={inputValue}
-      onValueChange={(v) => {
-        if (numberOnly) v = v.replaceAll(/[a-zA-z]/g, "");
-        if (allowDecimals) v = v.replaceAll(",", ".");
-        else v = v.replaceAll(/[,.]/g, "");
-        setInputValue(v);
-      }}
+      onValueChange={setInputValue}
       onFocusChange={(isFocused) => {
         if (isFocused) {
-          if (autoSelect) ref.current?.setSelectionRange(0, -1);
+          if (!isReadOnly && autoSelect) ref.current?.setSelectionRange(0, -1);
         } else {
           onValueChange && onValueChange(inputValue ?? "");
         }
