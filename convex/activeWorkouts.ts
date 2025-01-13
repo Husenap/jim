@@ -155,11 +155,11 @@ export const updateSet = mutation({
       ...activeWorkout.exercises[exerciseIndex].sets[setIndex],
       ...setData
     };
-    if (setData.done === true && sets[setIndex].weight === undefined && setIndex > 0) {
-      sets[setIndex].weight = sets[setIndex - 1].weight ?? 0;
+    if (setData.done === true && sets[setIndex].weight === undefined) {
+      sets[setIndex].weight = sets[setIndex - 1]?.weight ?? 0;
     }
-    if (setData.done === true && sets[setIndex].reps === undefined && setIndex > 0) {
-      sets[setIndex].reps = sets[setIndex - 1].reps ?? 0;
+    if (setData.done === true && sets[setIndex].reps === undefined) {
+      sets[setIndex].reps = sets[setIndex - 1]?.reps ?? 0;
     }
 
     await activeWorkout.patch(activeWorkout);
