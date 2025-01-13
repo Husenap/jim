@@ -5,8 +5,14 @@ interface DebouncedInputProps extends InputFieldProps {
   autoSelect?: boolean;
 }
 export default function DebouncedInput(props: DebouncedInputProps) {
-  const { value, onValueChange, autoSelect, isReadOnly } = props;
-  const [inputValue, setInputValue] = useState(value);
+  const {
+    value,
+    defaultValue,
+    onValueChange = () => {},
+    autoSelect,
+    isReadOnly,
+  } = props;
+  const [inputValue, setInputValue] = useState(value ?? defaultValue);
   const ref = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -24,8 +30,8 @@ export default function DebouncedInput(props: DebouncedInputProps) {
       onFocusChange={(isFocused) => {
         if (isFocused) {
           if (!isReadOnly && autoSelect) ref.current?.setSelectionRange(0, -1);
-        } else {
-          onValueChange && onValueChange(inputValue ?? "");
+        } else if (inputValue !== value) {
+          onValueChange(inputValue ?? "");
         }
       }}
     />
