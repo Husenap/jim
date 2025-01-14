@@ -1,5 +1,8 @@
 "use client";
 import Navbar from "@/app/(member-area)/workout/create-routine/navbar";
+import DrawerMenu from "@/components/drawer-menu/drawer-menu";
+import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
+import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
 import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import PageContainer from "@/components/page-container";
 import { api } from "@/convex/_generated/api";
@@ -9,16 +12,13 @@ import {
   Avatar,
   Button,
   Divider,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Form,
   Input,
+  MenuItem,
   useDisclosure,
 } from "@nextui-org/react";
 import { useMutation } from "convex/react";
-import { Dumbbell, EllipsisVertical, Plus } from "lucide-react";
+import { Dumbbell, Ellipsis, Plus, Replace, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
@@ -124,36 +124,42 @@ export default function Page() {
                 </span>
               </div>
             </div>
-            <Dropdown placement="left">
-              <DropdownTrigger>
+            <DrawerMenu>
+              <DrawerMenuTrigger>
                 <Button isIconOnly variant="light" size="md">
-                  <EllipsisVertical size={20} />
+                  <Ellipsis size={20} />
                 </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem
+              </DrawerMenuTrigger>
+              <DrawerMenuContent ariaLabel="Exercise Menu">
+                <MenuItem
+                  startContent={<Replace />}
                   key="replace"
+                  title="Replace Exercise"
                   onPress={() => {
                     setReplaceId(id);
                     replaceDisclosure.onOpen();
                   }}
-                >
-                  Replace exercise
-                </DropdownItem>
-                <DropdownItem
+                />
+                <MenuItem
+                  startContent={<Plus />}
+                  key="add-superset"
+                  title="Add to Superset"
+                  className="under-construction"
+                />
+                <MenuItem
+                  startContent={<X />}
                   key="delete"
                   color="danger"
                   className="text-danger"
+                  title="Remove Exercise"
                   onPress={() =>
                     setExercises(
                       exercises.filter(({ id: otherId }) => id !== otherId),
                     )
                   }
-                >
-                  Remove exercise
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+                />
+              </DrawerMenuContent>
+            </DrawerMenu>
           </div>
         ))}
       </ReactSortable>
