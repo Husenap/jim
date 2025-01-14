@@ -109,7 +109,9 @@ export default function SetMenu({
             ))}
             <MenuItem
               key="delete"
-              startContent={<X className="text-danger" />}
+              color="danger"
+              className="text-danger"
+              startContent={<X />}
               onPress={() =>
                 removeSet({
                   id: activeWorkout!._id,
