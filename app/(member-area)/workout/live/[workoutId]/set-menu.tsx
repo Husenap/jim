@@ -7,6 +7,10 @@ import { SetType } from "@/convex/schema";
 import { cn, MenuItem } from "@nextui-org/react";
 import { X } from "lucide-react";
 
+const colorWarmup = "text-[#eeaa00]";
+const colorDrop = "text-[#36baff]";
+const colorFailure = "text-[#e34b37]";
+
 const setTypeButtons: {
   color: string;
   shortLabel: string;
@@ -14,7 +18,7 @@ const setTypeButtons: {
   value: SetType;
 }[] = [
   {
-    color: "text-warning",
+    color: colorWarmup,
     shortLabel: "W",
     label: "Warm Up Set",
     value: "warmup",
@@ -26,13 +30,13 @@ const setTypeButtons: {
     value: "normal",
   },
   {
-    color: "text-danger",
+    color: colorFailure,
     shortLabel: "F",
     label: "Failure Set",
     value: "failure",
   },
   {
-    color: "text-primary",
+    color: colorDrop,
     shortLabel: "D",
     label: "Drop Set",
     value: "drop",
@@ -56,9 +60,9 @@ export default function SetMenu({
       <div
         onClick={onPress}
         className={cn("-m-3 min-w-6 p-3 text-center text-lg font-bold", {
-          "text-[#eeaa00]": item.set.type === "warmup",
-          "text-[#36baff]": item.set.type === "drop",
-          "text-[#e34b37]": item.set.type === "failure",
+          [colorWarmup]: item.set.type === "warmup",
+          [colorDrop]: item.set.type === "drop",
+          [colorFailure]: item.set.type === "failure",
           "cursor-pointer": isOwner,
         })}
       >
