@@ -46,7 +46,13 @@ export function useActiveWorkout({ workoutId }: {
       localStore.setQuery(api.activeWorkouts.exercises, { id: workoutId }, exercises);
     }
   });
-  const setBodyweight = useMutation(api.activeWorkouts.setBodyweight);
+  const setBodyweight = useMutation(api.activeWorkouts.setBodyweight).withOptimisticUpdate((localStore, { workoutId, bodyweight }) => {
+    const activeWorkout = localStore.getQuery(api.activeWorkouts.get, { id: workoutId });
+    if (activeWorkout) {
+      activeWorkout.bodyweight = bodyweight;
+      localStore.setQuery(api.activeWorkouts.get, { id: workoutId }, activeWorkout);
+    }
+  });
 
   const isOwner = !!(user && activeWorkout && user._id === activeWorkout.userId);
 

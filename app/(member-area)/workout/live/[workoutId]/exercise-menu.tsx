@@ -1,12 +1,11 @@
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
+import DrawerMenu from "@/components/drawer-menu/drawer-menu";
+import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
+import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
 import InputField from "@/components/input/input-field";
 import { isBodyweightExercise } from "@/utils/workout/exercise";
 import {
   Button,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  Menu,
   MenuItem,
   Modal,
   ModalBody,
@@ -25,66 +24,46 @@ export default function ExerciseMenu({
 }) {
   const { activeWorkout, exercises, removeExercise } =
     useActiveWorkoutContext();
-  const { isOpen, onOpenChange, onOpen } = useDisclosure();
   const exercise = exercises![exerciseIndex];
 
   const bodyweightDisclosure = useDisclosure();
 
   return (
     <>
-      <Button onPress={onOpen} isIconOnly variant="light" size="md">
-        <Ellipsis size={20} />
-      </Button>
-      <Drawer
-        hideCloseButton
-        isDismissable
-        placement="bottom"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
-        <DrawerContent>
-          {(onClose) => (
-            <DrawerBody className="p-4">
-              <Menu
-                className="iphone-safe-inset"
-                disabledKeys={[
-                  "reorder",
-                  "replace",
-                  "add-superset",
-                  "remove-superset",
-                ]}
-                onClose={onClose}
-                closeOnSelect
-                aria-label="Exercise Menu"
-              >
-                <>
-                  <MenuItem
-                    startContent={<ArrowUpDown />}
-                    key="reorder"
-                    title="Reorder Exercises"
-                    className="under-construction"
-                  />
-                  <MenuItem
-                    startContent={<Replace />}
-                    key="replace"
-                    title="Replace Exercise"
-                    className="under-construction"
-                  />
-                  {isBodyweightExercise(exercise.exercise.exerciseType) && (
-                    <MenuItem
-                      startContent={<Scale />}
-                      key="update-bodyweight"
-                      title="Update Bodyweight"
-                      onPress={bodyweightDisclosure.onOpen}
-                    />
-                  )}
-                  <MenuItem
-                    startContent={<Plus />}
-                    key="add-superset"
-                    title="Add to Superset"
-                    className="under-construction"
-                  />
-                  {/*
+      <DrawerMenu>
+        <DrawerMenuTrigger>
+          <Button isIconOnly variant="light" size="md">
+            <Ellipsis size={20} />
+          </Button>
+        </DrawerMenuTrigger>
+        <DrawerMenuContent ariaLabel="Exercise Menu">
+          <MenuItem
+            startContent={<ArrowUpDown />}
+            key="reorder"
+            title="Reorder Exercises"
+            className="under-construction"
+          />
+          <MenuItem
+            startContent={<Replace />}
+            key="replace"
+            title="Replace Exercise"
+            className="under-construction"
+          />
+          {isBodyweightExercise(exercise.exercise.exerciseType) && (
+            <MenuItem
+              startContent={<Scale />}
+              key="update-bodyweight"
+              title="Update Bodyweight"
+              onPress={bodyweightDisclosure.onOpen}
+            />
+          )}
+          <MenuItem
+            startContent={<Plus />}
+            key="add-superset"
+            title="Add to Superset"
+            className="under-construction"
+          />
+          {/*
                   <MenuItem
                     startContent={<X />}
                     key="remove-superset"
@@ -92,25 +71,21 @@ export default function ExerciseMenu({
                     className="under-construction"
                   />
                   */}
-                  <MenuItem
-                    startContent={<X />}
-                    key="delete"
-                    color="danger"
-                    className="text-danger"
-                    title="Remove Exercise"
-                    onPress={() => {
-                      removeExercise({
-                        workoutId: activeWorkout!._id,
-                        exerciseIndex,
-                      });
-                    }}
-                  />
-                </>
-              </Menu>
-            </DrawerBody>
-          )}
-        </DrawerContent>
-      </Drawer>
+          <MenuItem
+            startContent={<X />}
+            key="delete"
+            color="danger"
+            className="text-danger"
+            title="Remove Exercise"
+            onPress={() => {
+              removeExercise({
+                workoutId: activeWorkout!._id,
+                exerciseIndex,
+              });
+            }}
+          />
+        </DrawerMenuContent>
+      </DrawerMenu>
       <BodyweightModal disclosure={bodyweightDisclosure} />
     </>
   );
@@ -144,11 +119,12 @@ function BodyweightModal({ disclosure }: { disclosure: UseDisclosureReturn }) {
                 <Button
                   color="primary"
                   isDisabled={value.length <= 0}
-                  onPress={async () => {
+                  onPress={() => {
                     setBodyweight({
                       workoutId: activeWorkout!._id,
                       bodyweight: parseFloat(value) || undefined,
                     });
+                    onClose();
                   }}
                 >
                   Set Bodyweight

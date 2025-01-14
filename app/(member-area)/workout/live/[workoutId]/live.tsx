@@ -74,6 +74,11 @@ export default function Live() {
             <div className="flex flex-row items-center gap-2">
               <Avatar size="sm" src={e.exercise.imageURL} />
               <span className="flex-1">{e.exercise.name}</span>
+              {isBodyweightExercise(e.exercise.exerciseType) && (
+                <span className="text-xs text-default-500">
+                  {Math.round(e.exercise.bodyweightFactor! * 100)}% BW
+                </span>
+              )}
               {isBodyweightExercise(e.exercise.exerciseType) &&
                 (!activeWorkout.bodyweight ||
                   activeWorkout.bodyweight <= 0) && (

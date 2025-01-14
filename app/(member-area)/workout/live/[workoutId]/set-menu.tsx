@@ -1,15 +1,10 @@
 import { SetRowType } from "@/app/(member-area)/workout/live/[workoutId]/types";
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
+import DrawerMenu from "@/components/drawer-menu/drawer-menu";
+import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
+import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
 import { SetType } from "@/convex/schema";
-import {
-  cn,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  Menu,
-  MenuItem,
-  useDisclosure,
-} from "@nextui-org/react";
+import { cn, MenuItem } from "@nextui-org/react";
 import { X } from "lucide-react";
 
 const setTypeButtons: {
@@ -55,12 +50,11 @@ export default function SetMenu({
 }) {
   const { activeWorkout, isOwner, updateSet, removeSet } =
     useActiveWorkoutContext();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const SetIndicator = () => {
+  const SetIndicator = ({ onPress }: { onPress?: () => void }) => {
     return (
       <div
-        onClick={onOpen}
+        onClick={onPress}
         className={cn("-m-3 min-w-6 p-3 text-center text-lg font-bold", {
           "text-[#eeaa00]": item.set.type === "warmup",
           "text-[#36baff]": item.set.type === "drop",
@@ -85,72 +79,50 @@ export default function SetMenu({
 
   return (
     <>
-      <SetIndicator />
-      <Drawer
-        hideCloseButton
-        isDismissable
-        placement="bottom"
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
-        <DrawerContent>
-          {(onClose) => (
-            <>
-              <DrawerBody className="p-4">
-                <Menu
-                  onClose={onClose}
-                  closeOnSelect
-                  className="iphone-safe-inset"
-                  aria-label="Set Menu"
-                >
-                  <>
-                    {setTypeButtons.map(
-                      ({ color, shortLabel, label, value }) => (
-                        <MenuItem
-                          key={value}
-                          startContent={
-                            <span
-                              className={cn(
-                                "w-6 text-center text-lg font-bold",
-                                color,
-                              )}
-                            >
-                              {shortLabel}
-                            </span>
-                          }
-                          onPress={() =>
-                            updateSet({
-                              id: activeWorkout!._id,
-                              exerciseIndex,
-                              setIndex: item.index,
-                              setData: { type: value },
-                            })
-                          }
-                        >
-                          {label}
-                        </MenuItem>
-                      ),
-                    )}
-                    <MenuItem
-                      key="delete"
-                      startContent={<X className="text-danger" />}
-                      onPress={() =>
-                        removeSet({
-                          id: activeWorkout!._id,
-                          exerciseIndex,
-                          setIndex: item.index,
-                        })
-                      }
-                    >
-                      Remove Set
-                    </MenuItem>
-                  </>
-                </Menu>
-              </DrawerBody>
-            </>
-          )}
-        </DrawerContent>
-      </Drawer>
+      <DrawerMenu>
+        <DrawerMenuTrigger>
+          <SetIndicator />
+        </DrawerMenuTrigger>
+        <DrawerMenuContent ariaLabel="Set Menu">
+          <>
+            {setTypeButtons.map(({ color, shortLabel, label, value }) => (
+              <MenuItem
+                key={value}
+                startContent={
+                  <span
+                    className={cn("w-6 text-center text-lg font-bold", color)}
+                  >
+                    {shortLabel}
+                  </span>
+                }
+                onPress={() =>
+                  updateSet({
+                    id: activeWorkout!._id,
+                    exerciseIndex,
+                    setIndex: item.index,
+                    setData: { type: value },
+                  })
+                }
+              >
+                {label}
+              </MenuItem>
+            ))}
+            <MenuItem
+              key="delete"
+              startContent={<X className="text-danger" />}
+              onPress={() =>
+                removeSet({
+                  id: activeWorkout!._id,
+                  exerciseIndex,
+                  setIndex: item.index,
+                })
+              }
+            >
+              Remove Set
+            </MenuItem>
+          </>
+        </DrawerMenuContent>
+      </DrawerMenu>
     </>
   );
 }
