@@ -1,3 +1,6 @@
+import DrawerMenu from "@/components/drawer-menu/drawer-menu";
+import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
+import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
 import {
   TypographyH1,
   TypographyH2,
@@ -26,10 +29,11 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  MenuItem,
   User,
 } from "@nextui-org/react";
 import { useMutation, useQuery } from "convex/react";
-import { Ellipsis, MessageCircle, Share, ThumbsUp } from "lucide-react";
+import { Ellipsis, MessageCircle, Share, ThumbsUp, X } from "lucide-react";
 import { Link } from "next-view-transitions";
 import { useMemo } from "react";
 
@@ -95,25 +99,25 @@ export default function WorkoutPost({
             })}
           />
           {workout.userId === currentUser?._id && (
-            <Dropdown placement="left">
-              <DropdownTrigger>
+            <DrawerMenu>
+              <DrawerMenuTrigger>
                 <Button isIconOnly variant="light" size="md">
                   <Ellipsis size={20} />
                 </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem
+              </DrawerMenuTrigger>
+              <DrawerMenuContent ariaLabel="Workout Menu">
+                <MenuItem
+                  startContent={<X />}
                   key="delete"
                   color="danger"
                   className="text-danger"
+                  title="Remove workout"
                   onPress={() => {
                     removeWorkout({ workoutId: workout._id });
                   }}
-                >
-                  Remove workout
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+                />
+              </DrawerMenuContent>
+            </DrawerMenu>
           )}
         </div>
         <div>

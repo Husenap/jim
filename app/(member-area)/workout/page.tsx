@@ -1,6 +1,9 @@
 "use client";
 
 import BottomNavbar from "@/app/(member-area)/bottom-navbar";
+import DrawerMenu from "@/components/drawer-menu/drawer-menu";
+import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
+import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
 import PageContainer from "@/components/page-container";
 import {
   TypographyH1,
@@ -15,17 +18,23 @@ import {
   Card,
   CardFooter,
   CardHeader,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
+  MenuItem,
   Modal,
   ModalBody,
   ModalContent,
   Spinner,
 } from "@nextui-org/react";
 import { useMutation, useQuery } from "convex/react";
-import { Ellipsis, NotepadText, Plus, Search } from "lucide-react";
+import {
+  Copy,
+  Ellipsis,
+  NotepadText,
+  Pen,
+  Plus,
+  Search,
+  Share,
+  X,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -87,25 +96,47 @@ export default function Page() {
                   {r.exercises.map((e) => e.name).join(", ")}
                 </TypographyH4>
               </div>
-              <Dropdown placement="left">
-                <DropdownTrigger>
+              <DrawerMenu>
+                <DrawerMenuTrigger>
                   <Button isIconOnly variant="light" size="md">
                     <Ellipsis size={20} />
                   </Button>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem
+                </DrawerMenuTrigger>
+                <DrawerMenuContent ariaLabel="Routine Menu">
+                  <MenuItem
+                    key="share"
+                    className="under-construction"
+                    startContent={<Share />}
+                  >
+                    Share routine
+                  </MenuItem>
+                  <MenuItem
+                    key="duplicate"
+                    className="under-construction"
+                    startContent={<Copy />}
+                  >
+                    Duplicate routine
+                  </MenuItem>
+                  <MenuItem
+                    key="edit"
+                    className="under-construction"
+                    startContent={<Pen />}
+                  >
+                    Edit routine
+                  </MenuItem>
+                  <MenuItem
                     key="delete"
                     color="danger"
                     className="text-danger"
                     onPress={() => {
                       removeRoutine({ id: r._id });
                     }}
+                    startContent={<X />}
                   >
                     Remove routine
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+                  </MenuItem>
+                </DrawerMenuContent>
+              </DrawerMenu>
             </CardHeader>
             <CardFooter>
               <Button
