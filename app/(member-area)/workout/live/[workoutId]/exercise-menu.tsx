@@ -84,12 +84,14 @@ export default function ExerciseMenu({
                     title="Add to Superset"
                     className="under-construction"
                   />
+                  {/*
                   <MenuItem
                     startContent={<X />}
                     key="remove-superset"
                     title="Remove from Superset"
                     className="under-construction"
                   />
+                  */}
                   <MenuItem
                     startContent={<X />}
                     key="delete"
