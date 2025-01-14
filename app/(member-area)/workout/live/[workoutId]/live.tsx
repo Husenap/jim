@@ -214,18 +214,17 @@ function ExerciseSet({
               isReadOnly={!isMutable}
               onValueChange={
                 isMutable
-                  ? (v) =>
+                  ? (v) => {
                       updateSet({
                         id: activeWorkout!._id,
                         exerciseIndex,
                         setIndex: item.index,
                         setData: {
                           [columnKey]:
-                            (columnKey === "reps"
-                              ? parseInt(v)
-                              : parseFloat(v)) || undefined,
+                            columnKey === "reps" ? parseInt(v) : parseFloat(v),
                         },
-                      })
+                      });
+                    }
                   : undefined
               }
               value={item.set[columnKey]?.toString() ?? ""}
