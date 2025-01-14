@@ -1,5 +1,6 @@
 "use client";
 
+import BackButton from "@/components/back-button";
 import PageContainer from "@/components/page-container";
 import { useProfileContext } from "@/components/profile/profile-context";
 import { TypographyH1, TypographyH4 } from "@/components/typography";
@@ -88,7 +89,7 @@ function FollowerDrawer({
         onOpenChange={onOpenChange}
         hideCloseButton
         size="full"
-        placement="bottom"
+        placement="right"
       >
         <DrawerContent>
           {(onClose) => (
@@ -98,9 +99,7 @@ function FollowerDrawer({
                 topNavbar={
                   <div className="grid w-full grid-cols-3 items-center py-3">
                     <div>
-                      <Button onPress={onClose} variant="light" color="danger">
-                        Close
-                      </Button>
+                      <BackButton onPress={onClose} />
                     </div>
                     <span className="text-center">{title}</span>
                   </div>

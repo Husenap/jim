@@ -1,7 +1,7 @@
 "use client";
 
-import Navbar from "@/app/(member-area)/workout/live/[workoutId]/navbar";
 import Live from "@/app/(member-area)/workout/live/[workoutId]/live";
+import Navbar from "@/app/(member-area)/workout/live/[workoutId]/navbar";
 import ActiveWorkout from "@/components/active-workout/active-workout";
 import PageContainer from "@/components/page-container";
 import { Id } from "@/convex/_generated/dataModel";

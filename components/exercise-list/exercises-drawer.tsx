@@ -3,7 +3,7 @@ import Exercises from "@/components/exercise-list/exercises";
 import ExercisesList from "@/components/exercise-list/exercises-list";
 import ExercisesNavbar from "@/components/exercise-list/exercises-navbar";
 import { Doc } from "@/convex/_generated/dataModel";
-import { Modal, ModalContent, useDisclosure } from "@nextui-org/react";
+import { Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
 import type { UseDisclosureReturn } from "@nextui-org/use-disclosure";
 
 export default function ExercisesDrawer({
@@ -23,15 +23,14 @@ export default function ExercisesDrawer({
     <>
       {children && children(onOpen)}
       <Exercises>
-        <Modal
-          placement="top"
+        <Drawer
+          placement="right"
           hideCloseButton
           size="full"
           isOpen={isOpen}
           onOpenChange={onOpenChange}
-          disableAnimation
         >
-          <ModalContent>
+          <DrawerContent>
             {(onClose) => (
               <DrawerPageContainer
                 topNavbar={<ExercisesNavbar onClose={onClose} title={title} />}
@@ -41,8 +40,8 @@ export default function ExercisesDrawer({
                 />
               </DrawerPageContainer>
             )}
-          </ModalContent>
-        </Modal>
+          </DrawerContent>
+        </Drawer>
       </Exercises>
     </>
   );

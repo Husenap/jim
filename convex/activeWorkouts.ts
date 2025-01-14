@@ -4,6 +4,7 @@ import { mutation, query } from "@/convex/functions";
 import { createOrTake, removeOrReturn } from "@/convex/immutableExercises";
 import { SetTypeValidator } from "@/convex/schema";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
+import { updateSetData } from "@/utils/workout/sets";
 import { v } from "convex/values";
 
 export const create = mutation({
@@ -151,16 +152,7 @@ export const updateSet = mutation({
     if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
 
     const sets = activeWorkout.exercises[exerciseIndex].sets;
-    sets[setIndex] = {
-      ...activeWorkout.exercises[exerciseIndex].sets[setIndex],
-      ...setData
-    };
-    if (setData.done === true && sets[setIndex].weight === undefined && setIndex > 0) {
-      sets[setIndex].weight = sets[setIndex - 1].weight ?? 0;
-    }
-    if (setData.done === true && sets[setIndex].reps === undefined && setIndex > 0) {
-      sets[setIndex].reps = sets[setIndex - 1].reps ?? 0;
-    }
+    updateSetData(sets, setIndex, setData);
 
     await activeWorkout.patch(activeWorkout);
   }
@@ -252,3 +244,17 @@ export const removeExercise = mutation({
     await activeWorkout.patch(activeWorkout);
   }
 });
+
+export const setBodyweight = mutation({
+  args: {
+    workoutId: v.id("activeWorkouts"),
+    bodyweight: v.optional(v.number()),
+  },
+  handler: async (ctx, { workoutId, bodyweight }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
+    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    await activeWorkout.patch({ bodyweight });
+    await ctx.table("users").getX(user._id).patch({ bodyweight });
+  }
+})

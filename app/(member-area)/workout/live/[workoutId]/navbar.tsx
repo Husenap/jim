@@ -1,6 +1,6 @@
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
 import BackButton from "@/components/back-button";
-import PageContainer from "@/components/page-container";
+import DrawerPageContainer from "@/components/drawer-page-container";
 import { TypographyH4 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { humanReadiableDuration } from "@/utils/time-diff";
@@ -112,7 +112,7 @@ function FinishButton() {
       </div>
 
       <Drawer
-        placement="bottom"
+        placement="right"
         hideCloseButton
         size="full"
         onOpenChange={onOpenChange}
@@ -120,7 +120,7 @@ function FinishButton() {
       >
         <DrawerContent>
           {(onClose) => (
-            <PageContainer
+            <DrawerPageContainer
               topNavbar={
                 <>
                   <div className="grid grid-cols-4 items-center py-3">
@@ -154,7 +154,7 @@ function FinishButton() {
                 value={description}
                 onValueChange={setDescription}
               />
-            </PageContainer>
+            </DrawerPageContainer>
           )}
         </DrawerContent>
       </Drawer>

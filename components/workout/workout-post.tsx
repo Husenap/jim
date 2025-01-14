@@ -110,7 +110,7 @@ export default function WorkoutPost({
                     removeWorkout({ workoutId: workout._id });
                   }}
                 >
-                  Remove routine
+                  Remove workout
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
