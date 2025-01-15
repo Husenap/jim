@@ -2,7 +2,9 @@ import { useActiveWorkoutContext } from "@/components/active-workout/active-work
 import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
+import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import InputField from "@/components/input/input-field";
+import { Doc } from "@/convex/_generated/dataModel";
 import { isBodyweightExercise } from "@/utils/workout/exercise";
 import {
   Button,
@@ -22,11 +24,24 @@ export default function ExerciseMenu({
 }: {
   exerciseIndex: number;
 }) {
-  const { activeWorkout, exercises, removeExercise } =
+  const { activeWorkout, exercises, removeExercise, replaceExercise } =
     useActiveWorkoutContext();
   const exercise = exercises![exerciseIndex];
 
   const bodyweightDisclosure = useDisclosure();
+  const exercisesDrawerDisclosure = useDisclosure();
+
+  const onReplaceExercise = async (
+    e: Doc<"exercises">,
+    onClose: () => void,
+  ) => {
+    replaceExercise({
+      workoutId: activeWorkout!._id,
+      exerciseIndex,
+      exerciseId: e._id,
+    });
+    onClose();
+  };
 
   return (
     <>
@@ -47,7 +62,7 @@ export default function ExerciseMenu({
             startContent={<Replace />}
             key="replace"
             title="Replace Exercise"
-            className="under-construction"
+            onPress={exercisesDrawerDisclosure.onOpen}
           />
           {isBodyweightExercise(exercise.exercise.exerciseType) && (
             <MenuItem
@@ -86,6 +101,10 @@ export default function ExerciseMenu({
           />
         </DrawerMenuContent>
       </DrawerMenu>
+      <ExercisesDrawer
+        onSelect={onReplaceExercise}
+        disclosure={exercisesDrawerDisclosure}
+      />
       <BodyweightModal disclosure={bodyweightDisclosure} />
     </>
   );

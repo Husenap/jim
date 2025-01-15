@@ -1,8 +1,18 @@
 import { Id } from "@/convex/_generated/dataModel";
-import { ExerciseFieldsType } from "@/convex/schema";
 import { MutationCtx } from "@/convex/types";
 
-export async function createOrTake(ctx: MutationCtx, exercise: ExerciseFieldsType) {
+export async function createOrTake(ctx: MutationCtx, exerciseId: Id<"exercises">) {
+  const exerciseDoc = await ctx.table("exercises").getX(exerciseId).doc();
+
+  const exercise = {
+    name: exerciseDoc.name,
+    imageURL: exerciseDoc.imageURL,
+    equipment: exerciseDoc.equipment,
+    muscleGroups: exerciseDoc.muscleGroups,
+    exerciseType: exerciseDoc.exerciseType,
+    bodyweightFactor: exerciseDoc.bodyweightFactor,
+  };
+
   let immutableExercise = await ctx.table("immutableExercises").get("exercise", exercise);
   if (!immutableExercise) {
     const id = await ctx.table("immutableExercises").insert({

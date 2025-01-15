@@ -75,21 +75,22 @@ export default function Live() {
               <Avatar size="sm" src={e.exercise.imageURL} />
               <span className="flex-1">{e.exercise.name}</span>
               {isBodyweightExercise(e.exercise.exerciseType) && (
-                <span className="text-xs text-default-500">
-                  {Math.round(e.exercise.bodyweightFactor! * 100)}% BW
-                </span>
+                <>
+                  <span className="text-xs text-default-500">
+                    {Math.round((e.exercise.bodyweightFactor ?? 1) * 100)}% BW
+                  </span>
+                  {(!activeWorkout.bodyweight ||
+                    activeWorkout.bodyweight <= 0) && (
+                    <Tooltip
+                      color="warning"
+                      placement="left"
+                      content="No Bodyweight"
+                    >
+                      <TriangleAlert className="text-warning" />
+                    </Tooltip>
+                  )}
+                </>
               )}
-              {isBodyweightExercise(e.exercise.exerciseType) &&
-                (!activeWorkout.bodyweight ||
-                  activeWorkout.bodyweight <= 0) && (
-                  <Tooltip
-                    color="warning"
-                    placement="left"
-                    content="No Bodyweight"
-                  >
-                    <TriangleAlert className="text-warning" />
-                  </Tooltip>
-                )}
               {isOwner && <ExerciseMenu exerciseIndex={i} />}
             </div>
             {isOwner ? (
