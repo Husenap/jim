@@ -24,23 +24,11 @@ export const create = mutation({
     if (id) {
       const routine = await ctx.table("routines").getX(id);
       title = routine.name;
-      const routineExercises = await ctx.table("exercises").getMany(routine.exercises);
-      for (const re of routineExercises) {
-        if (re) {
-          const immutableExerciseId =
-            await createOrTake(
-              ctx,
-              {
-                name: re.name,
-                imageURL: re.imageURL,
-                equipment: re.equipment,
-                muscleGroups: re.muscleGroups,
-                exerciseType: re.exerciseType,
-                bodyweightFactor: re.bodyweightFactor,
-              }
-            )
+      for (const re of routine.exercises) {
+        try {
+          const immutableExerciseId = await createOrTake(ctx, re);
           exercises.push(immutableExerciseId);
-        }
+        } catch { }
       }
     }
 
@@ -203,18 +191,7 @@ export const addExercise = mutation({
     const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
     if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
 
-    const exercise = await ctx.table("exercises").getX(exerciseId);
-
-    const immutableExerciseId = await createOrTake(ctx,
-      {
-        name: exercise.name,
-        imageURL: exercise.imageURL,
-        equipment: exercise.equipment,
-        muscleGroups: exercise.muscleGroups,
-        exerciseType: exercise.exerciseType,
-        bodyweightFactor: exercise.bodyweightFactor,
-      }
-    );
+    const immutableExerciseId = await createOrTake(ctx, exerciseId);
     activeWorkout.exercises.push({
       exercise: immutableExerciseId,
       sets: [{
@@ -240,6 +217,25 @@ export const removeExercise = mutation({
       activeWorkout.exercises
         .splice(exerciseIndex, 1)
         .map(async e => removeOrReturn(ctx, e.exercise)));
+
+    await activeWorkout.patch(activeWorkout);
+  }
+});
+
+export const replaceExercise = mutation({
+  args: {
+    workoutId: v.id("activeWorkouts"),
+    exerciseIndex: v.number(),
+    exerciseId: v.id("exercises")
+  },
+  handler: async (ctx, { workoutId, exerciseIndex, exerciseId }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
+    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+
+    const newExerciseId = await createOrTake(ctx, exerciseId);
+    await removeOrReturn(ctx, activeWorkout.exercises[exerciseIndex].exercise);
+    activeWorkout.exercises[exerciseIndex].exercise = newExerciseId;
 
     await activeWorkout.patch(activeWorkout);
   }
