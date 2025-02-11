@@ -21,7 +21,7 @@ export default function ExercisesDrawer({
 
   return (
     <>
-      {children && children(onOpen)}
+      {children?.(onOpen)}
       <Exercises>
         <Drawer
           placement="right"

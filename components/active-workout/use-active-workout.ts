@@ -39,6 +39,7 @@ export function useActiveWorkout({ workoutId }: {
     }
   });
   const addExercise = useMutation(api.activeWorkouts.addExercise);
+  const replaceExercise = useMutation(api.activeWorkouts.replaceExercise);
   const removeExercise = useMutation(api.activeWorkouts.removeExercise).withOptimisticUpdate((localStore, { workoutId, exerciseIndex }) => {
     const exercises = localStore.getQuery(api.activeWorkouts.exercises, { id: workoutId });
     if (exercises) {
@@ -71,11 +72,24 @@ export function useActiveWorkout({ workoutId }: {
       addSet,
       removeSet,
       addExercise,
+      replaceExercise,
       removeExercise,
       setBodyweight,
       volume,
       finishedSets
-    }), [activeWorkout, user, exercises, updateNote, updateSet, addSet, removeSet, addExercise, removeExercise, setBodyweight]);
+    }), [
+    activeWorkout,
+    user,
+    exercises,
+    updateNote,
+    updateSet,
+    addSet,
+    removeSet,
+    addExercise,
+    replaceExercise,
+    removeExercise,
+    setBodyweight,
+  ]);
 
   return context;
 };
