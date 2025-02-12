@@ -1,7 +1,7 @@
 import BackButton from "@/components/back-button";
 import CreateExerciseDrawer from "@/components/exercise-list/create/create-exercise-drawer";
 import ExercisesFilter from "@/components/exercise-list/exercises-filter";
-import { Button, Divider } from "@nextui-org/react";
+import { Button, Divider } from "@heroui/react";
 
 export default function ExercisesNavbar({
   onClose,

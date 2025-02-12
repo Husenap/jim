@@ -12,7 +12,7 @@ import {
   Input,
   Textarea,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useMutation } from "convex/react";
 import { useTransitionRouter } from "next-view-transitions";
 import { useEffect, useState } from "react";

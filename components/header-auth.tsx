@@ -1,7 +1,7 @@
 "use client";
 
 import { SignInButton } from "@clerk/clerk-react";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { LogIn } from "lucide-react";
 
 export default function AuthButton() {

@@ -1,7 +1,7 @@
 "use client";
 
 import BackButton from "@/components/back-button";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import { Search } from "lucide-react";
 
 export default function Navbar({

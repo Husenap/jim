@@ -1,7 +1,7 @@
 "use server";
 
 import { api } from "@/convex/_generated/api";
-import { Link, User as NextUIUser } from "@nextui-org/react";
+import { Link, User as NextUIUser } from "@heroui/react";
 import { fetchQuery } from "convex/nextjs";
 
 export default async function User({ username }: { username: string }) {

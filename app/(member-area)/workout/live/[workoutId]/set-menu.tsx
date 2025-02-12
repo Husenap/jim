@@ -4,7 +4,7 @@ import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
 import { SetType } from "@/convex/schema";
-import { cn, MenuItem } from "@nextui-org/react";
+import { cn, MenuItem } from "@heroui/react";
 import { X } from "lucide-react";
 
 const colorWarmup = "text-[#eeaa00]";

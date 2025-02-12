@@ -1,4 +1,4 @@
-import { DrawerBody, DrawerContent, Menu } from "@nextui-org/react";
+import { DrawerBody, DrawerContent, Menu } from "@heroui/react";
 import React from "react";
 
 export default function DrawerMenuContent({

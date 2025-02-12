@@ -1,7 +1,7 @@
 "use client";
 
 import { useProfileContext } from "@/components/profile/profile-context";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { Share } from "lucide-react";
 
 export default function ProfileShareButton() {

@@ -1,4 +1,4 @@
-import { useDisclosure } from "@nextui-org/react";
+import { useDisclosure } from "@heroui/react";
 
 export function useDrawerMenu() {
   const disclosure = useDisclosure();

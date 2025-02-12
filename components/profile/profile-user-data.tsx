@@ -14,7 +14,7 @@ import {
   Skeleton,
   useDisclosure,
   User,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Link from "next/link";
 
 export default function ProfileUserData() {

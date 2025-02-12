@@ -1,5 +1,5 @@
 import { useExercisesContext } from "@/components/exercise-list/exercises-context";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input } from "@heroui/react";
 import { Search } from "lucide-react";
 
 export default function ExercisesFilter() {

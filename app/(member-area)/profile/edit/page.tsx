@@ -5,7 +5,7 @@ import PageContainer from "@/components/page-container";
 import { TypographyH2 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { UserProfile } from "@clerk/nextjs";
-import { Button, Form, Input, Textarea } from "@nextui-org/react";
+import { Button, Form, Input, Textarea } from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
 import { FormEvent, useEffect, useState } from "react";
 

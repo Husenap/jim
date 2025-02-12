@@ -1,6 +1,6 @@
 import HeaderAuth from "@/components/header-auth";
 import Hero from "@/components/hero";
-import { Avatar } from "@nextui-org/react";
+import { Avatar } from "@heroui/react";
 import Link from "next/link";
 
 export default async function Home() {

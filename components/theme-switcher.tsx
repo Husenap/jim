@@ -1,7 +1,7 @@
 // app/components/ThemeSwitcher.tsx
 "use client";
 
-import { Button, Skeleton, Tooltip } from "@nextui-org/react";
+import { Button, Skeleton, Tooltip } from "@heroui/react";
 import { Computer, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";

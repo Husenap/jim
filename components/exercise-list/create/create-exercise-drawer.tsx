@@ -2,7 +2,7 @@ import DrawerPageContainer from "@/components/drawer-page-container";
 import CreateExerciseForm from "@/components/exercise-list/create/create-exercise-form";
 import CreateExerciseNavbar from "@/components/exercise-list/create/create-exercise-navbar";
 import Exercises from "@/components/exercise-list/exercises";
-import { Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
+import { Drawer, DrawerContent, useDisclosure } from "@heroui/react";
 
 export default function CreateExerciseDrawer({
   children,

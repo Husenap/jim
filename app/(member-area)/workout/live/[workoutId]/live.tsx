@@ -28,7 +28,7 @@ import {
   TableHeader,
   TableRow,
   Tooltip,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Check, Plus, TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
@@ -97,6 +97,7 @@ export default function Live() {
               <DebouncedInput
                 size="sm"
                 placeholder="Add a note..."
+                isMultiLine
                 value={e.note ?? ""}
                 onValueChange={(v) =>
                   v !== (e.note ?? "") &&

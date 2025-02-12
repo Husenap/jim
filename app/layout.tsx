@@ -1,5 +1,5 @@
 import { Providers } from "@/app/providers";
-import { cn, Tooltip } from "@nextui-org/react";
+import { cn, Tooltip } from "@heroui/react";
 import { CircleDot } from "lucide-react";
 import { Viewport } from "next";
 import { ViewTransitions } from "next-view-transitions";

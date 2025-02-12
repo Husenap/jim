@@ -1,6 +1,6 @@
 import { DrawerMenuProvider } from "@/components/drawer-menu/drawer-menu-context";
 import { useDrawerMenu } from "@/components/drawer-menu/use-drawer-menu";
-import { Drawer } from "@nextui-org/react";
+import { Drawer } from "@heroui/react";
 import React, { Children } from "react";
 
 export default function DrawerMenu({

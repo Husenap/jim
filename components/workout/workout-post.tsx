@@ -31,7 +31,7 @@ import {
   DropdownTrigger,
   MenuItem,
   User,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
 import { Ellipsis, MessageCircle, Share, ThumbsUp, X } from "lucide-react";
 import { Link } from "next-view-transitions";
