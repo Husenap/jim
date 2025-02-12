@@ -37,14 +37,14 @@ export default function InputField(props: InputFieldProps) {
       onValueChange={(v) => {
         if (numberOnly) {
           v = v.replaceAll(/[^\d,.]/g, "");
-        }
-        if (allowDecimals) {
-          v = v.replaceAll(",", ".");
-          if (v.replaceAll(/[^,.]/g, "").length > 1) {
-            v = v.slice(0, -1);
+          if (allowDecimals) {
+            v = v.replaceAll(",", ".");
+            if (v.replaceAll(/[^,.]/g, "").length > 1) {
+              v = v.slice(0, -1);
+            }
+          } else {
+            v = v.replaceAll(/[,.]/g, "");
           }
-        } else {
-          v = v.replaceAll(/[,.]/g, "");
         }
         setInputValue(v);
       }}
