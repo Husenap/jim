@@ -23,7 +23,7 @@ import {
   ModalBody,
   ModalContent,
   Spinner,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
 import {
   Copy,

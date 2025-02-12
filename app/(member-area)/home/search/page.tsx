@@ -3,7 +3,7 @@
 import Navbar from "@/app/(member-area)/home/search/navbar";
 import PageContainer from "@/components/page-container";
 import { api } from "@/convex/_generated/api";
-import { Button, User } from "@nextui-org/react";
+import { Button, User } from "@heroui/react";
 import { useQuery } from "convex/react";
 import { Link } from "next-view-transitions";
 import { useState } from "react";

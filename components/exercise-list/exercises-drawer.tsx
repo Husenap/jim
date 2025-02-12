@@ -3,8 +3,8 @@ import Exercises from "@/components/exercise-list/exercises";
 import ExercisesList from "@/components/exercise-list/exercises-list";
 import ExercisesNavbar from "@/components/exercise-list/exercises-navbar";
 import { Doc } from "@/convex/_generated/dataModel";
-import { Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
-import type { UseDisclosureReturn } from "@nextui-org/use-disclosure";
+import { Drawer, DrawerContent, useDisclosure } from "@heroui/react";
+import type { UseDisclosureReturn } from "@heroui/use-disclosure";
 
 export default function ExercisesDrawer({
   children,

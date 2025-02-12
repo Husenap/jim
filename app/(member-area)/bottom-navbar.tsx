@@ -9,7 +9,7 @@ import {
   ModalContent,
   ModalHeader,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
 import { Dumbbell, Home, Play, User, X } from "lucide-react";
 import { Link, useTransitionRouter } from "next-view-transitions";

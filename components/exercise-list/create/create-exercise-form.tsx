@@ -18,7 +18,7 @@ import {
   Select,
   SelectItem,
   Slider,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useMutation } from "convex/react";
 import { Save } from "lucide-react";
 import {

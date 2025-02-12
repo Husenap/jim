@@ -1,5 +1,5 @@
 import { UseProfileReturn } from "@/components/profile/use-profile";
-import { createContext } from "@nextui-org/react-utils";
+import { createContext } from "@heroui/react-utils";
 
 export const [ProfileProvider, useProfileContext] = createContext<UseProfileReturn>({
   name: "ProfileContext",

@@ -11,9 +11,10 @@ export default function DebouncedInput(props: DebouncedInputProps) {
     onValueChange = () => {},
     autoSelect,
     isReadOnly,
+    isMultiLine,
   } = props;
   const [inputValue, setInputValue] = useState(value ?? defaultValue);
-  const ref = useRef<HTMLInputElement | null>(null);
+  const ref = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     setInputValue(value);

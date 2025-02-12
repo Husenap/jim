@@ -1,5 +1,5 @@
 import { UseActiveWorkoutReturn } from "@/components/active-workout/use-active-workout";
-import { createContext } from "@nextui-org/react-utils";
+import { createContext } from "@heroui/react-utils";
 
 export const [ActiveWorkoutProvider, useActiveWorkoutContext] = createContext<UseActiveWorkoutReturn>({
   name: "ActiveWorkoutContext",

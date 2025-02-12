@@ -1,5 +1,5 @@
-import type { Selection } from "@nextui-org/react";
-import { Button, Select, SelectItem } from "@nextui-org/react";
+import type { Selection } from "@heroui/react";
+import { Button, Select, SelectItem } from "@heroui/react";
 import { Search } from "lucide-react";
 import { Link } from "next-view-transitions";
 

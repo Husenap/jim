@@ -4,7 +4,7 @@ import { useExercisesContext } from "@/components/exercise-list/exercises-contex
 import { TypographyH2 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
-import { Avatar, Button } from "@nextui-org/react";
+import { Avatar, Button } from "@heroui/react";
 import { useQuery } from "convex/react";
 import { ChevronRight } from "lucide-react";
 

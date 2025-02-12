@@ -14,8 +14,8 @@ import {
   ModalContent,
   ModalHeader,
   useDisclosure,
-} from "@nextui-org/react";
-import type { UseDisclosureReturn } from "@nextui-org/use-disclosure";
+} from "@heroui/react";
+import type { UseDisclosureReturn } from "@heroui/use-disclosure";
 import { ArrowUpDown, Ellipsis, Plus, Replace, Scale, X } from "lucide-react";
 import { useState } from "react";
 

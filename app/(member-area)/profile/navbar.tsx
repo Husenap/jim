@@ -3,7 +3,7 @@
 import { useProfileContext } from "@/components/profile/profile-context";
 import ProfileShareButton from "@/components/profile/profile-share-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { Link } from "next-view-transitions";
 
 export default function Navbar() {

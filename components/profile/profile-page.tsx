@@ -7,7 +7,7 @@ import ProfileUserData from "@/components/profile/profile-user-data";
 import ProfileWorkouts from "@/components/profile/profile-workouts";
 import { TypographyH2 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
-import { Button, Link } from "@nextui-org/react";
+import { Button, Link } from "@heroui/react";
 import { useMutation } from "convex/react";
 
 export default function ProfilePage({

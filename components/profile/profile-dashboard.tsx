@@ -1,6 +1,6 @@
 import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import { TypographyH2 } from "@/components/typography";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { Calendar, ChartLine, Dumbbell, PersonStanding } from "lucide-react";
 
 export default function ProfileDashboard() {

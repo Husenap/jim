@@ -1,5 +1,5 @@
 import { UseExercisesReturn } from "@/components/exercise-list/use-exercises";
-import { createContext } from "@nextui-org/react-utils";
+import { createContext } from "@heroui/react-utils";
 
 export const [ExercisesProvider, useExercisesContext] = createContext<UseExercisesReturn>({
   name: "ExercisesContext",

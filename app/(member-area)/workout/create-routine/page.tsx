@@ -16,7 +16,7 @@ import {
   Input,
   MenuItem,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useMutation } from "convex/react";
 import { Dumbbell, Ellipsis, Plus, Replace, X } from "lucide-react";
 import { useRouter } from "next/navigation";

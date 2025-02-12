@@ -2,7 +2,7 @@
 
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ThemeProvider, useTheme } from "next-themes";
@@ -15,7 +15,7 @@ function ThemeWrappedProviders({ children }: { children: React.ReactNode }) {
   const { resolvedTheme } = useTheme();
 
   return (
-    <NextUIProvider className="h-full min-h-full">
+    <HeroUIProvider className="h-full min-h-full">
       <ClerkProvider
         publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY as string}
         appearance={{
@@ -26,7 +26,7 @@ function ThemeWrappedProviders({ children }: { children: React.ReactNode }) {
           {children}
         </ConvexProviderWithClerk>
       </ClerkProvider>
-    </NextUIProvider>
+    </HeroUIProvider>
   );
 }
 

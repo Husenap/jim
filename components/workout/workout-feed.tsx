@@ -1,7 +1,7 @@
 import WorkoutPost from "@/components/workout/workout-post";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { useMutation, usePaginatedQuery, useQuery } from "convex/react";
 import { InView } from "react-intersection-observer";
 
