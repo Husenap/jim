@@ -2,8 +2,8 @@
 
 import { useProfileContext } from "@/components/profile/profile-context";
 import ProfileShareButton from "@/components/profile/profile-share-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Button } from "@heroui/react";
+import { Settings } from "lucide-react";
 import { Link } from "next-view-transitions";
 
 export default function Navbar() {
@@ -23,7 +23,9 @@ export default function Navbar() {
 
       <div className="flex justify-end gap-2">
         <ProfileShareButton />
-        <ThemeSwitcher />
+        <Button as={Link} variant="light" isIconOnly href="/profile/settings">
+          <Settings />
+        </Button>
       </div>
     </div>
   );
