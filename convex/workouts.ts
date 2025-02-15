@@ -1,3 +1,4 @@
+import { internal } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { mutation, query } from "@/convex/functions";
 import { removeOrReturn } from "@/convex/immutableExercises";
@@ -127,6 +128,19 @@ export const toggleLike = mutation({
       await workout.patch({
         likers: { add: [user._id] }
       });
+
+
+      const owner = await workout.edgeX("user");
+      if (owner.pushSubscriptions.length > 0) {
+        await ctx.scheduler.runAfter(0, internal.actions.sendNotification, {
+          subscriptions: owner.pushSubscriptions,
+          payload: JSON.stringify({
+            title: "Jim",
+            body: `${user.name} liked your workout!`,
+            icon: user.imageURL,
+          })
+        });
+      }
     }
   }
 });
