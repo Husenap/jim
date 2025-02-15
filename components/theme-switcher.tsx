@@ -1,7 +1,7 @@
 // app/components/ThemeSwitcher.tsx
 "use client";
 
-import { Button, Skeleton, Tooltip } from "@heroui/react";
+import { Select, SelectItem, Skeleton } from "@heroui/react";
 import { Computer, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -18,19 +18,37 @@ export function ThemeSwitcher() {
     return <Skeleton className="h-10 w-10 rounded-medium"></Skeleton>;
 
   return (
-    <Tooltip content={theme}>
-      <Button
-        isIconOnly
-        aria-label="Set theme"
-        variant="light"
-        onPress={() =>
-          setTheme(
-            theme == "light" ? "dark" : theme == "dark" ? "system" : "light",
-          )
-        }
+    <Select
+      label="Theme"
+      labelPlacement="outside"
+      selectedKeys={[theme || "light"]}
+      selectionMode="single"
+      fullWidth={false}
+      startContent={
+        theme == "light" ? <Sun /> : theme == "dark" ? <Moon /> : <Computer />
+      }
+    >
+      <SelectItem
+        startContent={<Sun />}
+        key="light"
+        onPress={() => setTheme("light")}
       >
-        {theme == "light" ? <Sun /> : theme == "dark" ? <Moon /> : <Computer />}
-      </Button>
-    </Tooltip>
+        Light
+      </SelectItem>
+      <SelectItem
+        startContent={<Moon />}
+        key="dark"
+        onPress={() => setTheme("dark")}
+      >
+        Dark
+      </SelectItem>
+      <SelectItem
+        startContent={<Computer />}
+        key="system"
+        onPress={() => setTheme("system")}
+      >
+        System
+      </SelectItem>
+    </Select>
   );
 }
