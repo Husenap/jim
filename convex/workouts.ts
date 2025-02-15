@@ -28,7 +28,7 @@ export const create = mutation({
     const activeWorkout = await ctx.table("activeWorkouts").getX(activeWorkoutId);
     if (user?._id !== activeWorkout.userId) throw new Error("You're not the owner of the active workout!");
 
-    await ctx.table("workouts").insert({
+    const newWorkout = await ctx.table("workouts").insert({
       title,
       description,
       exercises: activeWorkout.exercises,
@@ -37,6 +37,21 @@ export const create = mutation({
       startTime: activeWorkout._creationTime,
     });
     await activeWorkout.delete();
+
+    const subscriptions = (await user.edgeX("followers")).flatMap(follower => follower.pushSubscriptions);
+    if (subscriptions.length > 0) {
+      await ctx.scheduler.runAfter(0, internal.actions.sendNotification, {
+        subscriptions,
+        payload: JSON.stringify({
+          title: "Jim",
+          body: `${user.name} just finished a workout!`,
+          icon: user.imageURL,
+          // Todo: https://github.com/Husenap/jim/issues/11
+          // path: `/workout/post/${newWorkout}`
+        })
+      });
+    }
+
   }
 });
 
