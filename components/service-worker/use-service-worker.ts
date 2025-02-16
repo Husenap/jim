@@ -23,11 +23,7 @@ export function useServiceWorker() {
   const unsubscribeUser = useMutation(api.pushNotifications.unsubscribe);
 
   useEffect(() => {
-    console.log("We are here");
-    console.log("serviceWorker" in navigator);
-    console.log("PushManager" in window);
     if ("serviceWorker" in navigator && "PushManager" in window) {
-      console.log("We are there");
       setIsSupported(true);
       getSubscription();
     }
