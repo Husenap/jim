@@ -16,6 +16,7 @@
       "@radix-ui/react-label": "^2.1.1",
       "@radix-ui/react-slot": "^1.1.1",
       "@react-stately/utils": "^3.10.5",
+      "@sentry/nextjs": "8",
       "@serwist/next": "^9.0.11",
       "autoprefixer": "10.4.20",
       "class-variance-authority": "^0.7.1",
