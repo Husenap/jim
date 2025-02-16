@@ -1,3 +1,4 @@
+import { internal } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { mutation, query } from "@/convex/functions";
 import { removeOrReturn } from "@/convex/immutableExercises";
@@ -27,7 +28,7 @@ export const create = mutation({
     const activeWorkout = await ctx.table("activeWorkouts").getX(activeWorkoutId);
     if (user?._id !== activeWorkout.userId) throw new Error("You're not the owner of the active workout!");
 
-    await ctx.table("workouts").insert({
+    const newWorkout = await ctx.table("workouts").insert({
       title,
       description,
       exercises: activeWorkout.exercises,
@@ -36,6 +37,21 @@ export const create = mutation({
       startTime: activeWorkout._creationTime,
     });
     await activeWorkout.delete();
+
+    const subscriptions = (await user.edgeX("followers")).flatMap(follower => follower.pushSubscriptions);
+    if (subscriptions.length > 0) {
+      await ctx.scheduler.runAfter(0, internal.actions.sendNotification, {
+        subscriptions,
+        payload: JSON.stringify({
+          title: "Jim",
+          body: `${user.name} just finished a workout!`,
+          icon: user.imageURL,
+          // Todo: https://github.com/Husenap/jim/issues/11
+          // path: `/workout/post/${newWorkout}`
+        })
+      });
+    }
+
   }
 });
 
@@ -127,6 +143,19 @@ export const toggleLike = mutation({
       await workout.patch({
         likers: { add: [user._id] }
       });
+
+
+      const owner = await workout.edgeX("user");
+      if (owner.pushSubscriptions.length > 0) {
+        await ctx.scheduler.runAfter(0, internal.actions.sendNotification, {
+          subscriptions: owner.pushSubscriptions,
+          payload: JSON.stringify({
+            title: "Jim",
+            body: `${user.name} liked your workout!`,
+            icon: user.imageURL,
+          })
+        });
+      }
     }
   }
 });

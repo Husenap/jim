@@ -98,6 +98,7 @@ export const upsertFromClerk = internalMutation({
       imageURL: data.image_url,
       name: (data.first_name || data.last_name) ? [data.first_name ?? "", data.last_name ?? ""].join(" ").trim() : data.username!,
       externalId: data.id,
+      pushSubscriptions: []
     };
 
     try {

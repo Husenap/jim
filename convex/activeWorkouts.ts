@@ -1,4 +1,4 @@
-import { api } from "@/convex/_generated/api";
+import { api, internal } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { mutation, query } from "@/convex/functions";
 import { createOrTake, removeOrReturn } from "@/convex/immutableExercises";
@@ -32,7 +32,7 @@ export const create = mutation({
       }
     }
 
-    return await ctx.table("activeWorkouts").insert({
+    const newActiveWorkout = await ctx.table("activeWorkouts").insert({
       title,
       userId: user._id,
       bodyweight: user.bodyweight,
@@ -44,6 +44,21 @@ export const create = mutation({
         }]
       }))
     });
+
+    const subscriptions = (await user.edgeX("followers")).flatMap(follower => follower.pushSubscriptions);
+    if (subscriptions.length > 0) {
+      await ctx.scheduler.runAfter(0, internal.actions.sendNotification, {
+        subscriptions,
+        payload: JSON.stringify({
+          title: "Jim",
+          body: `${user.name} just started a workout!`,
+          icon: user.imageURL,
+          path: `/workout/live/${newActiveWorkout}`
+        })
+      });
+    }
+
+    return newActiveWorkout;
   }
 });
 

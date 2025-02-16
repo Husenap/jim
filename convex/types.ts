@@ -15,3 +15,12 @@ export type EntWriter<TableName extends TableNames> = GenericEntWriter<
   typeof entDefinitions,
   TableName
 >;
+
+export type PushSubscription = {
+  endpoint: string;
+  expirationTime?: null | number;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
+}

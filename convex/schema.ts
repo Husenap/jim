@@ -1,6 +1,7 @@
+import { PushSubscription } from "@/convex/types";
 import { defineEnt, defineEntFromTable, defineEntSchema, getEntDefinitions } from "convex-ents";
 import { migrationsTable } from "convex-helpers/server/migrations";
-import { Infer, v } from "convex/values";
+import { Infer, v, Validator } from "convex/values";
 
 export const EquipmentValidator = v.union(
   v.literal("none"),
@@ -107,6 +108,7 @@ const schema = defineEntSchema({
     link: v.optional(v.string()),
     bodyweight: v.optional(v.number())
   })
+    .field("pushSubscriptions", v.array(v.any() as Validator<PushSubscription>), { default: [] })
     .index("externalId", ["externalId"])
     .index("username", ["username"])
     .searchIndex("search_username", { searchField: "username" })
