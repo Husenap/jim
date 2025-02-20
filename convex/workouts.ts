@@ -1,7 +1,7 @@
-import { internal } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { mutation, query } from "@/convex/functions";
 import { removeOrReturn } from "@/convex/immutableExercises";
+import { sendNotification } from "@/convex/notifications";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
 import { paginationOptsValidator, PaginationResult } from "convex/server";
 import { v } from "convex/values";
@@ -39,18 +39,17 @@ export const create = mutation({
     await activeWorkout.delete();
 
     const subscriptions = (await user.edgeX("followers")).flatMap(follower => follower.pushSubscriptions);
-    if (subscriptions.length > 0) {
-      await ctx.scheduler.runAfter(0, internal.actions.sendNotification, {
-        subscriptions,
-        payload: JSON.stringify({
-          title: "Jim",
-          body: `${user.name} just finished a workout!`,
-          icon: user.imageURL,
-          // Todo: https://github.com/Husenap/jim/issues/11
-          // path: `/workout/post/${newWorkout}`
-        })
-      });
-    }
+    await sendNotification(
+      ctx,
+      subscriptions,
+      {
+        title: "Jim",
+        body: `${user.name} just finished a workout!`,
+        icon: user.imageURL,
+        // Todo: https://github.com/Husenap/jim/issues/11
+        // path: `/workout/post/${newWorkout}`
+      }
+    );
 
   }
 });
@@ -146,16 +145,15 @@ export const toggleLike = mutation({
 
 
       const owner = await workout.edgeX("user");
-      if (owner.pushSubscriptions.length > 0) {
-        await ctx.scheduler.runAfter(0, internal.actions.sendNotification, {
-          subscriptions: owner.pushSubscriptions,
-          payload: JSON.stringify({
-            title: "Jim",
-            body: `${user.name} liked your workout!`,
-            icon: user.imageURL,
-          })
-        });
-      }
+      await sendNotification(
+        ctx,
+        owner.pushSubscriptions,
+        {
+          title: "Jim",
+          body: `${user.name} liked your workout!`,
+          icon: user.imageURL,
+        }
+      );
     }
   }
 });

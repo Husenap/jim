@@ -20,6 +20,7 @@ import type * as functions from "../functions.js";
 import type * as http from "../http.js";
 import type * as immutableExercises from "../immutableExercises.js";
 import type * as migrations from "../migrations.js";
+import type * as notifications from "../notifications.js";
 import type * as pushNotifications from "../pushNotifications.js";
 import type * as routines from "../routines.js";
 import type * as types from "../types.js";
@@ -42,6 +43,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   immutableExercises: typeof immutableExercises;
   migrations: typeof migrations;
+  notifications: typeof notifications;
   pushNotifications: typeof pushNotifications;
   routines: typeof routines;
   types: typeof types;
