@@ -28,14 +28,42 @@ export const create = mutation({
     const activeWorkout = await ctx.table("activeWorkouts").getX(activeWorkoutId);
     if (user?._id !== activeWorkout.userId) throw new Error("You're not the owner of the active workout!");
 
+    const cleanExercises = activeWorkout.exercises.map(e => ({
+      ...e,
+      sets: e.sets.filter(s => s.done)
+    }));
+
+
     const newWorkout = await ctx.table("workouts").insert({
       title,
       description,
-      exercises: activeWorkout.exercises,
+      exercises: cleanExercises,
       userId: activeWorkout.userId,
       bodyweight: activeWorkout.bodyweight,
       startTime: activeWorkout._creationTime,
     });
+
+    for (const exercise of cleanExercises) {
+      const pastExerciseSet = await ctx.table(
+        "pastExerciseSets",
+        "by_user_exercise",
+        q => q
+          .eq("userId", activeWorkout.userId)
+          .eq("exercise", exercise.exercise)
+      ).first();
+      if (pastExerciseSet) {
+        await pastExerciseSet.patch({
+          ...exercise,
+          note: exercise.note
+        });
+      } else {
+        await ctx.table("pastExerciseSets").insert({
+          userId: user._id,
+          ...exercise
+        });
+      }
+    }
+
     await activeWorkout.delete();
 
     const subscriptions = (await user.edgeX("followers")).flatMap(follower => follower.pushSubscriptions);
