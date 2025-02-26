@@ -1,7 +1,8 @@
-import { api, internal } from "@/convex/_generated/api";
+import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { mutation, query } from "@/convex/functions";
 import { createOrTake, removeOrReturn } from "@/convex/immutableExercises";
+import { sendNotification } from "@/convex/notifications";
 import { SetTypeValidator } from "@/convex/schema";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
 import { updateSetData } from "@/utils/workout/sets";
@@ -46,17 +47,16 @@ export const create = mutation({
     });
 
     const subscriptions = (await user.edgeX("followers")).flatMap(follower => follower.pushSubscriptions);
-    if (subscriptions.length > 0) {
-      await ctx.scheduler.runAfter(0, internal.actions.sendNotification, {
-        subscriptions,
-        payload: JSON.stringify({
-          title: "Jim",
-          body: `${user.name} just started a workout!`,
-          icon: user.imageURL,
-          path: `/workout/live/${newActiveWorkout}`
-        })
-      });
-    }
+    await sendNotification(
+      ctx,
+      subscriptions,
+      {
+        title: "Jim",
+        body: `${user.name} just started a workout!`,
+        icon: user.imageURL,
+        path: `/workout/live/${newActiveWorkout}`
+      }
+    );
 
     return newActiveWorkout;
   }

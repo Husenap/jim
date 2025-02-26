@@ -1,4 +1,5 @@
 import { internalMutation, mutation, query } from "@/convex/functions";
+import { sendNotification } from "@/convex/notifications";
 import { QueryCtx } from "@/convex/types";
 import { UserJSON } from "@clerk/backend";
 import { v, Validator } from "convex/values";
@@ -32,6 +33,17 @@ export const toggleFollow = mutation({
       await ctx.table("users").getX(user._id).patch({
         followees: { add: [userId] }
       });
+      const followee = await ctx.table("users").getX(userId);
+      await sendNotification(
+        ctx,
+        followee.pushSubscriptions,
+        {
+          title: "Jim",
+          body: `${user.name} started following you!`,
+          icon: user.imageURL,
+          path: `/user/${user.username}`
+        }
+      );
     }
   }
 });
