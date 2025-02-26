@@ -85,10 +85,20 @@ export const exercises = query({
   handler: async (ctx, { id }) => {
     const activeWorkout = await ctx.table("activeWorkouts").get(id);
     if (!activeWorkout) return [];
+
     return await Promise.all(activeWorkout.exercises.map(async e => ({
       sets: e.sets,
       note: e.note,
       exercise: (await ctx.table("immutableExercises").getX(e.exercise)).exercise,
+      previous:
+        (o => ({ sets: o?.sets, note: o?.note }))
+          (await ctx.table(
+            "pastExerciseSets",
+            "by_user_exercise",
+            q => q.eq("userId", activeWorkout.userId)
+              .eq("exercise", e.exercise)).first()
+          )
+      ,
     })));
   }
 });

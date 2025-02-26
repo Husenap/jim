@@ -5,4 +5,4 @@ export type SetRowType = {
   index: number;
 };
 
-export type SetRowColumnKey = keyof SetRowType["set"];
+export type SetRowColumnKey = keyof SetRowType["set"] | "previous";

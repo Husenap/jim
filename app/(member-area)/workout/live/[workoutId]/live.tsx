@@ -11,7 +11,10 @@ import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import DebouncedInput from "@/components/input/debounced-input";
 import { ExerciseFieldsType, ExerciseSetType } from "@/convex/schema";
-import { isBodyweightExercise } from "@/utils/workout/exercise";
+import {
+  isBodyweightExercise,
+  setDetailString,
+} from "@/utils/workout/exercise";
 import {
   Avatar,
   Button,
@@ -96,7 +99,7 @@ export default function Live() {
             {isOwner ? (
               <DebouncedInput
                 size="sm"
-                placeholder="Add a note..."
+                placeholder={e.previous.note ?? "Add a note..."}
                 isMultiLine
                 value={e.note ?? ""}
                 onValueChange={(v) =>
@@ -119,6 +122,7 @@ export default function Live() {
               exerciseIndex={i}
               isMutable={isOwner}
               exercise={e.exercise}
+              previousSets={e.previous.sets}
               sets={e.sets}
             />
           </div>
@@ -154,16 +158,19 @@ function ExerciseSet({
   sets,
   isMutable = false,
   exerciseIndex,
+  previousSets,
 }: {
   exercise: ExerciseFieldsType;
   sets: ExerciseSetType["sets"];
   isMutable?: boolean;
   exerciseIndex: number;
+  previousSets: ExerciseSetType["sets"] | undefined;
 }) {
   const { activeWorkout, updateSet, addSet } = useActiveWorkoutContext();
 
   const columns = [];
   columns.push({ key: "type", label: "SET" });
+  columns.push({ key: "previous", label: "PREVIOUS" });
   switch (exercise.exerciseType) {
     case "weight & reps":
       columns.push({ key: "weight", label: "KG" });
@@ -205,6 +212,33 @@ function ExerciseSet({
           return (
             <SetMenu item={item} rows={rows} exerciseIndex={exerciseIndex} />
           );
+        case "previous":
+          if (previousSets && item.index < previousSets.length) {
+            return (
+              <div
+                className="text-default-500"
+                onClick={
+                  isMutable
+                    ? () =>
+                        updateSet({
+                          id: activeWorkout!._id,
+                          exerciseIndex,
+                          setIndex: item.index,
+                          setData: {
+                            reps: previousSets[item.index].reps,
+                            weight: previousSets[item.index].weight,
+                            type: previousSets[item.index].type,
+                          },
+                        })
+                    : undefined
+                }
+              >
+                {setDetailString(previousSets[item.index])}
+              </div>
+            );
+          } else {
+            return <div className="text-default-500">-</div>;
+          }
         case "reps":
         case "weight":
           return (
