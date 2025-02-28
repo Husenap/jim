@@ -7,6 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'The best and fastest way to track your gym progress!',
     start_url: '/',
     display: "standalone",
+    background_color: "#90ccee",
     icons: [
       {
         src: '/icon-192x192.png',
