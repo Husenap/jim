@@ -10,6 +10,7 @@ const isProtectedRoute = createRouteMatcher([
   '/workout(.*)',
   '/profile(.*)',
   '/user(.*)',
+  '/post(.*)',
 ]);
 
 
