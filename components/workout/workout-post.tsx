@@ -1,20 +1,14 @@
 import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
-import {
-  TypographyH1,
-  TypographyH2,
-  TypographyH4,
-} from "@/components/typography";
+import FullscreenSpinner from "@/components/fullscreen-spinner";
+import { usePostContext } from "@/components/post/post-context";
+import { TypographyH2 } from "@/components/typography";
+import WorkoutButtons from "@/components/workout/workout-buttons";
+import WorkoutStats from "@/components/workout/workout-stats";
+import WorkoutTitleDescription from "@/components/workout/workout-title-description";
+import WorkoutUser from "@/components/workout/workout-user";
 import { api } from "@/convex/_generated/api";
-import { Doc } from "@/convex/_generated/dataModel";
-import { PaginatedWorkoutsReturnType } from "@/convex/workouts";
-import {
-  humanReadiableDuration,
-  humanReadibleTimeDiff,
-} from "@/utils/time-diff";
-import countSets from "@/utils/workout/sets";
-import calculateVolume from "@/utils/workout/volume";
 import {
   Avatar,
   AvatarGroup,
@@ -23,45 +17,17 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  cn,
   Divider,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   MenuItem,
-  User,
 } from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
-import { Ellipsis, MessageCircle, Share, ThumbsUp, X } from "lucide-react";
-import { Link } from "next-view-transitions";
-import { useMemo } from "react";
+import { Ellipsis, X } from "lucide-react";
+import { useTransitionRouter } from "next-view-transitions";
 
-export default function WorkoutPost({
-  workout,
-  user,
-  onToggleLike,
-}: {
-  workout: PaginatedWorkoutsReturnType;
-  user: Doc<"users">;
-  onToggleLike?: () => void;
-}) {
-  const time = useMemo(
-    () =>
-      workout.startTime
-        ? humanReadiableDuration({
-            startTime: workout.startTime,
-            endTime: workout._creationTime,
-            includeSeconds: false,
-          })
-        : undefined,
-    [workout],
-  );
-  const volume = useMemo(
-    () => calculateVolume(workout.exercises, workout.bodyweight),
-    [workout],
-  );
-  const sets = useMemo(() => countSets(workout.exercises), [workout]);
+export default function WorkoutPost() {
+  const { workout, user } = usePostContext();
+
+  if (!workout || !user) return <FullscreenSpinner></FullscreenSpinner>;
 
   const currentUser = useQuery(api.users.current);
   const removeWorkout = useMutation(api.workouts.remove).withOptimisticUpdate(
@@ -84,20 +50,13 @@ export default function WorkoutPost({
     },
   );
 
+  const { push } = useTransitionRouter();
+
   return (
     <Card radius="none">
       <CardHeader className="flex flex-col items-start gap-2">
         <div className="flex w-full flex-row">
-          <User
-            className="flex-1 justify-start"
-            as={Link}
-            href={`/user/${user.username}`}
-            avatarProps={{ src: user.imageURL }}
-            name={user.name}
-            description={humanReadibleTimeDiff({
-              startTime: workout._creationTime,
-            })}
-          />
+          <WorkoutUser />
           {workout.userId === currentUser?._id && (
             <DrawerMenu>
               <DrawerMenuTrigger>
@@ -120,31 +79,13 @@ export default function WorkoutPost({
             </DrawerMenu>
           )}
         </div>
-        <div>
-          <TypographyH1>{workout.title}</TypographyH1>
-          <TypographyH2>{workout.description}</TypographyH2>
-        </div>
-        <div className="flex flex-row gap-4">
-          {time && (
-            <div className="flex flex-col">
-              <TypographyH4>Time</TypographyH4>
-              <span>{time}</span>
-            </div>
-          )}
-          <div className="flex flex-col">
-            <TypographyH4>Volume</TypographyH4>
-            <span>{volume} kg</span>
-          </div>
-          <div className="flex flex-col">
-            <TypographyH4>Sets</TypographyH4>
-            <span>{sets} sets</span>
-          </div>
-        </div>
+        <WorkoutTitleDescription />
+        <WorkoutStats />
       </CardHeader>
       <Divider />
       <CardBody
-        className="flex flex-col gap-2"
-        onClick={() => console.log("Clicked body")}
+        className="flex cursor-pointer flex-col gap-2"
+        onClick={() => push(`/post/${workout._id}`)}
       >
         <TypographyH2>Workout</TypographyH2>
         {workout.exercises.slice(0, 3).map((w, i) => (
@@ -169,38 +110,8 @@ export default function WorkoutPost({
         </div>
       </CardBody>
       <Divider />
-      <CardFooter className="grid grid-cols-3 gap-2">
-        <Button
-          isIconOnly
-          className="w-full"
-          size="sm"
-          variant="light"
-          onPress={onToggleLike}
-        >
-          <ThumbsUp
-            className={cn({
-              "text-primary": workout.likers.some(
-                (l) => l._id === currentUser?._id,
-              ),
-            })}
-          />
-        </Button>
-        <Button
-          isIconOnly
-          className="under-construction w-full"
-          size="sm"
-          variant="light"
-        >
-          <MessageCircle />
-        </Button>
-        <Button
-          isIconOnly
-          className="under-construction w-full"
-          size="sm"
-          variant="light"
-        >
-          <Share />
-        </Button>
+      <CardFooter>
+        <WorkoutButtons />
       </CardFooter>
     </Card>
   );
