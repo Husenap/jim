@@ -15,7 +15,9 @@ export default function ShareButton({
 }) {
   const [disabled, setDisabled] = useState(true);
   const share = async () => {
-    await navigator.share(data);
+    try {
+      await navigator.share(data);
+    } catch (error) {}
   };
 
   useEffect(() => {
