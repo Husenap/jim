@@ -30,11 +30,9 @@ export default function WorkoutMuscleSplit() {
       0,
     );
 
-    const split = Array.from(
-      muscleGroupSum
-        .entries()
-        .map(([k, v]) => [k, v / totalSum] as [string, number]),
-    ).toSorted(([_1, v1], [_2, v2]) => v2 - v1);
+    const split = Array.from(muscleGroupSum.entries())
+      .map(([k, v]) => [k, v / totalSum] as [string, number])
+      .toSorted(([_1, v1], [_2, v2]) => v2 - v1);
 
     const factors = Array.from(split.map(([_, v]) => v));
 
