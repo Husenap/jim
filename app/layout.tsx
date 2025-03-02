@@ -54,19 +54,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <body className="relative h-full min-h-full w-full overflow-x-hidden overscroll-x-none bg-background text-foreground">
-          <Providers>
-            <Tooltip content="Report Github Issue" color="danger">
-              <a
-                target="_blank"
-                style={{ viewTransitionName: "jim-create-issue-button" }}
-                href="https://github.com/Husenap/jim/issues/new"
-                className="fixed left-0 top-0 z-[100] h-6 w-6"
-              >
-                <CircleDot className="text-danger" />
-              </a>
-            </Tooltip>
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
         </body>
       </html>
     </ViewTransitions>
