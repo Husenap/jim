@@ -17,12 +17,7 @@ export default function ShareButton({
   const share = async () => {
     try {
       await navigator.share(data);
-    } catch (error) {
-      if (error instanceof DOMException && error.name === "AbortError") {
-      } else {
-        throw error;
-      }
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
