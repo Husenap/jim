@@ -25,7 +25,10 @@ export default function WorkoutMuscleSplit() {
       }
     }
 
-    const totalSum = muscleGroupSum.values().reduce((a, b) => a + b, 0);
+    const totalSum = Array.from(muscleGroupSum.values()).reduce(
+      (a, b) => a + b,
+      0,
+    );
 
     const split = Array.from(
       muscleGroupSum
