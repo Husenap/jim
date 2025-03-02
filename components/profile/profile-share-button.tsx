@@ -1,25 +1,18 @@
 "use client";
 
 import { useProfileContext } from "@/components/profile/profile-context";
-import { Button } from "@heroui/react";
-import { Share } from "lucide-react";
+import ShareButton from "@/components/share-button";
 
 export default function ProfileShareButton() {
   const { profileUser } = useProfileContext();
 
-  const share = async () => {
-    await navigator.share({
-      title: `${profileUser?.name || profileUser?.username}'s Profile`,
-      text: `${profileUser?.name || profileUser?.username}'s Profile:\n`,
-      url: `/user/${profileUser?.username}`,
-    });
-  };
-
   return (
-    <>
-      <Button isIconOnly variant="light" onPress={share}>
-        <Share />
-      </Button>
-    </>
+    <ShareButton
+      data={{
+        title: `${profileUser?.name || profileUser?.username}'s Profile`,
+        text: `${profileUser?.name || profileUser?.username}'s Profile:\n`,
+        url: `/user/${profileUser?.username}`,
+      }}
+    />
   );
 }

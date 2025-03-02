@@ -17,6 +17,32 @@ export const get = query({
   }
 });
 
+export const details = query({
+  args: { workoutId: v.optional(v.id("workouts")) },
+  handler: async (ctx, { workoutId }) => {
+    if (!workoutId)
+      return null;
+
+    const workout = await ctx.table("workouts").get(workoutId);
+    if (!workout) return null;
+
+    const user = await ctx.table("users").getX(workout.userId).doc();
+
+    return {
+      workout: {
+        ...workout.doc(),
+        exercises: await Promise.all(workout.exercises.map(async e => ({
+          ...e,
+          exercise: (await ctx.table("immutableExercises").getX(e.exercise)).exercise
+        }))),
+        likers: await workout.edgeX("likers").docs(),
+      },
+      user
+    };
+  },
+});
+export type WorkoutDetailsType = NonNullable<Awaited<ReturnType<typeof details>>>;
+
 export const create = mutation({
   args: {
     activeWorkoutId: v.id("activeWorkouts"),
@@ -28,10 +54,12 @@ export const create = mutation({
     const activeWorkout = await ctx.table("activeWorkouts").getX(activeWorkoutId);
     if (user?._id !== activeWorkout.userId) throw new Error("You're not the owner of the active workout!");
 
-    const cleanExercises = activeWorkout.exercises.map(e => ({
-      ...e,
-      sets: e.sets.filter(s => s.done)
-    }));
+    const cleanExercises = activeWorkout.exercises
+      .map(e => ({
+        ...e,
+        sets: e.sets.filter(s => s.done)
+      }))
+      .filter(e => e.sets.length > 0);
 
 
     const newWorkout = await ctx.table("workouts").insert({
@@ -74,11 +102,9 @@ export const create = mutation({
         title: "Jim",
         body: `${user.name} just finished a workout!`,
         icon: user.imageURL,
-        // Todo: https://github.com/Husenap/jim/issues/11
-        // path: `/workout/post/${newWorkout}`
+        path: `/post/${newWorkout}`
       }
     );
-
   }
 });
 
@@ -155,7 +181,9 @@ export const paginatedWorkouts = query({
     }
   }
 });
-export type PaginatedWorkoutsReturnType = Awaited<ReturnType<typeof paginatedWorkouts>>["page"][0]["workout"];
+export type PaginatedWorkoutsReturnType = Awaited<
+  ReturnType<typeof paginatedWorkouts>
+>["page"][0]["workout"];
 
 export const toggleLike = mutation({
   args: { workoutId: v.id("workouts") },
