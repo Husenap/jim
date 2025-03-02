@@ -5,13 +5,13 @@ import FullscreenSpinner from "@/components/fullscreen-spinner";
 import { usePostContext } from "@/components/post/post-context";
 import { TypographyH2 } from "@/components/typography";
 import WorkoutButtons from "@/components/workout/workout-buttons";
+import WorkoutLikesAndComments from "@/components/workout/workout-likes-and-comments";
 import WorkoutStats from "@/components/workout/workout-stats";
 import WorkoutTitleDescription from "@/components/workout/workout-title-description";
 import WorkoutUser from "@/components/workout/workout-user";
 import { api } from "@/convex/_generated/api";
 import {
   Avatar,
-  AvatarGroup,
   Button,
   Card,
   CardBody,
@@ -99,15 +99,7 @@ export default function WorkoutPost() {
             See {workout.exercises.length - 3} more exercises
           </div>
         )}
-        <div className="flex flex-row items-center">
-          <AvatarGroup max={3} size="sm">
-            {workout.likers.map((l) => (
-              <Avatar key={l._id} src={l.imageURL} />
-            ))}
-          </AvatarGroup>
-          <span className="ms-2 text-sm">{workout.likers.length} likes</span>
-          <span className="flex-1 text-right text-sm">0 comments</span>
-        </div>
+        <WorkoutLikesAndComments />
       </CardBody>
       <Divider />
       <CardFooter>
