@@ -208,6 +208,7 @@ export const toggleLike = mutation({
           title: "Jim",
           body: `${user.name} liked your workout!`,
           icon: user.imageURL,
+          path: `/post/${workout._id}`
         }
       );
     }
