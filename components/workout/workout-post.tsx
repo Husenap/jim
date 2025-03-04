@@ -5,6 +5,8 @@ import FullscreenSpinner from "@/components/fullscreen-spinner";
 import { usePostContext } from "@/components/post/post-context";
 import { TypographyH2 } from "@/components/typography";
 import WorkoutButtons from "@/components/workout/workout-buttons";
+import WorkoutCommentsDrawer from "@/components/workout/workout-comments-drawer";
+import WorkoutCommentsPreview from "@/components/workout/workout-comments-preview";
 import WorkoutLikesAndComments from "@/components/workout/workout-likes-and-comments";
 import WorkoutStats from "@/components/workout/workout-stats";
 import WorkoutTitleDescription from "@/components/workout/workout-title-description";
@@ -20,16 +22,15 @@ import {
   Divider,
   MenuItem,
 } from "@heroui/react";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { Ellipsis, X } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
 
 export default function WorkoutPost() {
-  const { workout, user } = usePostContext();
+  const { workout, user, currentUser } = usePostContext();
 
   if (!workout || !user) return <FullscreenSpinner></FullscreenSpinner>;
 
-  const currentUser = useQuery(api.users.current);
   const removeWorkout = useMutation(api.workouts.remove).withOptimisticUpdate(
     (localStore, { workoutId }) => {
       if (!currentUser) return;
@@ -99,12 +100,16 @@ export default function WorkoutPost() {
             See {workout.exercises.length - 3} more exercises
           </div>
         )}
+      </CardBody>
+      <CardBody>
         <WorkoutLikesAndComments />
       </CardBody>
       <Divider />
       <CardFooter>
         <WorkoutButtons />
       </CardFooter>
+      <WorkoutCommentsPreview />
+      <WorkoutCommentsDrawer />
     </Card>
   );
 }

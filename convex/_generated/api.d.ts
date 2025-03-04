@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as actions from "../actions.js";
 import type * as activeWorkouts from "../activeWorkouts.js";
+import type * as comments from "../comments.js";
 import type * as exercises from "../exercises.js";
 import type * as functions from "../functions.js";
 import type * as http from "../http.js";
@@ -38,6 +39,7 @@ import type * as workouts from "../workouts.js";
 declare const fullApi: ApiFromModules<{
   actions: typeof actions;
   activeWorkouts: typeof activeWorkouts;
+  comments: typeof comments;
   exercises: typeof exercises;
   functions: typeof functions;
   http: typeof http;

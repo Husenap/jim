@@ -1,6 +1,7 @@
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { WorkoutDetailsType } from "@/convex/workouts";
+import { useDisclosure } from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
 import { useCallback, useMemo } from "react";
 
@@ -11,10 +12,12 @@ export function usePost({ workoutId, workoutDetails }: {
     user: Doc<"users">;
   };
 }) {
+  const currentUser = useQuery(api.users.current);
+
+  const commentsDisclosure = useDisclosure();
+
   if (workoutId) {
     const workoutDetails = useQuery(api.workouts.details, { workoutId });
-
-    const currentUser = useQuery(api.users.current);
 
     const toggleLikeMutation = useMutation(api.workouts.toggleLike).withOptimisticUpdate(
       (localStore, { workoutId }) => {
@@ -40,21 +43,31 @@ export function usePost({ workoutId, workoutDetails }: {
       workoutDetails && toggleLikeMutation({ workoutId: workoutDetails.workout._id });
     }, [toggleLikeMutation]);
 
+    const addCommentMutation = useMutation(api.comments.addComment);
+    const addComment = (text: string) => {
+      workoutDetails && addCommentMutation({
+        text,
+        workoutId: workoutDetails.workout._id
+      });
+    };
+
     const context = useMemo(() => ({
       workout: workoutDetails?.workout,
       user: workoutDetails?.user,
       toggleLike,
+      addComment,
       currentUser,
+      commentsDisclosure,
     }), [
       workoutDetails,
       toggleLike,
+      addComment,
       currentUser,
+      commentsDisclosure,
     ]);
 
     return context;
   } else if (workoutDetails) {
-    const currentUser = useQuery(api.users.current);
-
     const toggleLikeMutation = useMutation(api.workouts.toggleLike).withOptimisticUpdate(
       (localStore, { workoutId }) => {
         if (!currentUser) return;
@@ -87,15 +100,27 @@ export function usePost({ workoutId, workoutDetails }: {
       toggleLikeMutation({ workoutId: workoutDetails.workout._id });
     }, [toggleLikeMutation]);
 
+    const addCommentMutation = useMutation(api.comments.addComment);
+    const addComment = (text: string) => {
+      addCommentMutation({
+        text,
+        workoutId: workoutDetails.workout._id
+      });
+    };
+
     const context = useMemo(() => ({
       workout: workoutDetails.workout,
       user: workoutDetails.user,
       toggleLike,
+      addComment,
       currentUser,
+      commentsDisclosure,
     }), [
       workoutDetails,
       toggleLike,
+      addComment,
       currentUser,
+      commentsDisclosure,
     ]);
 
     return context;
@@ -104,7 +129,9 @@ export function usePost({ workoutId, workoutDetails }: {
       workout: null,
       user: null,
       toggleLike: undefined,
+      addComment: undefined,
       currentUser: null,
+      commentsDisclosure,
     }), []);
     return context;
   }

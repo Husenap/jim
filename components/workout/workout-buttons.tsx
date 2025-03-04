@@ -5,7 +5,8 @@ import { Button, cn } from "@heroui/react";
 import { MessageCircle, ThumbsUp } from "lucide-react";
 
 export default function WorkoutButtons() {
-  const { workout, user, toggleLike, currentUser } = usePostContext();
+  const { workout, user, toggleLike, commentsDisclosure, currentUser } =
+    usePostContext();
 
   if (!workout) return <></>;
 
@@ -31,9 +32,10 @@ export default function WorkoutButtons() {
       </Button>
       <Button
         isIconOnly
-        className="under-construction w-full"
+        className="w-full"
         size="sm"
         variant="light"
+        onPress={commentsDisclosure.onOpen}
       >
         <MessageCircle />
       </Button>
