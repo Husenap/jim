@@ -10,7 +10,7 @@ export function isBodyweightExercise(exerciseType: ExerciseType) {
 
 export function setDetailString(data: SetDataType) {
   if (data.weight) {
-    return `${data.reps} x ${data.weight}kg`;
+    return `${data.weight}kg x ${data.reps}`;
   }
   return `${data.reps}`;
 }
