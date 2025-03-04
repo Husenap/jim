@@ -1,5 +1,6 @@
 import { usePostContext } from "@/components/post/post-context";
 import ShareButton from "@/components/share-button";
+import { zap } from "@/utils/vibration";
 import { Button, cn } from "@heroui/react";
 import { MessageCircle, ThumbsUp } from "lucide-react";
 
@@ -15,7 +16,10 @@ export default function WorkoutButtons() {
         className="w-full"
         size="sm"
         variant="light"
-        onPress={toggleLike}
+        onPress={() => {
+          zap();
+          toggleLike();
+        }}
       >
         <ThumbsUp
           className={cn({

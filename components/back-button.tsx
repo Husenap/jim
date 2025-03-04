@@ -1,5 +1,6 @@
 "use client";
 
+import { zap } from "@/utils/vibration";
 import { Button } from "@heroui/react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -27,7 +28,10 @@ export default function BackButton({
 
   return (
     <Button
-      onPress={onPress ? onPress : backHandler}
+      onPress={() => {
+        zap();
+        (onPress ?? backHandler)();
+      }}
       isIconOnly
       variant="light"
     >
