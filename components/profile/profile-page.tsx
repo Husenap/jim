@@ -60,9 +60,9 @@ export default function ProfilePage({
       )}
       {showDashboard && <ProfileDashboard />}
       {showRoutines && (
-        <>
+        <div className="under-construction">
           <TypographyH2>Routines</TypographyH2>
-        </>
+        </div>
       )}
       {workouts.length > 0 && <ProfileWorkouts />}
     </>

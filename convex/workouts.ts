@@ -2,9 +2,25 @@ import { Doc } from "@/convex/_generated/dataModel";
 import { mutation, query } from "@/convex/functions";
 import { removeOrReturn } from "@/convex/immutableExercises";
 import { sendNotification } from "@/convex/notifications";
+import { Ent, QueryCtx } from "@/convex/types";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
 import { paginationOptsValidator, PaginationResult } from "convex/server";
 import { v } from "convex/values";
+
+async function extractWorkoutData(ctx: QueryCtx, workout: Ent<"workouts">) {
+  return {
+    ...workout.doc(),
+    exercises: await Promise.all(workout.exercises.map(async e => ({
+      ...e,
+      exercise: (await ctx.table("immutableExercises").getX(e.exercise)).exercise
+    }))),
+    likers: await workout.edgeX("likers").docs(),
+    comments: await workout.edgeX("comments").map(async comment => ({
+      ...comment,
+      author: (await ctx.table("users").getX(comment.authorId).doc())
+    })),
+  };
+}
 
 export const get = query({
   args: { userId: v.optional(v.id("users")) },
@@ -29,14 +45,7 @@ export const details = query({
     const user = await ctx.table("users").getX(workout.userId).doc();
 
     return {
-      workout: {
-        ...workout.doc(),
-        exercises: await Promise.all(workout.exercises.map(async e => ({
-          ...e,
-          exercise: (await ctx.table("immutableExercises").getX(e.exercise)).exercise
-        }))),
-        likers: await workout.edgeX("likers").docs(),
-      },
+      workout: await extractWorkoutData(ctx, workout),
       user
     };
   },
@@ -158,14 +167,7 @@ export const paginatedWorkouts = query({
       return {
         ...results,
         page: await Promise.all(results.page.map(async workout => ({
-          workout: {
-            ...workout.doc(),
-            exercises: await Promise.all(workout.exercises.map(async e => ({
-              ...e,
-              exercise: (await ctx.table("immutableExercises").getX(e.exercise)).exercise
-            }))),
-            likers: await workout.edgeX("likers").docs(),
-          },
+          workout: await extractWorkoutData(ctx, workout),
           user: await ctx.table("users").getX(workout.userId).doc()
         })))
       };

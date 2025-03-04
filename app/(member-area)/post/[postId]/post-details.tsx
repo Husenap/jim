@@ -3,6 +3,8 @@
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import { usePostContext } from "@/components/post/post-context";
 import WorkoutButtons from "@/components/workout/workout-buttons";
+import WorkoutCommentsDrawer from "@/components/workout/workout-comments-drawer";
+import WorkoutCommentsPreview from "@/components/workout/workout-comments-preview";
 import WorkoutExerciseDetails from "@/components/workout/workout-exercise-details";
 import WorkoutLikesAndComments from "@/components/workout/workout-likes-and-comments";
 import WorkoutMuscleSplit from "@/components/workout/workout-muscle-split";
@@ -34,6 +36,7 @@ export default function PostDetails() {
         <Divider />
       </div>
       <WorkoutButtons />
+      <WorkoutCommentsPreview />
       <div className="-mx-2">
         <Divider />
       </div>
@@ -41,6 +44,7 @@ export default function PostDetails() {
       <div>
         <WorkoutExerciseDetails />
       </div>
+      <WorkoutCommentsDrawer />
     </>
   );
 }

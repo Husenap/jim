@@ -116,6 +116,7 @@ const schema = defineEntSchema({
     .edges("exercises", { ref: "ownerId" })
     .edges("routines", { ref: "ownerId" })
     .edges("workouts", { ref: true })
+    .edges("comments", { ref: "authorId" })
     .edges("likedWorkouts", { to: "workouts", field: "likedWorkoutsId", table: "users_to_workouts_likers" })
     .edge("activeWorkout", { ref: true })
     .edges("pastExerciseSets", { to: "pastExerciseSets", ref: true }),
@@ -143,6 +144,7 @@ const schema = defineEntSchema({
     startTime: v.optional(v.number()),
   })
     .edge("user")
+    .edges("comments", { ref: "workoutId" })
     .edges("likers", { to: "users", field: "likersId", table: "users_to_workouts_likers" }),
 
   activeWorkouts: defineEnt({
@@ -157,6 +159,12 @@ const schema = defineEntSchema({
   })
     .edge("user", { to: "users", field: "userId" })
     .index("by_user_exercise", ["userId", "exercise"]),
+
+  comments: defineEnt({
+    text: v.string(),
+  })
+    .edge("author", { to: "users", field: "authorId" })
+    .edge("workout", { to: "workouts", field: "workoutId" }),
 });
 
 export default schema;
