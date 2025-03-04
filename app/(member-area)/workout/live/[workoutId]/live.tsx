@@ -11,6 +11,7 @@ import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import DebouncedInput from "@/components/input/debounced-input";
 import { ExerciseFieldsType, ExerciseSetType } from "@/convex/schema";
+import { zap } from "@/utils/vibration";
 import {
   isBodyweightExercise,
   setDetailString,
@@ -139,6 +140,7 @@ export default function Live() {
           {(onOpen) => (
             <Button
               onPress={() => {
+                zap();
                 onOpen();
               }}
               color="primary"
@@ -284,7 +286,8 @@ function ExerciseSet({
                 size="lg"
                 color="success"
                 classNames={{ icon: "text-background" }}
-                onValueChange={(v) =>
+                onValueChange={(v) => {
+                  zap();
                   updateSet({
                     id: activeWorkout!._id,
                     exerciseIndex,
@@ -292,8 +295,8 @@ function ExerciseSet({
                     setData: {
                       done: v,
                     },
-                  })
-                }
+                  });
+                }}
               />
             </div>
           );
@@ -352,7 +355,10 @@ function ExerciseSet({
         <Button
           size="sm"
           startContent={<Plus size={16} />}
-          onPress={() => addSet({ id: activeWorkout!._id, exerciseIndex })}
+          onPress={() => {
+            zap();
+            addSet({ id: activeWorkout!._id, exerciseIndex });
+          }}
         >
           Add Set
         </Button>
