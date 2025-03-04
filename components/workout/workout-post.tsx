@@ -54,64 +54,62 @@ export default function WorkoutPost() {
   const { push } = useTransitionRouter();
 
   return (
-    <>
-      <Card radius="none">
-        <CardHeader className="flex flex-col items-start gap-2">
-          <div className="flex w-full flex-row">
-            <WorkoutUser />
-            {workout.userId === currentUser?._id && (
-              <DrawerMenu>
-                <DrawerMenuTrigger>
-                  <Button isIconOnly variant="light" size="md">
-                    <Ellipsis size={20} />
-                  </Button>
-                </DrawerMenuTrigger>
-                <DrawerMenuContent ariaLabel="Workout Menu">
-                  <MenuItem
-                    startContent={<X />}
-                    key="delete"
-                    color="danger"
-                    className="text-danger"
-                    title="Remove workout"
-                    onPress={() => {
-                      removeWorkout({ workoutId: workout._id });
-                    }}
-                  />
-                </DrawerMenuContent>
-              </DrawerMenu>
-            )}
-          </div>
-          <WorkoutTitleDescription />
-          <WorkoutStats />
-        </CardHeader>
-        <Divider />
-        <CardBody
-          className="flex cursor-pointer flex-col gap-2"
-          onClick={() => push(`/post/${workout._id}`)}
-        >
-          <TypographyH2>Workout</TypographyH2>
-          {workout.exercises.slice(0, 3).map((w, i) => (
-            <div key={i} className="flex flex-row items-center gap-2">
-              <Avatar src={w.exercise.imageURL} size="md" />
-              {w.sets.length} sets of {w.exercise.name}
-            </div>
-          ))}
-          {workout.exercises.length > 3 && (
-            <div className="text-center text-sm text-default-400">
-              See {workout.exercises.length - 3} more exercises
-            </div>
+    <Card radius="none">
+      <CardHeader className="flex flex-col items-start gap-2">
+        <div className="flex w-full flex-row">
+          <WorkoutUser />
+          {workout.userId === currentUser?._id && (
+            <DrawerMenu>
+              <DrawerMenuTrigger>
+                <Button isIconOnly variant="light" size="md">
+                  <Ellipsis size={20} />
+                </Button>
+              </DrawerMenuTrigger>
+              <DrawerMenuContent ariaLabel="Workout Menu">
+                <MenuItem
+                  startContent={<X />}
+                  key="delete"
+                  color="danger"
+                  className="text-danger"
+                  title="Remove workout"
+                  onPress={() => {
+                    removeWorkout({ workoutId: workout._id });
+                  }}
+                />
+              </DrawerMenuContent>
+            </DrawerMenu>
           )}
-        </CardBody>
-        <CardBody>
-          <WorkoutLikesAndComments />
-        </CardBody>
-        <Divider />
-        <CardFooter>
-          <WorkoutButtons />
-        </CardFooter>
-        <WorkoutCommentsPreview />
-        <WorkoutCommentsDrawer />
-      </Card>
-    </>
+        </div>
+        <WorkoutTitleDescription />
+        <WorkoutStats />
+      </CardHeader>
+      <Divider />
+      <CardBody
+        className="flex cursor-pointer flex-col gap-2"
+        onClick={() => push(`/post/${workout._id}`)}
+      >
+        <TypographyH2>Workout</TypographyH2>
+        {workout.exercises.slice(0, 3).map((w, i) => (
+          <div key={i} className="flex flex-row items-center gap-2">
+            <Avatar src={w.exercise.imageURL} size="md" />
+            {w.sets.length} sets of {w.exercise.name}
+          </div>
+        ))}
+        {workout.exercises.length > 3 && (
+          <div className="text-center text-sm text-default-400">
+            See {workout.exercises.length - 3} more exercises
+          </div>
+        )}
+      </CardBody>
+      <CardBody>
+        <WorkoutLikesAndComments />
+      </CardBody>
+      <Divider />
+      <CardFooter>
+        <WorkoutButtons />
+      </CardFooter>
+      <WorkoutCommentsPreview />
+      <WorkoutCommentsDrawer />
+    </Card>
   );
 }
