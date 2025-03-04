@@ -79,7 +79,7 @@ export default function Live() {
               <span className="flex-1">{e.exercise.name}</span>
               {isBodyweightExercise(e.exercise.exerciseType) && (
                 <>
-                  <span className="text-xs text-default-500">
+                  <span className="text-xs text-foreground/70">
                     {Math.round((e.exercise.bodyweightFactor ?? 1) * 100)}% BW
                   </span>
                   {(!activeWorkout.bodyweight ||
@@ -113,7 +113,7 @@ export default function Live() {
               />
             ) : (
               e.note && (
-                <span className="text-sm font-semibold text-default-500">
+                <span className="text-sm font-semibold text-foreground/70">
                   {e.note}
                 </span>
               )
@@ -216,7 +216,7 @@ function ExerciseSet({
           if (previousSets && item.index < previousSets.length) {
             return (
               <div
-                className="text-default-500"
+                className="text-nowrap text-foreground/70"
                 onClick={
                   isMutable
                     ? () =>
@@ -237,7 +237,7 @@ function ExerciseSet({
               </div>
             );
           } else {
-            return <div className="text-default-500">-</div>;
+            return <div className="text-foreground/70">-</div>;
           }
         case "reps":
         case "weight":
@@ -305,7 +305,7 @@ function ExerciseSet({
   );
 
   const classNames = {
-    th: "bg-transparent text-default-500 border-b border-divider",
+    th: "bg-transparent text-foreground/70 border-b border-divider",
     td: [
       "group-data-[first=true]/tr:first:before:rounded-none",
       "group-data-[first=true]/tr:last:before:rounded-none",
