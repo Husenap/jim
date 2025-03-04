@@ -202,17 +202,19 @@ export const toggleLike = mutation({
       });
 
 
-      const owner = await workout.edgeX("user");
-      await sendNotification(
-        ctx,
-        owner.pushSubscriptions,
-        {
-          title: "Jim",
-          body: `${user.name} liked your workout!`,
-          icon: user.imageURL,
-          path: `/post/${workout._id}`
-        }
-      );
+      if (workout.userId !== user._id) {
+        const owner = await workout.edgeX("user");
+        await sendNotification(
+          ctx,
+          owner.pushSubscriptions,
+          {
+            title: "Jim",
+            body: `${user.name} liked your workout!`,
+            icon: user.imageURL,
+            path: `/post/${workout._id}`
+          }
+        );
+      }
     }
   }
 });
