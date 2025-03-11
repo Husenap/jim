@@ -5,7 +5,7 @@ import { useDisclosure } from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
 import { useCallback, useMemo } from "react";
 
-export function usePost({ workoutId, workoutDetails }: {
+export function usePost({ workoutId, workoutDetails: initialWorkoutDetails }: {
   workoutId?: Id<"workouts">;
   workoutDetails?: {
     workout: WorkoutDetailsType["workout"];
@@ -13,16 +13,23 @@ export function usePost({ workoutId, workoutDetails }: {
   };
 }) {
   const currentUser = useQuery(api.users.current);
-
   const commentsDisclosure = useDisclosure();
 
-  if (workoutId) {
-    const workoutDetails = useQuery(api.workouts.details, { workoutId });
+  // Fetch workout details if workoutId is provided
+  const queriedWorkoutDetails = workoutId
+    ? useQuery(api.workouts.details, { workoutId })
+    : undefined;
 
-    const toggleLikeMutation = useMutation(api.workouts.toggleLike).withOptimisticUpdate(
-      (localStore, { workoutId }) => {
-        if (!currentUser) return;
+  // Use either fetched details or provided details
+  const workoutData = workoutId ? queriedWorkoutDetails : initialWorkoutDetails;
 
+  // Setup like mutation with appropriate optimistic update
+  const toggleLikeMutation = useMutation(api.workouts.toggleLike).withOptimisticUpdate(
+    (localStore, { workoutId }) => {
+      if (!currentUser) return;
+
+      if (queriedWorkoutDetails) {
+        // Optimistic update for detailed workout view
         const result = localStore.getQuery(api.workouts.details, { workoutId });
         if (!result) return;
         const sizeBefore = result.workout.likers.length;
@@ -37,41 +44,8 @@ export function usePost({ workoutId, workoutDetails }: {
           { workoutId },
           result
         );
-      }
-    );
-    const toggleLike = useCallback(() => {
-      workoutDetails && toggleLikeMutation({ workoutId: workoutDetails.workout._id });
-    }, [toggleLikeMutation]);
-
-    const addCommentMutation = useMutation(api.comments.addComment);
-    const addComment = (text: string) => {
-      workoutDetails && addCommentMutation({
-        text,
-        workoutId: workoutDetails.workout._id
-      });
-    };
-
-    const context = useMemo(() => ({
-      workout: workoutDetails?.workout,
-      user: workoutDetails?.user,
-      toggleLike,
-      addComment,
-      currentUser,
-      commentsDisclosure,
-    }), [
-      workoutDetails,
-      toggleLike,
-      addComment,
-      currentUser,
-      commentsDisclosure,
-    ]);
-
-    return context;
-  } else if (workoutDetails) {
-    const toggleLikeMutation = useMutation(api.workouts.toggleLike).withOptimisticUpdate(
-      (localStore, { workoutId }) => {
-        if (!currentUser) return;
-
+      } else {
+        // Optimistic update for workout list view
         for (const query of localStore.getAllQueries(
           api.workouts.paginatedWorkouts,
         )) {
@@ -94,47 +68,46 @@ export function usePost({ workoutId, workoutDetails }: {
             );
           }
         }
-      },
-    );
-    const toggleLike = useCallback(() => {
-      toggleLikeMutation({ workoutId: workoutDetails.workout._id });
-    }, [toggleLikeMutation]);
+      }
+    }
+  );
 
-    const addCommentMutation = useMutation(api.comments.addComment);
-    const addComment = (text: string) => {
+  // Setup comment mutation
+  const addCommentMutation = useMutation(api.comments.addComment);
+
+  // Handler functions
+  const toggleLike = useCallback(() => {
+    if (workoutData?.workout) {
+      toggleLikeMutation({ workoutId: workoutData.workout._id });
+    }
+  }, [toggleLikeMutation, workoutData]);
+
+  const addComment = useCallback((text: string) => {
+    if (workoutData?.workout) {
       addCommentMutation({
         text,
-        workoutId: workoutDetails.workout._id
+        workoutId: workoutData.workout._id
       });
-    };
+    }
+  }, [addCommentMutation, workoutData]);
 
-    const context = useMemo(() => ({
-      workout: workoutDetails.workout,
-      user: workoutDetails.user,
-      toggleLike,
-      addComment,
-      currentUser,
-      commentsDisclosure,
-    }), [
-      workoutDetails,
-      toggleLike,
-      addComment,
-      currentUser,
-      commentsDisclosure,
-    ]);
+  // Create context object
+  const context = useMemo(() => ({
+    workout: workoutData?.workout || null,
+    user: workoutData?.user || null,
+    toggleLike: workoutData ? toggleLike : undefined,
+    addComment: workoutData ? addComment : undefined,
+    currentUser,
+    commentsDisclosure,
+  }), [
+    workoutData,
+    toggleLike,
+    addComment,
+    currentUser,
+    commentsDisclosure,
+  ]);
 
-    return context;
-  } else {
-    const context = useMemo(() => ({
-      workout: null,
-      user: null,
-      toggleLike: undefined,
-      addComment: undefined,
-      currentUser: null,
-      commentsDisclosure,
-    }), []);
-    return context;
-  }
-};
+  return context;
+}
 
 export type UsePostReturn = ReturnType<typeof usePost>;
