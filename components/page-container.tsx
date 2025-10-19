@@ -32,7 +32,7 @@ export default function PageContainer({
           }
         >
           <div
-            className="flex w-full justify-center bg-gradient-to-b from-content2 to-transparent px-2"
+            className="flex w-full justify-center bg-linear-to-b from-content2 to-transparent px-2"
             style={
               disableViewTransitions
                 ? undefined
@@ -90,7 +90,7 @@ export default function PageContainer({
                 }
           }
         >
-          <div className="iphone-safe-inset flex w-full justify-center bg-gradient-to-t from-content2 to-transparent">
+          <div className="iphone-safe-inset flex w-full justify-center bg-linear-to-t from-content2 to-transparent">
             <div className="w-full max-w-5xl">{bottomNavbar}</div>
           </div>
         </nav>

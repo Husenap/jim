@@ -61,7 +61,7 @@ export default function WorkoutMuscleSplit() {
           }).format(v)}
           key={k}
           classNames={{
-            indicator: "bg-gradient-to-r from-danger via-purple-500 to-primary",
+            indicator: "bg-linear-to-r from-danger via-purple-500 to-primary",
           }}
         />
       ))}
