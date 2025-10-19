@@ -2,7 +2,7 @@ import { entsTableFactory } from "convex-ents";
 import {
   customCtx,
   customMutation,
-  customQuery
+  customQuery,
 } from "convex-helpers/server/customFunctions";
 import {
   internalMutation as baseInternalMutation,
@@ -17,7 +17,7 @@ export const query = customQuery(
   customCtx(async (ctx) => {
     return {
       table: entsTableFactory(ctx, entDefinitions),
-      db: undefined
+      db: undefined,
     };
   }),
 );
@@ -27,7 +27,7 @@ export const internalQuery = customQuery(
   customCtx(async (ctx) => {
     return {
       table: entsTableFactory(ctx, entDefinitions),
-      db: undefined
+      db: undefined,
     };
   }),
 );
