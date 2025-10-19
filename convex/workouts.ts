@@ -57,8 +57,8 @@ export const details = query({
     };
   },
 });
-export type WorkoutDetailsType = FunctionReturnType<
-  typeof api.workouts.details
+export type WorkoutDetailsType = NonNullable<
+  FunctionReturnType<typeof api.workouts.details>
 >;
 
 export const create = mutation({
@@ -198,9 +198,11 @@ export const paginatedWorkouts = query({
     }
   },
 });
-export type PaginatedWorkoutsReturnType = FunctionReturnType<
-  typeof api.workouts.paginatedWorkouts
->["page"][0]["workout"];
+export type PaginatedWorkoutsReturnType = NonNullable<
+  FunctionReturnType<
+    typeof api.workouts.paginatedWorkouts
+  >["page"][0]["workout"]
+>;
 
 export const toggleLike = mutation({
   args: { workoutId: v.id("workouts") },
