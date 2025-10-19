@@ -5,6 +5,7 @@
     "build": "next build",
     "start": "next start"
   },
+  "type": "module",
   "dependencies": {
     "@clerk/backend": "^2.18.3",
     "@clerk/clerk-react": "^5.53.2",

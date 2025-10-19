@@ -1,6 +1,5 @@
 import { Providers } from "@/app/providers";
-import { cn, Tooltip } from "@heroui/react";
-import { CircleDot } from "lucide-react";
+import { cn } from "@heroui/react";
 import { Viewport } from "next";
 import { ViewTransitions } from "next-view-transitions";
 import { Geist } from "next/font/google";
@@ -53,7 +52,7 @@ export default function RootLayout({
         )}
         suppressHydrationWarning
       >
-        <body className="relative h-full min-h-full w-full overflow-x-hidden overscroll-x-none bg-background text-foreground">
+        <body className="bg-background text-foreground relative h-full min-h-full w-full overflow-x-hidden overscroll-x-none">
           <Providers>{children}</Providers>
         </body>
       </html>
