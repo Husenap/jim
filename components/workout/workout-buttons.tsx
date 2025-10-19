@@ -18,8 +18,10 @@ export default function WorkoutButtons() {
         size="sm"
         variant="light"
         onPress={() => {
-          zap();
-          toggleLike();
+          if (toggleLike) {
+            zap();
+            toggleLike();
+          }
         }}
       >
         <ThumbsUp
