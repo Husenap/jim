@@ -4,7 +4,6 @@ import Navbar from "@/app/(member-area)/profile/edit/navbar";
 import PageContainer from "@/components/page-container";
 import { TypographyH2 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
-import { UserProfile } from "@clerk/nextjs";
 import { Button, Form, Input, Textarea } from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
 import { FormEvent, useEffect, useState } from "react";
@@ -95,18 +94,6 @@ export default function Page() {
             Save
           </Button>
         </Form>
-
-        <TypographyH2>Account details</TypographyH2>
-
-        <UserProfile
-          appearance={{
-            elements: {
-              rootBox: "w-full",
-              cardBox: "max-w-none w-full h-auto",
-            },
-          }}
-          routing="hash"
-        />
       </div>
     </PageContainer>
   );
