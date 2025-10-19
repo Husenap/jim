@@ -12,7 +12,7 @@ export default function DrawerPageContainer({
   return (
     <div className="flex h-full max-h-full min-h-full flex-1 flex-col items-center">
       {topNavbar && (
-        <nav className="w-full bg-content2 px-2">
+        <nav className="flex w-full justify-center bg-content2 px-2">
           <div className="w-full max-w-5xl">{topNavbar}</div>
         </nav>
       )}
@@ -22,7 +22,7 @@ export default function DrawerPageContainer({
       </main>
 
       {bottomNavbar ? (
-        <nav className="iphone-safe-inset w-full bg-content2 px-2">
+        <nav className="iphone-safe-inset flex w-full justify-center bg-content2 px-2">
           <div className="w-full max-w-5xl">{bottomNavbar}</div>
         </nav>
       ) : (
