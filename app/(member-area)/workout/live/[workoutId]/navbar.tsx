@@ -40,7 +40,8 @@ export default function Navbar() {
 }
 
 function WorkoutDetails({ disableAnimation }: { disableAnimation?: boolean }) {
-  const { activeWorkout, volume, finishedSets } = useActiveWorkoutContext();
+  const { activeWorkout, volume, finishedSets, totalSets } =
+    useActiveWorkoutContext();
   const [timeString, setTimeString] = useState(
     humanReadiableDuration({ startTime: activeWorkout?._creationTime }),
   );
@@ -67,7 +68,7 @@ function WorkoutDetails({ disableAnimation }: { disableAnimation?: boolean }) {
       <div className="grid w-full grid-cols-3 text-center">
         <div className="flex flex-col">
           <TypographyH4>Duration</TypographyH4>
-          <span className="text-nowrap text-primary">{timeString}</span>
+          <span className="text-primary text-nowrap">{timeString}</span>
         </div>
         <div className="flex flex-col">
           <TypographyH4>Volume</TypographyH4>
@@ -75,7 +76,9 @@ function WorkoutDetails({ disableAnimation }: { disableAnimation?: boolean }) {
         </div>
         <div className="flex flex-col">
           <TypographyH4>Sets</TypographyH4>
-          <span className="text-nowrap">{finishedSets}</span>
+          <span className="text-nowrap">
+            {finishedSets}/{totalSets}
+          </span>
         </div>
       </div>
     </div>
@@ -83,7 +86,7 @@ function WorkoutDetails({ disableAnimation }: { disableAnimation?: boolean }) {
 }
 
 function FinishButton() {
-  const { activeWorkout } = useActiveWorkoutContext();
+  const { activeWorkout, totalSets, finishedSets } = useActiveWorkoutContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [title, setTitle] = useState(activeWorkout?.title ?? "Workout");
@@ -106,7 +109,11 @@ function FinishButton() {
   return (
     <>
       <div className="text-right">
-        <Button onPress={onOpen} color="primary">
+        <Button
+          onPress={onOpen}
+          color="primary"
+          isDisabled={totalSets !== finishedSets}
+        >
           Finish
         </Button>
       </div>

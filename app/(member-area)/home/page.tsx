@@ -39,12 +39,12 @@ export default function Page() {
                   <Badge
                     classNames={{
                       badge:
-                        "bg-gradient-to-tr from-orange-400 via-pink-500 to-blue-500 text-white",
+                        "bg-linear-to-tr from-orange-400 via-pink-500 to-blue-500 text-white",
                     }}
                     content="live"
                     size="sm"
                   >
-                    <div className="inline-block rounded-full bg-gradient-to-tr from-orange-400 via-pink-500 to-blue-500 p-[3px]">
+                    <div className="inline-block rounded-full bg-linear-to-tr from-orange-400 via-pink-500 to-blue-500 p-[3px]">
                       <div className="rounded-full bg-background p-[3px]">
                         <Avatar
                           className="h-[72px] w-[72px]"

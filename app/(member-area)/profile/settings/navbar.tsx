@@ -7,7 +7,7 @@ export default function Navbar() {
     <div className="grid grid-cols-3 items-center gap-2 py-3">
       <BackButton />
 
-      <span className="text-center">Edit profile</span>
+      <span className="text-center">Settings</span>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import HeaderAuth from "@/components/header-auth";
 import Hero from "@/components/hero";
-import { Avatar } from "@heroui/react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
@@ -10,7 +10,13 @@ export default async function Home() {
         <div className="flex w-full max-w-5xl items-center justify-between p-3 px-5 text-sm">
           <div className="flex items-center gap-5 font-semibold">
             <Link href={"/"} className="flex flex-row items-center gap-2">
-              <Avatar src="/favicon.ico"></Avatar>
+              <Image
+                src="/favicon.ico"
+                alt="Jim Logo"
+                className="rounded-full"
+                width={48}
+                height={48}
+              />
               Jim
             </Link>
           </div>

@@ -5,7 +5,7 @@ import {
 import { usePostContext } from "@/components/post/post-context";
 import { TypographyH2 } from "@/components/typography";
 import WorkoutSetIndicator from "@/components/workout/workout-set-indicator";
-import { WorkoutDetailsType } from "@/convex/workouts";
+import { type WorkoutDetailsType } from "@/convex/workouts";
 import { isBodyweightExercise } from "@/utils/workout/exercise";
 import {
   Avatar,

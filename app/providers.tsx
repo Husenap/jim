@@ -2,7 +2,7 @@
 
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
-import { HeroUIProvider } from "@heroui/react";
+import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ThemeProvider, useTheme } from "next-themes";
@@ -16,6 +16,7 @@ function ThemeWrappedProviders({ children }: { children: React.ReactNode }) {
 
   return (
     <HeroUIProvider className="h-full min-h-full">
+      <ToastProvider />
       <ClerkProvider
         publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY as string}
         appearance={{

@@ -16,14 +16,12 @@ export default function NotificationSwitch() {
   };
 
   return (
-    <>
-      <Switch
-        isDisabled={!isSupported}
-        isSelected={subscription !== null}
-        onValueChange={subscriptionHandler}
-      >
-        Enable Notifications
-      </Switch>
-    </>
+    <Switch
+      isDisabled={isSupported !== true}
+      isSelected={subscription !== null}
+      onValueChange={subscriptionHandler}
+    >
+      Enable Notifications
+    </Switch>
   );
 }
