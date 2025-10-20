@@ -1,5 +1,10 @@
 import { PushSubscription } from "@/convex/types";
-import { defineEnt, defineEntFromTable, defineEntSchema, getEntDefinitions } from "convex-ents";
+import {
+  defineEnt,
+  defineEntFromTable,
+  defineEntSchema,
+  getEntDefinitions,
+} from "convex-ents";
 import { migrationsTable } from "convex-helpers/server/migrations";
 import { Infer, v, Validator } from "convex/values";
 
@@ -77,7 +82,7 @@ export const SetTypeValidator = v.union(
   v.literal("normal"),
   v.literal("warmup"),
   v.literal("failure"),
-  v.literal("drop")
+  v.literal("drop"),
 );
 export type SetType = Infer<typeof SetTypeValidator>;
 
@@ -92,7 +97,7 @@ export type SetDataType = Infer<typeof SetDataValidator>;
 export const ExerciseSetValidator = v.object({
   exercise: v.id("immutableExercises"),
   note: v.optional(v.string()),
-  sets: v.array(SetDataValidator)
+  sets: v.array(SetDataValidator),
 });
 export type ExerciseSetType = Infer<typeof ExerciseSetValidator>;
 
@@ -106,9 +111,13 @@ const schema = defineEntSchema({
     externalId: v.string(),
     bio: v.optional(v.string()),
     link: v.optional(v.string()),
-    bodyweight: v.optional(v.number())
+    bodyweight: v.optional(v.number()),
   })
-    .field("pushSubscriptions", v.array(v.any() as Validator<PushSubscription>), { default: [] })
+    .field(
+      "pushSubscriptions",
+      v.array(v.any() as Validator<PushSubscription>),
+      { default: [] },
+    )
     .index("externalId", ["externalId"])
     .index("username", ["username"])
     .searchIndex("search_username", { searchField: "username" })
@@ -117,24 +126,29 @@ const schema = defineEntSchema({
     .edges("routines", { ref: "ownerId" })
     .edges("workouts", { ref: true })
     .edges("comments", { ref: "authorId" })
-    .edges("likedWorkouts", { to: "workouts", field: "likedWorkoutsId", table: "users_to_workouts_likers" })
+    .edges("likedWorkouts", {
+      to: "workouts",
+      field: "likedWorkoutsId",
+      table: "users_to_workouts_likers",
+    })
     .edge("activeWorkout", { ref: true })
     .edges("pastExerciseSets", { to: "pastExerciseSets", ref: true }),
 
   routines: defineEnt({
     name: v.string(),
     exercises: v.array(v.id("exercises")),
-  })
-    .edge("user", { to: "users", field: "ownerId" }),
+  }).edge("user", { to: "users", field: "ownerId" }),
 
-  exercises: defineEnt(ExerciseFields)
-    .edge("user", { to: "users", field: "ownerId", optional: true }),
+  exercises: defineEnt(ExerciseFields).edge("user", {
+    to: "users",
+    field: "ownerId",
+    optional: true,
+  }),
 
   immutableExercises: defineEnt({
     exercise: ExerciseFieldsValidator,
     refCount: v.number(),
-  })
-    .index("exercise", ["exercise"]),
+  }).index("exercise", ["exercise"]),
 
   workouts: defineEnt({
     title: v.string(),
@@ -145,17 +159,20 @@ const schema = defineEntSchema({
   })
     .edge("user")
     .edges("comments", { ref: "workoutId" })
-    .edges("likers", { to: "users", field: "likersId", table: "users_to_workouts_likers" }),
+    .edges("likers", {
+      to: "users",
+      field: "likersId",
+      table: "users_to_workouts_likers",
+    }),
 
   activeWorkouts: defineEnt({
     title: v.string(),
     exercises: v.array(ExerciseSetValidator),
-    bodyweight: v.optional(v.number())
-  })
-    .edge("user"),
+    bodyweight: v.optional(v.number()),
+  }).edge("user"),
 
   pastExerciseSets: defineEnt({
-    ...ExerciseSetValidator.fields
+    ...ExerciseSetValidator.fields,
   })
     .edge("user", { to: "users", field: "userId" })
     .index("by_user_exercise", ["userId", "exercise"]),
