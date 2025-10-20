@@ -3,9 +3,10 @@ import { ExerciseFieldsType, SetDataType } from "@/convex/schema";
 
 export default function countSets(
   exercises?: {
-    exercise: ExerciseFieldsType,
-    sets: SetDataType[]
-  }[]
+    exercise: ExerciseFieldsType;
+    sets: SetDataType[];
+  }[],
+  onlyCompleted = false,
 ): number {
   let numSets = 0;
 
@@ -13,7 +14,7 @@ export default function countSets(
 
   for (const { sets } of exercises) {
     for (const set of sets) {
-      if (set.done) {
+      if (set.done || !onlyCompleted) {
         numSets++;
       }
     }
@@ -22,16 +23,22 @@ export default function countSets(
   return numSets;
 }
 
-type SetDataPatch = typeof api.activeWorkouts.updateSet._args["setData"];
-export function updateSetData(sets: SetDataType[], setIndex: number, setDataPatch: SetDataPatch) {
+type SetDataPatch = (typeof api.activeWorkouts.updateSet._args)["setData"];
+export function updateSetData(
+  sets: SetDataType[],
+  setIndex: number,
+  setDataPatch: SetDataPatch,
+) {
   const setData = { ...setDataPatch };
 
-  if (setData.weight !== undefined && !Number.isFinite(setData.weight)) setData.weight = undefined;
-  if (setData.reps !== undefined && !Number.isFinite(setData.reps)) setData.reps = undefined;
+  if (setData.weight !== undefined && !Number.isFinite(setData.weight))
+    setData.weight = undefined;
+  if (setData.reps !== undefined && !Number.isFinite(setData.reps))
+    setData.reps = undefined;
 
   sets[setIndex] = {
     ...sets[setIndex],
-    ...setData
+    ...setData,
   };
   if (setData.done === true && sets[setIndex].weight === undefined) {
     sets[setIndex].weight = sets[setIndex - 1]?.weight ?? 0;
