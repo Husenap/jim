@@ -50,14 +50,14 @@ function Exercise({
         <span className="flex-1">{exercise.exercise.name}</span>
         {isBodyweightExercise(exercise.exercise.exerciseType) && (
           <>
-            <span className="text-xs text-default-500">
+            <span className="text-default-500 text-xs">
               {Math.round((exercise.exercise.bodyweightFactor ?? 1) * 100)}% BW
             </span>
           </>
         )}
       </div>
       {exercise.note && (
-        <span className="text-sm font-semibold text-default-500">
+        <span className="text-default-500 text-sm font-semibold">
           {exercise.note}
         </span>
       )}

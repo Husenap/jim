@@ -45,7 +45,7 @@ export default function Page() {
                     size="sm"
                   >
                     <div className="inline-block rounded-full bg-linear-to-tr from-orange-400 via-pink-500 to-blue-500 p-[3px]">
-                      <div className="rounded-full bg-background p-[3px]">
+                      <div className="bg-background rounded-full p-[3px]">
                         <Avatar
                           className="h-[72px] w-[72px]"
                           size="lg"
@@ -56,7 +56,7 @@ export default function Page() {
                       </div>
                     </div>
                   </Badge>
-                  <span className="w-24 overflow-hidden text-ellipsis text-nowrap text-center text-xs">
+                  <span className="w-24 overflow-hidden text-center text-xs text-nowrap text-ellipsis">
                     {user.username}
                   </span>
                 </Link>

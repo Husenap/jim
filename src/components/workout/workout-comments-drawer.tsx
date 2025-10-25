@@ -1,4 +1,3 @@
-import BottomNavbar from "@/app/(member-area)/bottom-navbar";
 import BackButton from "@/components/back-button";
 import DrawerPageContainer from "@/components/drawer-page-container";
 import { usePostContext } from "@/components/post/post-context";
@@ -85,7 +84,7 @@ export default function WorkoutCommentsDrawer() {
                       <span className="font-semibold">
                         {comment.author.name}
                       </span>
-                      <span className="text-sm text-foreground/70">
+                      <span className="text-foreground/70 text-sm">
                         {humanReadibleTimeDiff({
                           startTime: comment._creationTime,
                         })}

@@ -96,7 +96,7 @@ export default function WorkoutPost() {
           </div>
         ))}
         {workout.exercises.length > 3 && (
-          <div className="text-center text-sm text-default-400">
+          <div className="text-default-400 text-center text-sm">
             See {workout.exercises.length - 3} more exercises
           </div>
         )}

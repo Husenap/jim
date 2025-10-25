@@ -113,7 +113,7 @@ export default function Page() {
         {exercises.map(({ exercise, id }) => (
           <div
             key={id}
-            className="flex flex-row justify-between p-2 transition-background"
+            className="transition-background flex flex-row justify-between p-2"
           >
             <div className="flex flex-row items-center gap-2">
               <Avatar src={exercise.imageURL ?? "/favicon.ico"} size="lg" />
