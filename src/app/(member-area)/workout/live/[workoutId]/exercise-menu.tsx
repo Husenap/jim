@@ -1,34 +1,31 @@
+import BodyweightModal from "@/app/(member-area)/workout/live/[workoutId]/(dialogs)/bodyweight-modal";
+import SupersetDrawer from "@/app/(member-area)/workout/live/[workoutId]/(dialogs)/superset-drawer";
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
 import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
 import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
-import InputField from "@/components/input/input-field";
 import { Doc } from "@/convex/_generated/dataModel";
 import { isBodyweightExercise } from "@/utils/workout/exercise";
-import {
-  Button,
-  MenuItem,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  useDisclosure,
-} from "@heroui/react";
-import type { UseDisclosureReturn } from "@heroui/use-disclosure";
+import { Button, MenuItem, useDisclosure } from "@heroui/react";
 import { ArrowUpDown, Ellipsis, Plus, Replace, Scale, X } from "lucide-react";
-import { useState } from "react";
 
 export default function ExerciseMenu({
   exerciseIndex,
 }: {
   exerciseIndex: number;
 }) {
-  const { activeWorkout, exercises, removeExercise, replaceExercise } =
-    useActiveWorkoutContext();
+  const {
+    activeWorkout,
+    exercises,
+    removeExercise,
+    replaceExercise,
+    updateSuperset,
+  } = useActiveWorkoutContext();
   const exercise = exercises![exerciseIndex];
 
   const bodyweightDisclosure = useDisclosure();
+  const supersetDisclosure = useDisclosure();
   const exercisesDrawerDisclosure = useDisclosure();
 
   const onReplaceExercise = async (
@@ -72,20 +69,27 @@ export default function ExerciseMenu({
               onPress={bodyweightDisclosure.onOpen}
             />
           )}
-          <MenuItem
-            startContent={<Plus />}
-            key="add-superset"
-            title="Add to Superset"
-            className="under-construction"
-          />
-          {/*
-                  <MenuItem
-                    startContent={<X />}
-                    key="remove-superset"
-                    title="Remove from Superset"
-                    className="under-construction"
-                  />
-                  */}
+          {exercise.superset !== undefined ? (
+            <MenuItem
+              startContent={<X />}
+              key="remove-superset"
+              title="Remove from Superset"
+              onPress={() => {
+                updateSuperset({
+                  id: activeWorkout!._id,
+                  exerciseIndex,
+                  withIndex: undefined,
+                });
+              }}
+            />
+          ) : (
+            <MenuItem
+              startContent={<Plus />}
+              key="add-superset"
+              title="Add to Superset"
+              onPress={supersetDisclosure.onOpen}
+            />
+          )}
           <MenuItem
             startContent={<X />}
             key="delete"
@@ -106,56 +110,10 @@ export default function ExerciseMenu({
         disclosure={exercisesDrawerDisclosure}
       />
       <BodyweightModal disclosure={bodyweightDisclosure} />
-    </>
-  );
-}
-
-function BodyweightModal({ disclosure }: { disclosure: UseDisclosureReturn }) {
-  const { isOpen, onOpenChange } = disclosure;
-  const [value, setValue] = useState("");
-  const { activeWorkout, setBodyweight } = useActiveWorkoutContext();
-
-  return (
-    <>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        placement="center"
-        backdrop="blur"
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>Set Bodyweight</ModalHeader>
-              <ModalBody>
-                <InputField
-                  numberOnly
-                  allowDecimals
-                  label="Today's Bodyweight"
-                  value={value?.toString() ?? ""}
-                  onValueChange={setValue}
-                />
-                <Button
-                  color="primary"
-                  isDisabled={value.length <= 0}
-                  onPress={() => {
-                    setBodyweight({
-                      workoutId: activeWorkout!._id,
-                      bodyweight: parseFloat(value) || undefined,
-                    });
-                    onClose();
-                  }}
-                >
-                  Set Bodyweight
-                </Button>
-                <Button variant="light" color="primary" onPress={onClose}>
-                  Cancel
-                </Button>
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <SupersetDrawer
+        disclosure={supersetDisclosure}
+        exerciseIndex={exerciseIndex}
+      />
     </>
   );
 }

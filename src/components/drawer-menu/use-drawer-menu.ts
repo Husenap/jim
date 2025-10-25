@@ -1,11 +1,12 @@
 import { useDisclosure } from "@heroui/react";
+import type { UseDisclosureReturn } from "@heroui/use-disclosure";
 
-export function useDrawerMenu() {
-  const disclosure = useDisclosure();
+export function useDrawerMenu(customDisclosure?: UseDisclosureReturn) {
+  const disclosure = customDisclosure ?? useDisclosure();
 
   return {
     onPress: disclosure.onOpen,
-    disclosure
+    disclosure,
   };
 }
 export type UseDrawerMenuReturn = ReturnType<typeof useDrawerMenu>;

@@ -16,10 +16,12 @@ import {
   isBodyweightExercise,
   setDetailString,
 } from "@/utils/workout/exercise";
+import GetSupersetColor from "@/utils/workout/superset";
 import {
   Avatar,
   Button,
   Checkbox,
+  Chip,
   cn,
   Modal,
   ModalBody,
@@ -97,6 +99,11 @@ export default function Live() {
               )}
               {isOwner && <ExerciseMenu exerciseIndex={i} />}
             </div>
+            {e.superset !== undefined && (
+              <Chip color={GetSupersetColor(e.superset)} variant="shadow">
+                Superset
+              </Chip>
+            )}
             {isOwner ? (
               <DebouncedInput
                 size="sm"

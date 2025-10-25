@@ -4,9 +4,11 @@ import React from "react";
 export default function DrawerMenuContent({
   children,
   ariaLabel,
+  disabledKeys,
 }: {
   children: React.ReactNode;
-  ariaLabel: string;
+  ariaLabel?: string;
+  disabledKeys?: Iterable<string | number>;
 }) {
   return (
     <>
@@ -18,6 +20,7 @@ export default function DrawerMenuContent({
               onClose={onClose}
               closeOnSelect
               aria-label={ariaLabel}
+              disabledKeys={disabledKeys}
             >
               <>{children}</>
             </Menu>

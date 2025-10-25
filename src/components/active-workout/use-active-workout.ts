@@ -15,6 +15,7 @@ export function useActiveWorkout({
   const exercises = useQuery(api.activeWorkouts.exercises, { id: workoutId });
 
   const updateNote = useMutation(api.activeWorkouts.updateNote);
+  const updateSuperset = useMutation(api.activeWorkouts.updateSuperset);
   const updateSet = useMutation(
     api.activeWorkouts.updateSet,
   ).withOptimisticUpdate(
@@ -103,6 +104,7 @@ export function useActiveWorkout({
       isSpectate: !isOwner,
       exercises,
       updateNote,
+      updateSuperset,
       updateSet,
       addSet,
       removeSet,
@@ -119,6 +121,7 @@ export function useActiveWorkout({
       user,
       exercises,
       updateNote,
+      updateSuperset,
       updateSet,
       addSet,
       removeSet,

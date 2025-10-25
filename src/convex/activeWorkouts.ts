@@ -29,7 +29,7 @@ export const create = mutation({
         try {
           const immutableExerciseId = await createOrTake(ctx, re);
           exercises.push(immutableExerciseId);
-        } catch { }
+        } catch {}
       }
     }
 
@@ -37,47 +37,48 @@ export const create = mutation({
       title,
       userId: user._id,
       bodyweight: user.bodyweight,
-      exercises: exercises.map(e => ({
+      exercises: exercises.map((e) => ({
         exercise: e,
-        sets: [{
-          type: "normal",
-          done: false
-        }]
-      }))
+        sets: [
+          {
+            type: "normal",
+            done: false,
+          },
+        ],
+      })),
     });
 
-    const subscriptions = (await user.edgeX("followers")).flatMap(follower => follower.pushSubscriptions);
-    await sendNotification(
-      ctx,
-      subscriptions,
-      {
-        title: "Jim",
-        body: `${user.name} just started a workout!`,
-        icon: user.imageURL,
-        path: `/workout/live/${newActiveWorkout}`
-      }
+    const subscriptions = (await user.edgeX("followers")).flatMap(
+      (follower) => follower.pushSubscriptions,
     );
+    await sendNotification(ctx, subscriptions, {
+      title: "Jim",
+      body: `${user.name} just started a workout!`,
+      icon: user.imageURL,
+      path: `/workout/live/${newActiveWorkout}`,
+    });
 
     return newActiveWorkout;
-  }
+  },
 });
-
 
 export const remove = mutation({
   args: {},
   handler: async (ctx) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await user.edgeX("activeWorkout");
-    await Promise.all(activeWorkout.exercises.map(async e => removeOrReturn(ctx, e.exercise)));
+    await Promise.all(
+      activeWorkout.exercises.map(async (e) => removeOrReturn(ctx, e.exercise)),
+    );
     await ctx.table("activeWorkouts").getX(activeWorkout._id).delete();
-  }
+  },
 });
 
 export const get = query({
   args: { id: v.id("activeWorkouts") },
   handler: async (ctx, { id }) => {
     return await ctx.table("activeWorkouts").get(id).doc();
-  }
+  },
 });
 
 export const exercises = query({
@@ -86,21 +87,23 @@ export const exercises = query({
     const activeWorkout = await ctx.table("activeWorkouts").get(id);
     if (!activeWorkout) return [];
 
-    return await Promise.all(activeWorkout.exercises.map(async e => ({
-      sets: e.sets,
-      note: e.note,
-      exercise: (await ctx.table("immutableExercises").getX(e.exercise)).exercise,
-      previous:
-        (o => ({ sets: o?.sets, note: o?.note }))
-          (await ctx.table(
-            "pastExerciseSets",
-            "by_user_exercise",
-            q => q.eq("userId", activeWorkout.userId)
-              .eq("exercise", e.exercise)).first()
-          )
-      ,
-    })));
-  }
+    return await Promise.all(
+      activeWorkout.exercises.map(async (e) => ({
+        sets: e.sets,
+        note: e.note,
+        superset: e.superset,
+        exercise: (await ctx.table("immutableExercises").getX(e.exercise))
+          .exercise,
+        previous: ((o) => ({ sets: o?.sets, note: o?.note }))(
+          await ctx
+            .table("pastExerciseSets", "by_user_exercise", (q) =>
+              q.eq("userId", activeWorkout.userId).eq("exercise", e.exercise),
+            )
+            .first(),
+        ),
+      })),
+    );
+  },
 });
 
 export const current = query({
@@ -109,7 +112,7 @@ export const current = query({
     const user = await getCurrentUser(ctx);
     if (!user) return null;
     return await user.edge("activeWorkout").doc();
-  }
+  },
 });
 
 export const followees = query({
@@ -119,15 +122,19 @@ export const followees = query({
     if (!user) return [];
     const followees = user.edgeX("followees");
     return await followees
-      .map(async u => ({
+      .map(async (u) => ({
         user: u.doc(),
-        activeWorkout: await u.edge("activeWorkout").doc()
+        activeWorkout: await u.edge("activeWorkout").doc(),
       }))
-      .filter((aw): aw is {
-        user: typeof aw.user;
-        activeWorkout: NonNullable<typeof aw.activeWorkout>;
-      } => aw.activeWorkout !== null)
-  }
+      .filter(
+        (
+          aw,
+        ): aw is {
+          user: typeof aw.user;
+          activeWorkout: NonNullable<typeof aw.activeWorkout>;
+        } => aw.activeWorkout !== null,
+      );
+  },
 });
 
 export const updateNote = mutation({
@@ -139,12 +146,59 @@ export const updateNote = mutation({
   handler: async (ctx, { id, exerciseIndex, note }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await ctx.table("activeWorkouts").getX(id);
-    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    if (activeWorkout.userId !== user._id)
+      throw new Error("You're not the owner!");
 
     activeWorkout.exercises[exerciseIndex].note = note;
 
     await activeWorkout.patch(activeWorkout);
-  }
+  },
+});
+
+export const updateSuperset = mutation({
+  args: {
+    id: v.id("activeWorkouts"),
+    exerciseIndex: v.number(),
+    withIndex: v.optional(v.number()),
+  },
+  handler: async (ctx, { id, exerciseIndex, withIndex }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const activeWorkout = await ctx.table("activeWorkouts").getX(id);
+    if (activeWorkout.userId !== user._id)
+      throw new Error("You're not the owner!");
+
+    if (withIndex !== undefined) {
+      if (activeWorkout.exercises[withIndex].superset === undefined) {
+        const newSupersetIndex =
+          Math.max(...activeWorkout.exercises.map((e) => e.superset ?? -1)) + 1;
+        activeWorkout.exercises[exerciseIndex].superset = newSupersetIndex;
+        activeWorkout.exercises[withIndex].superset = newSupersetIndex;
+      } else {
+        activeWorkout.exercises[exerciseIndex].superset =
+          activeWorkout.exercises[withIndex].superset;
+      }
+    } else {
+      const superset = activeWorkout.exercises[exerciseIndex].superset;
+      activeWorkout.exercises[exerciseIndex].superset = undefined;
+      if (
+        activeWorkout.exercises.reduce(
+          (acc, e) => acc + (e.superset === superset ? 1 : 0),
+          0,
+        ) === 1
+      ) {
+        for (let i = 0; i < activeWorkout.exercises.length; i++) {
+          if (
+            i !== exerciseIndex &&
+            activeWorkout.exercises[i].superset === superset
+          ) {
+            activeWorkout.exercises[i].superset = undefined;
+          }
+        }
+      }
+    }
+
+    await activeWorkout.patch(activeWorkout);
+  },
 });
 
 export const updateSet = mutation({
@@ -156,19 +210,20 @@ export const updateSet = mutation({
       type: v.optional(SetTypeValidator),
       reps: v.optional(v.number()),
       weight: v.optional(v.number()),
-      done: v.optional(v.boolean())
-    })
+      done: v.optional(v.boolean()),
+    }),
   },
   handler: async (ctx, { id, exerciseIndex, setIndex, setData }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await ctx.table("activeWorkouts").getX(id);
-    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    if (activeWorkout.userId !== user._id)
+      throw new Error("You're not the owner!");
 
     const sets = activeWorkout.exercises[exerciseIndex].sets;
     updateSetData(sets, setIndex, setData);
 
     await activeWorkout.patch(activeWorkout);
-  }
+  },
 });
 
 export const addSet = mutation({
@@ -179,14 +234,15 @@ export const addSet = mutation({
   handler: async (ctx, { id, exerciseIndex }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await ctx.table("activeWorkouts").getX(id);
-    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    if (activeWorkout.userId !== user._id)
+      throw new Error("You're not the owner!");
 
     activeWorkout.exercises[exerciseIndex].sets.push({
       type: "normal",
-      done: false
+      done: false,
     });
     await activeWorkout.patch(activeWorkout);
-  }
+  },
 });
 
 export const removeSet = mutation({
@@ -198,12 +254,13 @@ export const removeSet = mutation({
   handler: async (ctx, { id, exerciseIndex, setIndex }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await ctx.table("activeWorkouts").getX(id);
-    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    if (activeWorkout.userId !== user._id)
+      throw new Error("You're not the owner!");
 
     activeWorkout.exercises[exerciseIndex].sets.splice(setIndex, 1);
 
     await activeWorkout.patch(activeWorkout);
-  }
+  },
 });
 
 export const addExercise = mutation({
@@ -214,18 +271,21 @@ export const addExercise = mutation({
   handler: async (ctx, { workoutId, exerciseId }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
-    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    if (activeWorkout.userId !== user._id)
+      throw new Error("You're not the owner!");
 
     const immutableExerciseId = await createOrTake(ctx, exerciseId);
     activeWorkout.exercises.push({
       exercise: immutableExerciseId,
-      sets: [{
-        type: "normal",
-        done: false
-      }]
+      sets: [
+        {
+          type: "normal",
+          done: false,
+        },
+      ],
     });
     await activeWorkout.patch(activeWorkout);
-  }
+  },
 });
 
 export const removeExercise = mutation({
@@ -236,34 +296,37 @@ export const removeExercise = mutation({
   handler: async (ctx, { workoutId, exerciseIndex }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
-    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    if (activeWorkout.userId !== user._id)
+      throw new Error("You're not the owner!");
 
     await Promise.all(
       activeWorkout.exercises
         .splice(exerciseIndex, 1)
-        .map(async e => removeOrReturn(ctx, e.exercise)));
+        .map(async (e) => removeOrReturn(ctx, e.exercise)),
+    );
 
     await activeWorkout.patch(activeWorkout);
-  }
+  },
 });
 
 export const replaceExercise = mutation({
   args: {
     workoutId: v.id("activeWorkouts"),
     exerciseIndex: v.number(),
-    exerciseId: v.id("exercises")
+    exerciseId: v.id("exercises"),
   },
   handler: async (ctx, { workoutId, exerciseIndex, exerciseId }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
-    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    if (activeWorkout.userId !== user._id)
+      throw new Error("You're not the owner!");
 
     const newExerciseId = await createOrTake(ctx, exerciseId);
     await removeOrReturn(ctx, activeWorkout.exercises[exerciseIndex].exercise);
     activeWorkout.exercises[exerciseIndex].exercise = newExerciseId;
 
     await activeWorkout.patch(activeWorkout);
-  }
+  },
 });
 
 export const setBodyweight = mutation({
@@ -274,8 +337,9 @@ export const setBodyweight = mutation({
   handler: async (ctx, { workoutId, bodyweight }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const activeWorkout = await ctx.table("activeWorkouts").getX(workoutId);
-    if (activeWorkout.userId !== user._id) throw new Error("You're not the owner!");
+    if (activeWorkout.userId !== user._id)
+      throw new Error("You're not the owner!");
     await activeWorkout.patch({ bodyweight });
     await ctx.table("users").getX(user._id).patch({ bodyweight });
-  }
-})
+  },
+});

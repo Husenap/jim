@@ -98,6 +98,7 @@ export const ExerciseSetValidator = v.object({
   exercise: v.id("immutableExercises"),
   note: v.optional(v.string()),
   sets: v.array(SetDataValidator),
+  superset: v.optional(v.number()),
 });
 export type ExerciseSetType = Infer<typeof ExerciseSetValidator>;
 
