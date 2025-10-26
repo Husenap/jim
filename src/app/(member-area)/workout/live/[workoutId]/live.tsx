@@ -10,18 +10,17 @@ import { useActiveWorkoutContext } from "@/components/active-workout/active-work
 import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import DebouncedInput from "@/components/input/debounced-input";
+import WorkoutSupersetChip from "@/components/workout/workout-superset-chip";
 import { ExerciseFieldsType, ExerciseSetType } from "@/convex/schema";
 import { zap } from "@/utils/vibration";
 import {
   isBodyweightExercise,
   setDetailString,
 } from "@/utils/workout/exercise";
-import GetSupersetColor from "@/utils/workout/superset";
 import {
   Avatar,
   Button,
   Checkbox,
-  Chip,
   cn,
   Modal,
   ModalBody,
@@ -100,9 +99,7 @@ export default function Live() {
               {isOwner && <ExerciseMenu exerciseIndex={i} />}
             </div>
             {e.superset !== undefined && (
-              <Chip color={GetSupersetColor(e.superset)} variant="shadow">
-                Superset
-              </Chip>
+              <WorkoutSupersetChip superset={e.superset} />
             )}
             {isOwner ? (
               <DebouncedInput

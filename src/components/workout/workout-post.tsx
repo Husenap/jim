@@ -12,6 +12,7 @@ import WorkoutStats from "@/components/workout/workout-stats";
 import WorkoutTitleDescription from "@/components/workout/workout-title-description";
 import WorkoutUser from "@/components/workout/workout-user";
 import { api } from "@/convex/_generated/api";
+import GetSupersetColor from "@/utils/workout/superset";
 import {
   Avatar,
   Button,
@@ -19,6 +20,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  cn,
   Divider,
   MenuItem,
 } from "@heroui/react";
@@ -91,8 +93,16 @@ export default function WorkoutPost() {
         <TypographyH2>Workout</TypographyH2>
         {workout.exercises.slice(0, 3).map((w, i) => (
           <div key={i} className="flex flex-row items-center gap-2">
+            {w.superset !== undefined && (
+              <span
+                className={cn(
+                  "h-10 w-1 rounded-full",
+                  `bg-${GetSupersetColor(w.superset)}`,
+                )}
+              />
+            )}
             <Avatar src={w.exercise.imageURL} size="md" />
-            {w.sets.length} sets of {w.exercise.name}
+            {w.sets.length} sets {w.exercise.name}
           </div>
         ))}
         {workout.exercises.length > 3 && (

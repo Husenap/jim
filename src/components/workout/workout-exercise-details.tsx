@@ -5,6 +5,7 @@ import {
 import { usePostContext } from "@/components/post/post-context";
 import { TypographyH2 } from "@/components/typography";
 import WorkoutSetIndicator from "@/components/workout/workout-set-indicator";
+import WorkoutSupersetChip from "@/components/workout/workout-superset-chip";
 import { type WorkoutDetailsType } from "@/convex/workouts";
 import { isBodyweightExercise } from "@/utils/workout/exercise";
 import {
@@ -27,7 +28,7 @@ export default function WorkoutExerciseDetails() {
     <>
       <TypographyH2>Workout</TypographyH2>
 
-      <div className="flex flex-col gap-8 pb-32">
+      <div className="flex flex-col gap-4 pb-32">
         {workout.exercises.map((e, i) => (
           <div key={i}>
             <Exercise exercise={e} />
@@ -56,6 +57,9 @@ function Exercise({
           </>
         )}
       </div>
+      {exercise.superset !== undefined && (
+        <WorkoutSupersetChip superset={exercise.superset} />
+      )}
       {exercise.note && (
         <span className="text-default-500 text-sm font-semibold">
           {exercise.note}
