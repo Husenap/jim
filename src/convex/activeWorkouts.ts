@@ -4,6 +4,7 @@ import { mutation, query } from "@/convex/functions";
 import { createOrTake, removeOrReturn } from "@/convex/immutableExercises";
 import { sendNotification } from "@/convex/notifications";
 import { SetTypeValidator } from "@/convex/schema";
+import { Ent } from "@/convex/types";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
 import { updateSetData } from "@/utils/workout/sets";
 import { v } from "convex/values";
@@ -155,6 +156,23 @@ export const updateNote = mutation({
   },
 });
 
+function removeSupersetIfSingle(
+  activeWorkout: Ent<"activeWorkouts">,
+  superset: number | undefined,
+) {
+  const count = activeWorkout.exercises.reduce(
+    (acc, e) => acc + (e.superset === superset ? 1 : 0),
+    0,
+  );
+  if (count === 1) {
+    for (let i = 0; i < activeWorkout.exercises.length; i++) {
+      if (activeWorkout.exercises[i].superset === superset) {
+        activeWorkout.exercises[i].superset = undefined;
+      }
+    }
+  }
+}
+
 export const updateSuperset = mutation({
   args: {
     id: v.id("activeWorkouts"),
@@ -180,21 +198,7 @@ export const updateSuperset = mutation({
     } else {
       const superset = activeWorkout.exercises[exerciseIndex].superset;
       activeWorkout.exercises[exerciseIndex].superset = undefined;
-      if (
-        activeWorkout.exercises.reduce(
-          (acc, e) => acc + (e.superset === superset ? 1 : 0),
-          0,
-        ) === 1
-      ) {
-        for (let i = 0; i < activeWorkout.exercises.length; i++) {
-          if (
-            i !== exerciseIndex &&
-            activeWorkout.exercises[i].superset === superset
-          ) {
-            activeWorkout.exercises[i].superset = undefined;
-          }
-        }
-      }
+      removeSupersetIfSingle(activeWorkout, superset);
     }
 
     await activeWorkout.patch(activeWorkout);
@@ -299,11 +303,12 @@ export const removeExercise = mutation({
     if (activeWorkout.userId !== user._id)
       throw new Error("You're not the owner!");
 
-    await Promise.all(
-      activeWorkout.exercises
-        .splice(exerciseIndex, 1)
-        .map(async (e) => removeOrReturn(ctx, e.exercise)),
-    );
+    const [removedExercise] = activeWorkout.exercises.splice(exerciseIndex, 1);
+    await removeOrReturn(ctx, removedExercise.exercise);
+
+    if (removedExercise.superset !== undefined) {
+      removeSupersetIfSingle(activeWorkout, removedExercise.superset);
+    }
 
     await activeWorkout.patch(activeWorkout);
   },
