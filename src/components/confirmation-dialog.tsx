@@ -17,7 +17,7 @@ export default function ConfirmationDialog({
   disclosure: UseDisclosureReturn;
   titleText: string;
   confirmText: string;
-  cancelText: string;
+  cancelText?: string;
   onConfirm?: () => void;
 }) {
   return (
@@ -46,7 +46,7 @@ export default function ConfirmationDialog({
                 >
                   {confirmText}
                 </Button>
-                <Button onPress={onClose}>{cancelText}</Button>
+                <Button onPress={onClose}>{cancelText ?? "Cancel"}</Button>
               </ModalBody>
             </>
           )}

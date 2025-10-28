@@ -95,7 +95,6 @@ function WorkoutDiscardButton() {
         disclosure={disclosure}
         titleText="Are you sure you want to discard the active workout?"
         confirmText="Discard"
-        cancelText="Cancel"
         onConfirm={removeActiveWorkout}
       />
     </>
