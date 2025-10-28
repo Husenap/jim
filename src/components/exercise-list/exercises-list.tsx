@@ -7,6 +7,7 @@ import { Doc } from "@/convex/_generated/dataModel";
 import { Avatar, Button } from "@heroui/react";
 import { useQuery } from "convex/react";
 import { ChevronRight } from "lucide-react";
+import { useCallback, useMemo } from "react";
 
 export default function ExercisesList({
   onSelect,
@@ -16,19 +17,40 @@ export default function ExercisesList({
   const builtinExercises = useQuery(api.exercises.builtin) ?? [];
   const customExercises = useQuery(api.exercises.custom) ?? [];
 
-  const { search } = useExercisesContext();
+  const { search, muscleGroup, equipment } = useExercisesContext();
 
-  const filter = (exercise: Doc<"exercises">) => {
-    if (search.length > 0) {
-      if (exercise.name.toLowerCase().indexOf(search.toLowerCase()) == -1) {
-        return false;
+  const exerciseFilter = useCallback(
+    (exercise: Doc<"exercises">) => {
+      if (search.length > 0) {
+        if (exercise.name.toLowerCase().indexOf(search.toLowerCase()) == -1) {
+          return false;
+        }
       }
-    }
-    return true;
-  };
+      if (muscleGroup.size > 0) {
+        if (
+          muscleGroup.intersection(
+            new Set(exercise.muscleGroups.map((mg) => mg.muscleGroup)),
+          ).size === 0
+        ) {
+          return false;
+        }
+      }
+      if (equipment.size > 0) {
+        if (!equipment.has(exercise.equipment)) {
+          return false;
+        }
+      }
+      return true;
+    },
+    [search, muscleGroup, equipment],
+  );
 
-  const filteredBuiltinExercises = builtinExercises?.filter(filter);
-  const filteredCustomExercises = customExercises?.filter(filter);
+  const filteredBuiltinExercises = useMemo(() => {
+    return builtinExercises?.filter(exerciseFilter);
+  }, [builtinExercises, exerciseFilter]);
+  const filteredCustomExercises = useMemo(() => {
+    return customExercises?.filter(exerciseFilter);
+  }, [customExercises, exerciseFilter]);
 
   return (
     <>
@@ -43,7 +65,7 @@ export default function ExercisesList({
       )}
       {filteredBuiltinExercises.length > 0 && (
         <>
-          <TypographyH2>Built in exercises</TypographyH2>
+          <TypographyH2>Built-in exercises</TypographyH2>
           <ExerciseListCategory
             exercises={filteredBuiltinExercises}
             onSelect={onSelect}
@@ -79,7 +101,7 @@ function ExerciseListCategory({
                 <h2 className="w-full overflow-hidden text-ellipsis">
                   {exercise.name}
                 </h2>
-                <span className="w-full overflow-hidden text-ellipsis text-default-400">
+                <span className="text-default-400 w-full overflow-hidden text-ellipsis">
                   {exercise.muscleGroups
                     .toSorted((a, b) => b.weight - a.weight)
                     .map((mg) => mg.muscleGroup)

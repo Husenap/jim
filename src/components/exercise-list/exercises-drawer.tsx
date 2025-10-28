@@ -22,16 +22,16 @@ export default function ExercisesDrawer({
   return (
     <>
       {children?.(onOpen)}
-      <Exercises>
-        <Drawer
-          placement="right"
-          hideCloseButton
-          size="full"
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        >
-          <DrawerContent>
-            {(onClose) => (
+      <Drawer
+        placement="right"
+        hideCloseButton
+        size="full"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
+        <DrawerContent>
+          {(onClose) => (
+            <Exercises>
               <DrawerPageContainer
                 topNavbar={<ExercisesNavbar onClose={onClose} title={title} />}
               >
@@ -39,10 +39,10 @@ export default function ExercisesDrawer({
                   onSelect={onSelect ? (e) => onSelect(e, onClose) : undefined}
                 />
               </DrawerPageContainer>
-            )}
-          </DrawerContent>
-        </Drawer>
-      </Exercises>
+            </Exercises>
+          )}
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }
