@@ -1,15 +1,8 @@
 "use client";
 
+import ConfirmationDialog from "@/components/confirmation-dialog";
 import { api } from "@/convex/_generated/api";
-import {
-  Button,
-  Divider,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  useDisclosure,
-} from "@heroui/react";
+import { Button, Divider, useDisclosure } from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
 import { Dumbbell, Home, Play, User, X } from "lucide-react";
 import { Link, useTransitionRouter } from "next-view-transitions";
@@ -84,7 +77,7 @@ export default function BottomNavbar() {
 }
 
 function WorkoutDiscardButton() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const disclosure = useDisclosure();
   const removeActiveWorkout = useMutation(api.activeWorkouts.remove);
 
   return (
@@ -94,38 +87,17 @@ function WorkoutDiscardButton() {
         variant="light"
         size="lg"
         startContent={<X size={20} />}
-        onPress={onOpen}
+        onPress={disclosure.onOpen}
       >
         Discard
       </Button>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        placement="center"
-        backdrop="blur"
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>
-                Are you sure you want to discard the active workout?
-              </ModalHeader>
-              <ModalBody>
-                <Button
-                  color="danger"
-                  onPress={() => {
-                    removeActiveWorkout();
-                    onClose();
-                  }}
-                >
-                  Discard workout
-                </Button>
-                <Button onPress={onClose}>Cancel</Button>
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <ConfirmationDialog
+        disclosure={disclosure}
+        titleText="Are you sure you want to discard the active workout?"
+        confirmText="Discard"
+        cancelText="Cancel"
+        onConfirm={removeActiveWorkout}
+      />
     </>
   );
 }
