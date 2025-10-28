@@ -156,7 +156,7 @@ const schema = defineEntSchema({
     description: v.optional(v.string()),
     exercises: v.array(ExerciseSetValidator),
     bodyweight: v.optional(v.number()),
-    startTime: v.optional(v.number()),
+    startTime: v.number(),
   })
     .edge("user")
     .edges("comments", { ref: "workoutId" })

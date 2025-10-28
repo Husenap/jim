@@ -1,6 +1,7 @@
 "use client";
 
 import BottomNavbar from "@/app/(member-area)/bottom-navbar";
+import ConfirmationDialog from "@/components/confirmation-dialog";
 import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
@@ -23,6 +24,7 @@ import {
   ModalBody,
   ModalContent,
   Spinner,
+  useDisclosure,
 } from "@heroui/react";
 import { useMutation, useQuery } from "convex/react";
 import {
@@ -41,7 +43,6 @@ import { useState } from "react";
 
 export default function Page() {
   const routines = useQuery(api.routines.custom) ?? [];
-  const removeRoutine = useMutation(api.routines.remove);
   const createWorkout = useMutation(api.activeWorkouts.create);
   const { push } = useRouter();
 
@@ -96,47 +97,7 @@ export default function Page() {
                   {r.exercises.map((e) => e.name).join(", ")}
                 </TypographyH4>
               </div>
-              <DrawerMenu>
-                <DrawerMenuTrigger>
-                  <Button isIconOnly variant="light" size="md">
-                    <Ellipsis size={20} />
-                  </Button>
-                </DrawerMenuTrigger>
-                <DrawerMenuContent ariaLabel="Routine Menu">
-                  <MenuItem
-                    key="share"
-                    className="under-construction"
-                    startContent={<Share />}
-                  >
-                    Share routine
-                  </MenuItem>
-                  <MenuItem
-                    key="duplicate"
-                    className="under-construction"
-                    startContent={<Copy />}
-                  >
-                    Duplicate routine
-                  </MenuItem>
-                  <MenuItem
-                    key="edit"
-                    className="under-construction"
-                    startContent={<Pen />}
-                  >
-                    Edit routine
-                  </MenuItem>
-                  <MenuItem
-                    key="delete"
-                    color="danger"
-                    className="text-danger"
-                    onPress={() => {
-                      removeRoutine({ id: r._id });
-                    }}
-                    startContent={<X />}
-                  >
-                    Remove routine
-                  </MenuItem>
-                </DrawerMenuContent>
-              </DrawerMenu>
+              <RoutineMenu id={r._id} />
             </CardHeader>
             <CardFooter>
               <Button
@@ -150,6 +111,7 @@ export default function Page() {
           </Card>
         ))}
       </PageContainer>
+
       <Modal
         isOpen={isStarting}
         isDismissable={false}
@@ -166,6 +128,63 @@ export default function Page() {
           </ModalBody>
         </ModalContent>
       </Modal>
+    </>
+  );
+}
+function RoutineMenu({ id }: { id: Id<"routines"> }) {
+  const removeRoutine = useMutation(api.routines.remove);
+
+  const removeDisclosure = useDisclosure();
+
+  return (
+    <>
+      <DrawerMenu>
+        <DrawerMenuTrigger>
+          <Button isIconOnly variant="light" size="md">
+            <Ellipsis size={20} />
+          </Button>
+        </DrawerMenuTrigger>
+        <DrawerMenuContent ariaLabel="Routine Menu">
+          <MenuItem
+            key="share"
+            className="under-construction"
+            startContent={<Share />}
+          >
+            Share routine
+          </MenuItem>
+          <MenuItem
+            key="duplicate"
+            className="under-construction"
+            startContent={<Copy />}
+          >
+            Duplicate routine
+          </MenuItem>
+          <MenuItem
+            key="edit"
+            className="under-construction"
+            startContent={<Pen />}
+          >
+            Edit routine
+          </MenuItem>
+          <MenuItem
+            key="delete"
+            color="danger"
+            className="text-danger"
+            onPress={removeDisclosure.onOpen}
+            startContent={<X />}
+          >
+            Remove routine
+          </MenuItem>
+        </DrawerMenuContent>
+      </DrawerMenu>
+      <ConfirmationDialog
+        disclosure={removeDisclosure}
+        titleText="Are you sure you want to remove this routine? This action cannot be undone."
+        confirmText="Remove routine"
+        onConfirm={() => {
+          removeRoutine({ id });
+        }}
+      />
     </>
   );
 }
