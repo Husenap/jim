@@ -32,7 +32,7 @@ export default function ConfirmationDialog({
           {(onClose) => (
             <>
               <ModalHeader>{titleText}</ModalHeader>
-              <ModalBody>
+              <ModalBody className="py-4">
                 <Button
                   color="danger"
                   onPress={

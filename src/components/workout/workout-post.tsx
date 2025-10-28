@@ -1,3 +1,4 @@
+import ConfirmationDialog from "@/components/confirmation-dialog";
 import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
@@ -23,6 +24,7 @@ import {
   cn,
   Divider,
   MenuItem,
+  useDisclosure,
 } from "@heroui/react";
 import { useMutation } from "convex/react";
 import { Ellipsis, X } from "lucide-react";
@@ -54,6 +56,7 @@ export default function WorkoutPost() {
   );
 
   const { push } = useTransitionRouter();
+  const removeDisclosure = useDisclosure();
 
   return (
     <Card radius="none">
@@ -74,9 +77,7 @@ export default function WorkoutPost() {
                   color="danger"
                   className="text-danger"
                   title="Remove workout"
-                  onPress={() => {
-                    removeWorkout({ workoutId: workout._id });
-                  }}
+                  onPress={removeDisclosure.onOpen}
                 />
               </DrawerMenuContent>
             </DrawerMenu>
@@ -120,6 +121,14 @@ export default function WorkoutPost() {
       </CardFooter>
       <WorkoutCommentsPreview />
       <WorkoutCommentsDrawer />
+      <ConfirmationDialog
+        disclosure={removeDisclosure}
+        titleText="Are you sure you want to remove this workout? This action cannot be undone."
+        confirmText="Remove workout"
+        onConfirm={() => {
+          removeWorkout({ workoutId: workout._id });
+        }}
+      />
     </Card>
   );
 }
