@@ -37,14 +37,13 @@ import {
   Share,
   X,
 } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import { useState } from "react";
 
 export default function Page() {
   const routines = useQuery(api.routines.custom) ?? [];
   const createWorkout = useMutation(api.activeWorkouts.create);
-  const { push } = useRouter();
+  const { push } = useTransitionRouter();
 
   const [isStarting, setIsStarting] = useState(false);
 
@@ -136,6 +135,8 @@ function RoutineMenu({ id }: { id: Id<"routines"> }) {
 
   const removeDisclosure = useDisclosure();
 
+  const { push } = useTransitionRouter();
+
   return (
     <>
       <DrawerMenu>
@@ -161,8 +162,10 @@ function RoutineMenu({ id }: { id: Id<"routines"> }) {
           </MenuItem>
           <MenuItem
             key="edit"
-            className="under-construction"
             startContent={<Pen />}
+            onPress={() => {
+              push(`/workout/edit-routine/${id}`);
+            }}
           >
             Edit routine
           </MenuItem>

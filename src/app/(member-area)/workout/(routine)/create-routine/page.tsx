@@ -1,54 +1,62 @@
 "use client";
-import Navbar from "@/app/(member-area)/workout/create-routine/navbar";
+import Navbar from "@/app/(member-area)/workout/(routine)/navbar";
 import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
 import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import PageContainer from "@/components/page-container";
+import Routine from "@/components/routine/routine";
+import { useRoutineContext } from "@/components/routine/routine-context";
+import RoutineTitle from "@/components/routine/routine-title";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
-import useLocalStorage from "@/utils/use-local-storage";
 import {
   Avatar,
   Button,
   Divider,
-  Form,
-  Input,
   MenuItem,
   useDisclosure,
 } from "@heroui/react";
 import { useMutation } from "convex/react";
 import { Dumbbell, Ellipsis, Plus, Replace, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useTransitionRouter } from "next-view-transitions";
 import { ReactSortable } from "react-sortablejs";
+import useLocalStorage from "use-local-storage";
 import { v4 as uuidv4 } from "uuid";
 
 export default function Page() {
-  const { back } = useRouter();
+  const [title, setTitle] = useLocalStorage("jim-create-routine-title", "");
+
+  return (
+    <Routine
+      props={{
+        title,
+        setTitle,
+      }}
+    >
+      <PageContainerWithRoutine />
+    </Routine>
+  );
+}
+
+function PageContainerWithRoutine() {
+  const { back } = useTransitionRouter();
 
   const replaceDisclosure = useDisclosure();
 
-  const [title, setTitle] = useLocalStorage("jim-create-routine-title", "");
   const [exercises, setExercises] = useLocalStorage(
     "jim-create-routine-exercises",
     [] as { exercise: Doc<"exercises">; id: string }[],
   );
-  const [errors, setErrors] = useState({} as Record<string, string>);
   const [replaceId, setReplaceId] = useLocalStorage<string | null>(
     "jim-create-routine-replaceId",
     null,
   );
+  const { title, errors, setErrors } = useRoutineContext();
 
   const createRoutine = useMutation(api.routines.create);
 
   const onSave = async () => {
-    if (title === "") {
-      setErrors({
-        title: "Your routine needs a title.",
-      });
-      return;
-    }
     if (exercises.length === 0) {
       setErrors({
         exercises: "Your routine needs at least one exercise.",
@@ -82,16 +90,17 @@ export default function Page() {
   };
 
   return (
-    <PageContainer topNavbar={<Navbar onCancel={back} onSave={onSave} />}>
-      <Form validationErrors={errors}>
-        <Input
-          name="title"
-          placeholder="Routine title"
-          size="lg"
-          value={title}
-          onValueChange={setTitle}
+    <PageContainer
+      topNavbar={
+        <Navbar
+          titleText="Create Routine"
+          confirmText="Create"
+          onCancel={back}
+          onConfirm={onSave}
         />
-      </Form>
+      }
+    >
+      <RoutineTitle />
       <Divider />
       {exercises.length === 0 && (
         <div className="flex flex-col items-center gap-2 py-8">
