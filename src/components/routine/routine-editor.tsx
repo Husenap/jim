@@ -4,9 +4,15 @@ import RoutineAddExerciseButton from "@/components/routine/routine-add-exercise-
 import { useRoutineContext } from "@/components/routine/routine-context";
 import RoutineExercises from "@/components/routine/routine-exercises";
 import RoutineTitle from "@/components/routine/routine-title";
+import { Id } from "@/convex/_generated/dataModel";
 import { addToast, Divider } from "@heroui/react";
 import { Dumbbell } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
+
+export type RoutineData = {
+  name: string;
+  exercises: Id<"exercises">[];
+};
 
 export default function RoutineEditor({
   titleText,
@@ -15,7 +21,7 @@ export default function RoutineEditor({
 }: {
   titleText: string;
   confirmText: string;
-  onConfirm: () => void;
+  onConfirm: (routineData: RoutineData) => Promise<void>;
 }) {
   const { back } = useTransitionRouter();
 
@@ -37,7 +43,10 @@ export default function RoutineEditor({
     }
 
     try {
-      await onConfirm();
+      await onConfirm({
+        name: title,
+        exercises: exercises.map((e) => e.exercise._id),
+      });
       back();
     } catch {
       addToast({

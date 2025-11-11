@@ -1,6 +1,8 @@
 "use client";
 import Routine from "@/components/routine/routine";
-import RoutineEditor from "@/components/routine/routine-editor";
+import RoutineEditor, {
+  RoutineData,
+} from "@/components/routine/routine-editor";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
@@ -16,11 +18,8 @@ export default function Page() {
 
   const createRoutine = useMutation(api.routines.create);
 
-  const onSave = async () => {
-    await createRoutine({
-      name: title,
-      exercises: exercises.map((e) => e.exercise._id),
-    });
+  const onSave = async (routineData: RoutineData) => {
+    await createRoutine(routineData);
     setTitle("");
     setExercises([]);
   };

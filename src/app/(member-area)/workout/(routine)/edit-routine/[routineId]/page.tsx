@@ -2,7 +2,9 @@
 
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import Routine from "@/components/routine/routine";
-import RoutineEditor from "@/components/routine/routine-editor";
+import RoutineEditor, {
+  RoutineData,
+} from "@/components/routine/routine-editor";
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { useQueryWithStatus } from "@/utils/use-query-with-status";
@@ -39,11 +41,10 @@ export default function Page({
     }
   }, [data]);
 
-  const onUpdate = async () => {
+  const onUpdate = async (routineData: RoutineData) => {
     await updateRoutine({
       routineId,
-      name: title,
-      exercises: exercises.map((e) => e.exercise._id),
+      ...routineData,
     });
   };
 
