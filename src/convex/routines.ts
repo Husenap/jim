@@ -32,6 +32,26 @@ export const create = mutation({
   },
 });
 
+export const update = mutation({
+  args: {
+    routineId: v.id("routines"),
+    name: v.string(),
+    exercises: v.array(v.id("exercises")),
+  },
+  handler: async (ctx, { routineId, name, exercises }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const routine = await ctx.table("routines").getX(routineId);
+    if (routine.ownerId !== user._id) {
+      throw new Error("You're not the owner of this routine!");
+    }
+
+    await routine.patch({
+      name,
+      exercises,
+    });
+  },
+});
+
 export const remove = mutation({
   args: {
     id: v.id("routines"),
@@ -57,9 +77,9 @@ export const get = query({
     }
     return {
       ...routine,
-      exercises: (
-        await ctx.table("exercises").getMany(routine.exercises)
-      ).filter((e) => e !== null),
+      exercises: (await ctx.table("exercises").getMany(routine.exercises))
+        .filter((e) => e !== null)
+        .map((e) => e.doc()),
     };
   },
 });

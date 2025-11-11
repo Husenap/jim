@@ -6,6 +6,8 @@ import { Doc } from "@/convex/_generated/dataModel";
 import { Drawer, DrawerContent, useDisclosure } from "@heroui/react";
 import type { UseDisclosureReturn } from "@heroui/use-disclosure";
 
+export type ExerciseDrawerSelectCallback = (exercise: Doc<"exercises">) => void;
+
 export default function ExercisesDrawer({
   children,
   title,
@@ -14,7 +16,7 @@ export default function ExercisesDrawer({
 }: {
   children?: (onOpen: () => void) => React.ReactNode;
   title?: string;
-  onSelect?: (exercise: Doc<"exercises">, onClose: () => void) => void;
+  onSelect?: ExerciseDrawerSelectCallback;
   disclosure?: UseDisclosureReturn;
 }) {
   const { isOpen, onOpen, onOpenChange } = disclosure ?? useDisclosure();
@@ -36,7 +38,14 @@ export default function ExercisesDrawer({
                 topNavbar={<ExercisesNavbar onClose={onClose} title={title} />}
               >
                 <ExercisesList
-                  onSelect={onSelect ? (e) => onSelect(e, onClose) : undefined}
+                  onSelect={
+                    onSelect
+                      ? (e) => {
+                          onSelect(e);
+                          onClose();
+                        }
+                      : undefined
+                  }
                 />
               </DrawerPageContainer>
             </Exercises>

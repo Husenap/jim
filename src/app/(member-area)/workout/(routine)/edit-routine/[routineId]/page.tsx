@@ -1,17 +1,14 @@
 "use client";
 
-import Navbar from "@/app/(member-area)/workout/(routine)/navbar";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
-import PageContainer from "@/components/page-container";
 import Routine from "@/components/routine/routine";
-import RoutineTitle from "@/components/routine/routine-title";
+import RoutineEditor from "@/components/routine/routine-editor";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import { useQueryWithStatus } from "@/utils/use-query-with-status";
-import { FunctionReturnType } from "convex/server";
-import { useTransitionRouter } from "next-view-transitions";
-import { use } from "react";
-import useLocalStorage from "use-local-storage";
+import { useMutation } from "convex/react";
+import { use, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Page({
   params,
@@ -20,15 +17,40 @@ export default function Page({
 }) {
   const { routineId } = use(params);
 
-  const [title, setTitle] = useLocalStorage("jim-create-routine-title", "");
-
   const { data, isPending, isError } = useQueryWithStatus(api.routines.get, {
     routineId,
   });
+  const updateRoutine = useMutation(api.routines.update);
+
+  const [title, setTitle] = useState<string>("");
+  const [exercises, setExercises] = useState(
+    [] as { exercise: Doc<"exercises">; id: string }[],
+  );
+
+  useEffect(() => {
+    if (data) {
+      setTitle(data.name);
+      setExercises(
+        data.exercises.map((e) => ({
+          exercise: e,
+          id: uuidv4(),
+        })),
+      );
+    }
+  }, [data]);
+
+  const onUpdate = async () => {
+    await updateRoutine({
+      routineId,
+      name: title,
+      exercises: exercises.map((e) => e.exercise._id),
+    });
+  };
 
   if (isError) {
     return <span>Failed to load routine!</span>;
   }
+
   if (isPending) {
     return <FullscreenSpinner />;
   }
@@ -38,37 +60,15 @@ export default function Page({
       props={{
         title,
         setTitle,
+        exercises,
+        setExercises,
       }}
     >
-      <PageContainerWithRoutine data={data} />
+      <RoutineEditor
+        titleText="Edit Routine"
+        confirmText="Update"
+        onConfirm={onUpdate}
+      />
     </Routine>
-  );
-}
-
-function PageContainerWithRoutine({
-  data,
-}: {
-  data: FunctionReturnType<typeof api.routines.get>;
-}) {
-  const { back } = useTransitionRouter();
-
-  const onUpdate = async () => {
-    console.log("updating routine...");
-  };
-
-  return (
-    <PageContainer
-      topNavbar={
-        <Navbar
-          titleText="Edit Routine"
-          confirmText="Update"
-          onCancel={back}
-          onConfirm={onUpdate}
-        />
-      }
-    >
-      <RoutineTitle />
-      {data.name}
-    </PageContainer>
   );
 }

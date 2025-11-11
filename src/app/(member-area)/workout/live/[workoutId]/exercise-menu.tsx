@@ -28,16 +28,12 @@ export default function ExerciseMenu({
   const supersetDisclosure = useDisclosure();
   const exercisesDrawerDisclosure = useDisclosure();
 
-  const onReplaceExercise = async (
-    e: Doc<"exercises">,
-    onClose: () => void,
-  ) => {
+  const onReplaceExercise = async (e: Doc<"exercises">) => {
     replaceExercise({
       workoutId: activeWorkout!._id,
       exerciseIndex,
       exerciseId: e._id,
     });
-    onClose();
   };
 
   return (

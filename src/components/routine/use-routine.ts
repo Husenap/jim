@@ -1,8 +1,17 @@
-import { useMemo, useState } from "react";
+import { Doc } from "@/convex/_generated/dataModel";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
+type Setter<T> = Dispatch<SetStateAction<T>>;
+
+type ExerciseItem = {
+  exercise: Doc<"exercises">;
+  id: string;
+};
 
 export type UseRoutineProps = {
   title: string;
-  setTitle: (title: string) => void;
+  setTitle: Setter<string>;
+  exercises: ExerciseItem[];
+  setExercises: Setter<ExerciseItem[]>;
 };
 
 export function useRoutine(props: UseRoutineProps) {
@@ -12,10 +21,9 @@ export function useRoutine(props: UseRoutineProps) {
     () => ({
       errors,
       setErrors,
-      title: props.title,
-      setTitle: props.setTitle,
+      ...props,
     }),
-    [errors, props.title, props.setTitle],
+    [errors, props],
   );
 
   return context;
