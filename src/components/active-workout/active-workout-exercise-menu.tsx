@@ -1,6 +1,6 @@
-import BodyweightModal from "@/app/(member-area)/workout/live/[workoutId]/(dialogs)/bodyweight-modal";
-import SupersetDrawer from "@/app/(member-area)/workout/live/[workoutId]/(dialogs)/superset-drawer";
+import ActiveWorkoutBodyweightModal from "@/components/active-workout/active-workout-bodyweight-modal";
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
+import ActiveWorkoutSupersetDrawer from "@/components/active-workout/active-workout-superset-drawer";
 import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
@@ -101,12 +101,15 @@ export default function ExerciseMenu({
           />
         </DrawerMenuContent>
       </DrawerMenu>
+
       <ExercisesDrawer
         onSelect={onReplaceExercise}
         disclosure={exercisesDrawerDisclosure}
       />
-      <BodyweightModal disclosure={bodyweightDisclosure} />
-      <SupersetDrawer
+
+      <ActiveWorkoutBodyweightModal disclosure={bodyweightDisclosure} />
+
+      <ActiveWorkoutSupersetDrawer
         disclosure={supersetDisclosure}
         exerciseIndex={exerciseIndex}
       />

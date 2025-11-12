@@ -1,5 +1,5 @@
-import { SetRowType } from "@/app/(member-area)/workout/live/[workoutId]/types";
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
+import { SetRowType } from "@/components/active-workout/active-workout-types";
 import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
@@ -43,7 +43,7 @@ const setTypeButtons: {
   },
 ];
 
-export default function SetMenu({
+export default function ActiveWorkoutSetMenu({
   item,
   rows,
   exerciseIndex,
