@@ -13,7 +13,7 @@ export default function Page() {
   const [title, setTitle] = useLocalStorage("jim-create-routine-title", "");
   const [exercises, setExercises] = useLocalStorage(
     "jim-create-routine-exercises",
-    [] as { exercise: Doc<"exercises">; id: string }[],
+    [] as { exercise: Doc<"exercises">; id: string; superset?: number }[],
   );
 
   const createRoutine = useMutation(api.routines.create);

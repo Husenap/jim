@@ -5,6 +5,7 @@ type Setter<T> = Dispatch<SetStateAction<T>>;
 type ExerciseItem = {
   exercise: Doc<"exercises">;
   id: string;
+  superset?: number;
 };
 
 export type UseRoutineProps = {
