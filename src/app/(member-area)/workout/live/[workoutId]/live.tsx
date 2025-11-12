@@ -136,10 +136,9 @@ export default function Live() {
       {isOwner && (
         <ExercisesDrawer
           title="Add Exercise"
-          onSelect={(e, onClose) => {
-            addExercise({ workoutId: activeWorkout._id, exerciseId: e._id });
-            onClose();
-          }}
+          onSelect={(e) =>
+            addExercise({ workoutId: activeWorkout._id, exerciseId: e._id })
+          }
         >
           {(onOpen) => (
             <Button

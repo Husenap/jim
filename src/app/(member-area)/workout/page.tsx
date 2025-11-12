@@ -5,6 +5,7 @@ import ConfirmationDialog from "@/components/confirmation-dialog";
 import DrawerMenu from "@/components/drawer-menu/drawer-menu";
 import DrawerMenuContent from "@/components/drawer-menu/drawer-menu-content";
 import DrawerMenuTrigger from "@/components/drawer-menu/drawer-menu-trigger";
+import FullscreenSpinner from "@/components/fullscreen-spinner";
 import PageContainer from "@/components/page-container";
 import {
   TypographyH1,
@@ -14,7 +15,9 @@ import {
 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import {
+  addToast,
   Button,
   Card,
   CardFooter,
@@ -26,7 +29,7 @@ import {
   Spinner,
   useDisclosure,
 } from "@heroui/react";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import {
   Copy,
   Ellipsis,
@@ -37,24 +40,31 @@ import {
   Share,
   X,
 } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import { useState } from "react";
 
 export default function Page() {
-  const routines = useQuery(api.routines.custom) ?? [];
+  const {
+    data: routines,
+    isPending,
+    isSuccess,
+  } = useQueryWithStatus(api.routines.custom);
   const createWorkout = useMutation(api.activeWorkouts.create);
-  const { push } = useRouter();
+  const { push } = useTransitionRouter();
 
   const [isStarting, setIsStarting] = useState(false);
 
   const startWorkout = async (id?: Id<"routines">) => {
+    setIsStarting(true);
     try {
-      setIsStarting(true);
       const workoutId = await createWorkout({ id });
       push(`/workout/live/${workoutId}`);
     } catch {
       setIsStarting(false);
+      addToast({
+        title: "Failed to start workout",
+        color: "danger",
+      });
     }
   };
 
@@ -88,28 +98,30 @@ export default function Page() {
           </Button>
         </div>
         <TypographyH3>My Routines</TypographyH3>
-        {routines.map((r) => (
-          <Card key={r._id} fullWidth as="div">
-            <CardHeader className="items-start justify-between">
-              <div>
-                <TypographyH1>{r.name}</TypographyH1>
-                <TypographyH4>
-                  {r.exercises.map((e) => e.name).join(", ")}
-                </TypographyH4>
-              </div>
-              <RoutineMenu id={r._id} />
-            </CardHeader>
-            <CardFooter>
-              <Button
-                fullWidth
-                color="primary"
-                onPress={() => startWorkout(r._id)}
-              >
-                Start Routine
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+        {isPending && <FullscreenSpinner />}
+        {isSuccess &&
+          routines.map((r) => (
+            <Card key={r._id} fullWidth as="div">
+              <CardHeader className="items-start justify-between">
+                <div>
+                  <TypographyH1>{r.name}</TypographyH1>
+                  <TypographyH4>
+                    {r.exercises.map((e) => e.name).join(", ")}
+                  </TypographyH4>
+                </div>
+                <RoutineMenu id={r._id} />
+              </CardHeader>
+              <CardFooter>
+                <Button
+                  fullWidth
+                  color="primary"
+                  onPress={() => startWorkout(r._id)}
+                >
+                  Start Routine
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
       </PageContainer>
 
       <Modal
@@ -136,6 +148,8 @@ function RoutineMenu({ id }: { id: Id<"routines"> }) {
 
   const removeDisclosure = useDisclosure();
 
+  const { push } = useTransitionRouter();
+
   return (
     <>
       <DrawerMenu>
@@ -161,8 +175,10 @@ function RoutineMenu({ id }: { id: Id<"routines"> }) {
           </MenuItem>
           <MenuItem
             key="edit"
-            className="under-construction"
             startContent={<Pen />}
+            onPress={() => {
+              push(`/workout/edit-routine/${id}`);
+            }}
           >
             Edit routine
           </MenuItem>

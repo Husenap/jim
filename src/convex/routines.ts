@@ -8,19 +8,19 @@ export const custom = query({
     const user = await getCurrentUser(ctx);
     if (!user) return [];
 
-    return user.edge("routines")
-      .map(async (routine) => ({
-        ...routine,
-        exercises: (await ctx.table("exercises").getMany(routine.exercises)).filter(e => e !== null)
-      }));
-  }
+    return user.edge("routines").map(async (routine) => ({
+      ...routine,
+      exercises: (
+        await ctx.table("exercises").getMany(routine.exercises)
+      ).filter((e) => e !== null),
+    }));
+  },
 });
-
 
 export const create = mutation({
   args: {
     name: v.string(),
-    exercises: v.array(v.id("exercises"))
+    exercises: v.array(v.id("exercises")),
   },
   handler: async (ctx, { name, exercises }) => {
     const user = await getCurrentUserOrThrow(ctx);
@@ -29,7 +29,27 @@ export const create = mutation({
       exercises,
       ownerId: user._id,
     });
-  }
+  },
+});
+
+export const update = mutation({
+  args: {
+    routineId: v.id("routines"),
+    name: v.string(),
+    exercises: v.array(v.id("exercises")),
+  },
+  handler: async (ctx, { routineId, name, exercises }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const routine = await ctx.table("routines").getX(routineId);
+    if (routine.ownerId !== user._id) {
+      throw new Error("You're not the owner of this routine!");
+    }
+
+    await routine.patch({
+      name,
+      exercises,
+    });
+  },
 });
 
 export const remove = mutation({
@@ -42,5 +62,24 @@ export const remove = mutation({
     if (routine.ownerId === user._id) {
       await routine.delete();
     }
-  }
+  },
+});
+
+export const get = query({
+  args: {
+    routineId: v.id("routines"),
+  },
+  handler: async (ctx, { routineId }) => {
+    const user = await getCurrentUserOrThrow(ctx);
+    const routine = await ctx.table("routines").getX(routineId);
+    if (routine.ownerId !== user._id) {
+      throw new Error("You're not the owner of this routine!");
+    }
+    return {
+      ...routine,
+      exercises: (await ctx.table("exercises").getMany(routine.exercises))
+        .filter((e) => e !== null)
+        .map((e) => e.doc()),
+    };
+  },
 });
