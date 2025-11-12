@@ -19,27 +19,31 @@ export const create = mutation({
       throw new Error("User already has active workout!");
     }
 
-    const exercises: Id<"immutableExercises">[] = [];
+    let exercises: {
+      exercise: Id<"immutableExercises">;
+      superset?: number;
+    }[] = [];
 
     let title = "Workout";
 
     if (id) {
       const routine = await ctx.table("routines").getX(id);
       title = routine.name;
-      for (const re of routine.exercises) {
-        try {
-          const immutableExerciseId = await createOrTake(ctx, re);
-          exercises.push(immutableExerciseId);
-        } catch {}
-      }
+      exercises = await Promise.all(
+        routine.exercises.map(async (re, i) => ({
+          exercise: await createOrTake(ctx, re),
+          superset: routine.exercisesData?.[i].superset,
+        })),
+      );
     }
 
     const newActiveWorkout = await ctx.table("activeWorkouts").insert({
       title,
       userId: user._id,
       bodyweight: user.bodyweight,
-      exercises: exercises.map((e) => ({
-        exercise: e,
+      exercises: exercises.map(({ exercise, superset }) => ({
+        exercise,
+        superset,
         sets: [
           {
             type: "normal",
@@ -158,7 +162,7 @@ export const updateNote = mutation({
 
 function removeSupersetIfSingle(
   activeWorkout: Ent<"activeWorkouts">,
-  superset: number | undefined,
+  superset?: number,
 ) {
   const count = activeWorkout.exercises.reduce(
     (acc, e) => acc + (e.superset === superset ? 1 : 0),

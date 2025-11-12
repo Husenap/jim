@@ -1,4 +1,5 @@
 import { mutation, query } from "@/convex/functions";
+import { RoutineExerciseDataValidator } from "@/convex/schema";
 import { getCurrentUser, getCurrentUserOrThrow } from "@/convex/users";
 import { v } from "convex/values";
 
@@ -21,12 +22,14 @@ export const create = mutation({
   args: {
     name: v.string(),
     exercises: v.array(v.id("exercises")),
+    exercisesData: v.array(RoutineExerciseDataValidator),
   },
-  handler: async (ctx, { name, exercises }) => {
+  handler: async (ctx, { name, exercises, exercisesData }) => {
     const user = await getCurrentUserOrThrow(ctx);
     return await ctx.table("routines").insert({
       name,
       exercises,
+      exercisesData,
       ownerId: user._id,
     });
   },
@@ -37,8 +40,9 @@ export const update = mutation({
     routineId: v.id("routines"),
     name: v.string(),
     exercises: v.array(v.id("exercises")),
+    exercisesData: v.array(RoutineExerciseDataValidator),
   },
-  handler: async (ctx, { routineId, name, exercises }) => {
+  handler: async (ctx, { routineId, name, exercises, exercisesData }) => {
     const user = await getCurrentUserOrThrow(ctx);
     const routine = await ctx.table("routines").getX(routineId);
     if (routine.ownerId !== user._id) {
@@ -48,6 +52,7 @@ export const update = mutation({
     await routine.patch({
       name,
       exercises,
+      exercisesData,
     });
   },
 });
