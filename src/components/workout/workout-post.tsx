@@ -21,13 +21,12 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  cn,
   Divider,
   MenuItem,
   useDisclosure,
 } from "@heroui/react";
 import { useMutation } from "convex/react";
-import { Ellipsis, X } from "lucide-react";
+import { Dumbbell, Ellipsis, X } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
 
 export default function WorkoutPost() {
@@ -88,21 +87,23 @@ export default function WorkoutPost() {
       </CardHeader>
       <Divider />
       <CardBody
-        className="flex cursor-pointer flex-col gap-2"
+        className="flex cursor-pointer flex-col gap-4"
         onClick={() => push(`/post/${workout._id}`)}
       >
         <TypographyH2>Workout</TypographyH2>
         {workout.exercises.slice(0, 3).map((w, i) => (
           <div key={i} className="flex flex-row items-center gap-2">
-            {w.superset !== undefined && (
-              <span
-                className={cn(
-                  "h-10 w-1 rounded-full",
-                  `bg-${GetSupersetColor(w.superset)}`,
-                )}
-              />
-            )}
-            <Avatar src={w.exercise.imageURL} size="md" />
+            <Avatar
+              isBordered={w.superset !== undefined}
+              color={
+                w.superset !== undefined
+                  ? GetSupersetColor(w.superset)
+                  : undefined
+              }
+              src={w.exercise.imageURL}
+              size="sm"
+              icon={<Dumbbell />}
+            />
             {w.sets.length} sets {w.exercise.name}
           </div>
         ))}
