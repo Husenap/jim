@@ -5,6 +5,7 @@ import { useRoutineContext } from "@/components/routine/routine-context";
 import RoutineExercises from "@/components/routine/routine-exercises";
 import RoutineTitle from "@/components/routine/routine-title";
 import { Id } from "@/convex/_generated/dataModel";
+import { RoutineExerciseData } from "@/convex/schema";
 import { addToast, Divider } from "@heroui/react";
 import { Dumbbell } from "lucide-react";
 import { useTransitionRouter } from "next-view-transitions";
@@ -12,6 +13,7 @@ import { useTransitionRouter } from "next-view-transitions";
 export type RoutineData = {
   name: string;
   exercises: Id<"exercises">[];
+  exercisesData: RoutineExerciseData[];
 };
 
 export default function RoutineEditor({
@@ -46,6 +48,9 @@ export default function RoutineEditor({
       await onConfirm({
         name: title,
         exercises: exercises.map((e) => e.exercise._id),
+        exercisesData: exercises.map((e) => ({
+          superset: e.superset,
+        })),
       });
       back();
     } catch {
