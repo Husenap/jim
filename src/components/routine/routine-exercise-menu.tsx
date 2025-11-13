@@ -7,7 +7,6 @@ import SupersetDrawer from "@/components/superset/superset-drawer";
 import { Doc } from "@/convex/_generated/dataModel";
 import { Button, MenuItem, useDisclosure } from "@heroui/react";
 import { Ellipsis, Plus, Replace, X } from "lucide-react";
-import { v4 as uuidv4 } from "uuid";
 
 export default function RoutineExerciseMenu({
   exerciseIndex,
@@ -22,10 +21,8 @@ export default function RoutineExerciseMenu({
 
   const onSelect = (e: Doc<"exercises">) => {
     setExercises(
-      exercises.map(({ exercise, id }, index) =>
-        index === exerciseIndex
-          ? { exercise: e, id: uuidv4() }
-          : { exercise, id },
+      exercises.map((props, index) =>
+        index === exerciseIndex ? { ...props, exercise: e } : { ...props },
       ),
     );
   };
