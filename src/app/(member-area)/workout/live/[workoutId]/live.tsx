@@ -1,22 +1,22 @@
 "use client";
 
-import ExerciseMenu from "@/app/(member-area)/workout/live/[workoutId]/exercise-menu";
-import SetMenu from "@/app/(member-area)/workout/live/[workoutId]/set-menu";
+import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
+import ExerciseMenu from "@/components/active-workout/active-workout-exercise-menu";
+import ActiveWorkoutSetMenu from "@/components/active-workout/active-workout-set-menu";
 import {
   SetRowColumnKey,
   SetRowType,
-} from "@/app/(member-area)/workout/live/[workoutId]/types";
-import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
+} from "@/components/active-workout/active-workout-types";
 import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import DebouncedInput from "@/components/input/debounced-input";
-import WorkoutSupersetChip from "@/components/workout/workout-superset-chip";
 import { ExerciseFieldsType, ExerciseSetType } from "@/convex/schema";
 import { zap } from "@/utils/vibration";
 import {
   isBodyweightExercise,
   setDetailString,
 } from "@/utils/workout/exercise";
+import GetSupersetColor from "@/utils/workout/superset";
 import {
   Avatar,
   Button,
@@ -34,7 +34,7 @@ import {
   TableRow,
   Tooltip,
 } from "@heroui/react";
-import { Check, Plus, TriangleAlert } from "lucide-react";
+import { Check, Dumbbell, Plus, TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
@@ -77,7 +77,17 @@ export default function Live() {
         <div key={i}>
           <div className="flex flex-col gap-2">
             <div className="flex flex-row items-center gap-2">
-              <Avatar size="sm" src={e.exercise.imageURL} />
+              <Avatar
+                isBordered={e.superset !== undefined}
+                color={
+                  e.superset !== undefined
+                    ? GetSupersetColor(e.superset)
+                    : undefined
+                }
+                size="sm"
+                src={e.exercise.imageURL}
+                icon={<Dumbbell />}
+              />
               <span className="flex-1">{e.exercise.name}</span>
               {isBodyweightExercise(e.exercise.exerciseType) && (
                 <>
@@ -98,9 +108,6 @@ export default function Live() {
               )}
               {isOwner && <ExerciseMenu exerciseIndex={i} />}
             </div>
-            {e.superset !== undefined && (
-              <WorkoutSupersetChip superset={e.superset} />
-            )}
             {isOwner ? (
               <DebouncedInput
                 size="sm"
@@ -215,7 +222,11 @@ function ExerciseSet({
       switch (columnKey) {
         case "type":
           return (
-            <SetMenu item={item} rows={rows} exerciseIndex={exerciseIndex} />
+            <ActiveWorkoutSetMenu
+              item={item}
+              rows={rows}
+              exerciseIndex={exerciseIndex}
+            />
           );
         case "previous":
           if (previousSets && item.index < previousSets.length) {

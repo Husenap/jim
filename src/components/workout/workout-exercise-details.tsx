@@ -1,13 +1,13 @@
 import {
   SetRowColumnKey,
   SetRowType,
-} from "@/app/(member-area)/workout/live/[workoutId]/types";
+} from "@/components/active-workout/active-workout-types";
 import { usePostContext } from "@/components/post/post-context";
 import { TypographyH2 } from "@/components/typography";
 import WorkoutSetIndicator from "@/components/workout/workout-set-indicator";
-import WorkoutSupersetChip from "@/components/workout/workout-superset-chip";
 import { type WorkoutDetailsType } from "@/convex/workouts";
 import { isBodyweightExercise } from "@/utils/workout/exercise";
+import GetSupersetColor from "@/utils/workout/superset";
 import {
   Avatar,
   Table,
@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/react";
+import { Dumbbell } from "lucide-react";
 import { useCallback } from "react";
 
 export default function WorkoutExerciseDetails() {
@@ -47,7 +48,17 @@ function Exercise({
   return (
     <div className="-mx-2 flex flex-col gap-2 p-2">
       <div className="flex flex-row items-center gap-2">
-        <Avatar size="sm" src={exercise.exercise.imageURL} />
+        <Avatar
+          isBordered={exercise.superset !== undefined}
+          color={
+            exercise.superset !== undefined
+              ? GetSupersetColor(exercise.superset)
+              : undefined
+          }
+          size="sm"
+          src={exercise.exercise.imageURL}
+          icon={<Dumbbell />}
+        />
         <span className="flex-1">{exercise.exercise.name}</span>
         {isBodyweightExercise(exercise.exercise.exerciseType) && (
           <>
@@ -57,9 +68,6 @@ function Exercise({
           </>
         )}
       </div>
-      {exercise.superset !== undefined && (
-        <WorkoutSupersetChip superset={exercise.superset} />
-      )}
       {exercise.note && (
         <span className="text-default-500 text-sm font-semibold">
           {exercise.note}

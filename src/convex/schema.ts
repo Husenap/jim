@@ -102,6 +102,11 @@ export const ExerciseSetValidator = v.object({
 });
 export type ExerciseSetType = Infer<typeof ExerciseSetValidator>;
 
+export const RoutineExerciseDataValidator = v.object({
+  superset: v.optional(v.number()),
+});
+export type RoutineExerciseData = Infer<typeof RoutineExerciseDataValidator>;
+
 const schema = defineEntSchema({
   migrations: defineEntFromTable(migrationsTable),
 
@@ -138,6 +143,7 @@ const schema = defineEntSchema({
   routines: defineEnt({
     name: v.string(),
     exercises: v.array(v.id("exercises")),
+    exercisesData: v.optional(v.array(RoutineExerciseDataValidator)),
   }).edge("user", { to: "users", field: "ownerId" }),
 
   exercises: defineEnt(ExerciseFields).edge("user", {

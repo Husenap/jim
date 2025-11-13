@@ -10,7 +10,7 @@ import {
 import type { UseDisclosureReturn } from "@heroui/use-disclosure";
 import { useState } from "react";
 
-export default function BodyweightModal({
+export default function ActiveWorkoutBodyweightModal({
   disclosure,
 }: {
   disclosure: UseDisclosureReturn;

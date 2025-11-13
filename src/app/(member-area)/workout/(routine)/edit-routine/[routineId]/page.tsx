@@ -26,15 +26,16 @@ export default function Page({
 
   const [title, setTitle] = useState<string>("");
   const [exercises, setExercises] = useState(
-    [] as { exercise: Doc<"exercises">; id: string }[],
+    [] as { exercise: Doc<"exercises">; id: string; superset?: number }[],
   );
 
   useEffect(() => {
     if (data) {
       setTitle(data.name);
       setExercises(
-        data.exercises.map((e) => ({
+        data.exercises.map((e, i) => ({
           exercise: e,
+          superset: data.exercisesData?.[i].superset,
           id: uuidv4(),
         })),
       );
