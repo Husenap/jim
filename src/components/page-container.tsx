@@ -22,7 +22,7 @@ export default function PageContainer({
       )}
       {topNavbar && (
         <nav
-          className="fixed left-0 right-0 top-0 z-50 bg-content2/70 backdrop-blur-lg"
+          className="bg-content2/70 fixed top-0 right-0 left-0 z-50 backdrop-blur-lg"
           style={
             disableViewTransitions
               ? undefined
@@ -32,7 +32,7 @@ export default function PageContainer({
           }
         >
           <div
-            className="flex w-full justify-center bg-linear-to-b from-content2 to-transparent px-2"
+            className="from-content2 flex w-full justify-center bg-linear-to-b to-transparent px-2"
             style={
               disableViewTransitions
                 ? undefined
@@ -81,7 +81,7 @@ export default function PageContainer({
       </div>
       {bottomNavbar && (
         <nav
-          className="fixed bottom-0 left-0 right-0 z-50 w-full rounded-t-xl bg-content2/70 backdrop-blur-lg"
+          className="bg-content2/70 fixed right-0 bottom-0 left-0 z-50 w-full rounded-t-xl backdrop-blur-lg"
           style={
             disableViewTransitions
               ? undefined
@@ -90,7 +90,7 @@ export default function PageContainer({
                 }
           }
         >
-          <div className="iphone-safe-inset flex w-full justify-center bg-linear-to-t from-content2 to-transparent">
+          <div className="iphone-safe-inset from-content2 flex w-full justify-center bg-linear-to-t to-transparent">
             <div className="w-full max-w-5xl">{bottomNavbar}</div>
           </div>
         </nav>
