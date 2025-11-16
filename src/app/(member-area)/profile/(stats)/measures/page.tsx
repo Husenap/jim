@@ -28,6 +28,7 @@ export default function Page() {
             x: new Date(date),
             y: bodyweight!,
           }))
+          .reverse()
           .value(),
       },
     ],
