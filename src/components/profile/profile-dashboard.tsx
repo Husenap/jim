@@ -9,7 +9,11 @@ export default function ProfileDashboard() {
     <>
       <TypographyH2>Dashboard</TypographyH2>
       <div className="grid grid-cols-2 grid-rows-2 gap-2">
-        <Button className="under-construction" startContent={<ChartLine />}>
+        <Button
+          startContent={<ChartLine />}
+          as={Link}
+          href="profile/statistics"
+        >
           Statistics
         </Button>
 
