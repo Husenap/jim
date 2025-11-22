@@ -4,6 +4,7 @@ import Navbar from "@/app/(member-area)/profile/(stats)/statistics/navbar";
 import ChartWrapper from "@/components/charts/chart-wrapper";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import PageContainer from "@/components/page-container";
+import { TypographyH1 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import type { MuscleGroup } from "@/convex/schema";
 import { useQueryWithStatus } from "@/utils/use-query-with-status";
@@ -46,28 +47,28 @@ export default function Page() {
     triceps: require("./muscles/muscles_triceps.png"),
   };
 
-  const muscleWeights: Partial<Record<MuscleGroup, number>> = {
-    abdominals: Math.random(),
-    abductors: Math.random(),
-    adductors: Math.random(),
-    biceps: Math.random(),
-    calves: Math.random(),
-    "lower chest": Math.random(),
-    "upper chest": Math.random(),
-    forearms: Math.random(),
-    glutes: Math.random(),
-    hamstrings: Math.random(),
-    lats: Math.random(),
-    "lower back": Math.random(),
-    "upper back": Math.random(),
-    neck: Math.random(),
-    quadriceps: Math.random(),
-    "front delts": Math.random(),
-    "side delts": Math.random(),
-    "rear delts": Math.random(),
-    traps: Math.random(),
-    triceps: Math.random(),
-  };
+  const tableRows: MuscleGroup[] = [
+    "abdominals",
+    "abductors",
+    "adductors",
+    "biceps",
+    "lower back",
+    "upper back",
+    "calves",
+    "lower chest",
+    "upper chest",
+    "forearms",
+    "glutes",
+    "hamstrings",
+    "lats",
+    "neck",
+    "quadriceps",
+    "front delts",
+    "side delts",
+    "rear delts",
+    "traps",
+    "triceps",
+  ];
 
   const { data, isPending, isSuccess } = useQueryWithStatus(
     api.measurements.setsPerMuscle,
@@ -186,66 +187,90 @@ export default function Page() {
         {isPending && <FullscreenSpinner />}
         {isSuccess && (
           <>
-            <div className="w-full">
-              <div className="relative mx-auto aspect-square max-h-56 w-auto">
-                <Image
-                  className="absolute inset-0"
-                  alt="Human body"
-                  src={BodyImage}
-                />
-                {_(muscles).map((muscleImage, muscle) => (
-                  <Image
-                    key={muscle}
-                    className="absolute inset-0"
-                    alt={muscle}
-                    src={muscleImage}
-                    style={{
-                      opacity: muscleDistribution[muscle as MuscleGroup] ?? 0.0,
-                    }}
-                  />
-                ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2">
+              <div>
+                <TypographyH1 className="text-center">
+                  Body Distribution
+                </TypographyH1>
+                <div className="w-full">
+                  <div className="relative mx-auto aspect-square max-h-64 w-auto">
+                    <Image
+                      className="absolute inset-0"
+                      alt="Human body"
+                      src={BodyImage}
+                    />
+                    {_(muscles).map((muscleImage, muscle) => (
+                      <Image
+                        key={muscle}
+                        className="absolute inset-0"
+                        alt={muscle}
+                        src={muscleImage}
+                        style={{
+                          opacity:
+                            muscleDistribution[muscle as MuscleGroup] ?? 0.0,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <TypographyH1 className="text-center">
+                  Muscle Distribution
+                </TypographyH1>
+                <ChartWrapper>
+                  {(theme, nivoTheme, colors) => (
+                    <div className="h-64 w-full">
+                      <ResponsiveRadar
+                        curve="linearClosed"
+                        data={muscleGroupDistribution}
+                        indexBy="muscleGroup"
+                        keys={["value"]}
+                        margin={{
+                          bottom: 10,
+                          left: 50,
+                          right: 50,
+                          top: 10,
+                        }}
+                        isInteractive={false}
+                        rotation={-30}
+                        theme={nivoTheme}
+                        colors={colors}
+                      />
+                    </div>
+                  )}
+                </ChartWrapper>
               </div>
             </div>
 
-            <ChartWrapper>
-              {(theme, nivoTheme, colors) => (
-                <div className="h-64 w-full">
-                  <ResponsiveRadar
-                    curve="linearClosed"
-                    data={muscleGroupDistribution}
-                    indexBy="muscleGroup"
-                    keys={["value"]}
-                    margin={{
-                      bottom: 10,
-                      left: 50,
-                      right: 50,
-                      top: 10,
-                    }}
-                    isInteractive={false}
-                    rotation={-30}
-                    theme={nivoTheme}
-                    colors={colors}
-                  />
-                </div>
-              )}
-            </ChartWrapper>
-
-            <Table isStriped>
+            <Table isCompact>
               <TableHeader>
                 <TableColumn>Muscle</TableColumn>
                 <TableColumn>Sets</TableColumn>
               </TableHeader>
               <TableBody>
-                {_.chain(setsPerMuscle)
-                  .pairs()
-                  .sortBy(([muscle, setCount]) => muscle)
-                  .map(([muscle, setCount]) => (
-                    <TableRow key={muscle}>
-                      <TableCell>{muscle}</TableCell>
-                      <TableCell>{setCount}</TableCell>
-                    </TableRow>
-                  ))
-                  .value()}
+                <>
+                  <TableRow>
+                    <TableCell>Total</TableCell>
+                    <TableCell>
+                      {_(setsPerMuscle)
+                        .values()
+                        .reduce((a, b) => a + b, 0)}
+                    </TableCell>
+                  </TableRow>
+                  {_.chain(tableRows)
+                    .sortBy((a) => -(setsPerMuscle[a] ?? 0))
+                    .map((mg) => (
+                      <TableRow key={mg}>
+                        <TableCell>
+                          {mg[0].toUpperCase() + mg.slice(1)}
+                        </TableCell>
+                        <TableCell>{setsPerMuscle[mg] ?? 0}</TableCell>
+                      </TableRow>
+                    ))
+                    .value()}
+                </>
               </TableBody>
             </Table>
           </>
