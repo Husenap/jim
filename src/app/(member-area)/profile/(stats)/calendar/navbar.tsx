@@ -1,12 +1,14 @@
 import BackButton from "@/components/back-button";
 import { Divider } from "@heroui/react";
-import { Flame, Moon } from "lucide-react";
+import { Flame, Hourglass, Moon } from "lucide-react";
 
 export default function Navbar({
   weekStreak,
+  previousWeekStreak,
   restDays,
 }: {
   weekStreak: number;
+  previousWeekStreak: number;
   restDays: number;
 }) {
   return (
@@ -23,8 +25,22 @@ export default function Navbar({
       <Divider />
       <div className="grid grid-cols-2 items-center py-3">
         <div className="mx-auto flex gap-1 text-center">
-          <Flame className="text-orange-500" />
-          <span>{weekStreak} week streak</span>
+          {previousWeekStreak !== 0 && weekStreak === 0 ? (
+            <>
+              <Hourglass className="text-orange-500" />
+              <span>{previousWeekStreak} week streak</span>
+            </>
+          ) : weekStreak !== 0 ? (
+            <>
+              <Flame className="text-orange-500" />
+              <span>{weekStreak} week streak</span>
+            </>
+          ) : (
+            <>
+              <Flame className="text-default-400" />
+              <span>{weekStreak} week streak</span>
+            </>
+          )}
         </div>
         <div className="mx-auto flex gap-1 text-center">
           <Moon className="text-blue-500" />

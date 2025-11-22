@@ -72,6 +72,29 @@ export default function Page() {
     return streak;
   }, [data]);
 
+  const previousWeekStreak = useMemo(() => {
+    if (!data || data.length === 0) return 0;
+
+    // Create a Set of ISO week start dates that have at least one measurement
+    const weeksWithData = new Set(
+      data.map(({ date }) =>
+        DateTime.fromMillis(date).startOf("week").toISODate(),
+      ),
+    );
+
+    let streak = 0;
+    // Start from the current week (today's week)
+    let currentWeek = DateTime.local().startOf("week").minus({ weeks: 1 });
+
+    // Count consecutive weeks that have data
+    while (weeksWithData.has(currentWeek.toISODate())) {
+      ++streak;
+      currentWeek = currentWeek.minus({ weeks: 1 });
+    }
+
+    return streak;
+  }, [data]);
+
   const restDays = useMemo(() => {
     if (!data || data.length === 0) return 0;
 
@@ -97,7 +120,13 @@ export default function Page() {
 
   return (
     <PageContainer
-      topNavbar={<Navbar weekStreak={weekStreak} restDays={restDays} />}
+      topNavbar={
+        <Navbar
+          weekStreak={weekStreak}
+          previousWeekStreak={previousWeekStreak}
+          restDays={restDays}
+        />
+      }
     >
       {isPending && <FullscreenSpinner />}
       {isSuccess && (

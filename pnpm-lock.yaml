@@ -35,6 +35,9 @@ importers:
       '@nivo/line':
         specifier: ^0.99.0
         version: 0.99.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@nivo/radar':
+        specifier: ^0.99.0
+        version: 0.99.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@nivo/theming':
         specifier: ^0.99.0
         version: 0.99.0(react@19.0.0)
@@ -1299,6 +1302,11 @@ packages:
 
   '@nivo/line@0.99.0':
     resolution: {integrity: sha512-bAqTXSjpnpcGMs341qWFUi7hJTqQiNoSeJHsYPuPS3icuXPcp3WETQH+zRZACeEF79ZigeOWCW+dzODgne1y9w==}
+    peerDependencies:
+      react: ^16.14 || ^17.0 || ^18.0 || ^19.0
+
+  '@nivo/radar@0.99.0':
+    resolution: {integrity: sha512-nLLUBs/TR8qEoXpvhawjg2Kt22Pma8MQRc35e/3HQGW2xuX9cZeIEx2gyx6jJAsaxTrBsb4ZcxRAflNXVWiZSQ==}
     peerDependencies:
       react: ^16.14 || ^17.0 || ^18.0 || ^19.0
 
@@ -5940,6 +5948,23 @@ snapshots:
       '@nivo/voronoi': 0.99.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@react-spring/web': 10.0.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@types/d3-shape': 3.1.7
+      d3-shape: 3.2.0
+      react: 19.0.0
+    transitivePeerDependencies:
+      - react-dom
+
+  '@nivo/radar@0.99.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@nivo/colors': 0.99.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@nivo/core': 0.99.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@nivo/legends': 0.99.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@nivo/text': 0.99.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@nivo/theming': 0.99.0(react@19.0.0)
+      '@nivo/tooltip': 0.99.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@react-spring/web': 10.0.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@types/d3-scale': 4.0.9
+      '@types/d3-shape': 3.1.7
+      d3-scale: 4.0.2
       d3-shape: 3.2.0
       react: 19.0.0
     transitivePeerDependencies:
