@@ -247,13 +247,13 @@ export default function Page() {
             <Table isCompact>
               <TableHeader>
                 <TableColumn>Muscle</TableColumn>
-                <TableColumn>Sets</TableColumn>
+                <TableColumn className="text-right">Sets</TableColumn>
               </TableHeader>
               <TableBody>
                 <>
                   <TableRow>
                     <TableCell>Total</TableCell>
-                    <TableCell>
+                    <TableCell className="text-right">
                       {_(setsPerMuscle)
                         .values()
                         .reduce((a, b) => a + b, 0)}
@@ -266,7 +266,9 @@ export default function Page() {
                         <TableCell>
                           {mg[0].toUpperCase() + mg.slice(1)}
                         </TableCell>
-                        <TableCell>{setsPerMuscle[mg] ?? 0}</TableCell>
+                        <TableCell className="text-right">
+                          {Math.round(10.0 * (setsPerMuscle[mg] ?? 0)) / 10.0}
+                        </TableCell>
                       </TableRow>
                     ))
                     .value()}

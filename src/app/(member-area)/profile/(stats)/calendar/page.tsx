@@ -1,16 +1,16 @@
 "use client";
 
+import Month from "@/app/(member-area)/profile/(stats)/calendar/(categories)/month";
+import MultiYear from "@/app/(member-area)/profile/(stats)/calendar/(categories)/multi-year";
+import Year from "@/app/(member-area)/profile/(stats)/calendar/(categories)/year";
 import Navbar from "@/app/(member-area)/profile/(stats)/calendar/navbar";
-import ChartWrapper from "@/components/charts/chart-wrapper";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import PageContainer from "@/components/page-container";
-import { TypographyH1 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { useQueryWithStatus } from "@/utils/use-query-with-status";
-import { Calendar } from "@heroui/react";
-import { ResponsiveCalendar } from "@nivo/calendar";
+import type { Selection } from "@heroui/react";
 import { DateTime } from "luxon";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import _ from "underscore";
 
 export default function Page() {
@@ -25,28 +25,6 @@ export default function Page() {
         date: DateTime.fromMillis(r.date),
       })),
     [data],
-  );
-
-  const yearCalendarData = useMemo(
-    () =>
-      _.chain(calendarData)
-        .groupBy(({ date }) => date.year)
-        .mapObject((l) =>
-          _.chain(l)
-            .map(({ date }) => ({
-              day: date.toFormat("yyyy-MM-dd"),
-              value: 0,
-            }))
-            .uniq(true, "day")
-            .value(),
-        )
-        .value(),
-    [calendarData],
-  );
-
-  const daysWorkedOut = useMemo(
-    () => new Set(calendarData.map(({ date }) => date.toFormat("yyyy-MM-dd"))),
-    [calendarData],
   );
 
   const weekStreak = useMemo(() => {
@@ -118,10 +96,14 @@ export default function Page() {
     return days;
   }, [data]);
 
+  const [category, setCategory] = useState<Selection>(new Set(["month"]));
+
   return (
     <PageContainer
       topNavbar={
         <Navbar
+          category={category}
+          setCategory={setCategory}
           weekStreak={weekStreak}
           previousWeekStreak={previousWeekStreak}
           restDays={restDays}
@@ -131,42 +113,11 @@ export default function Page() {
       {isPending && <FullscreenSpinner />}
       {isSuccess && (
         <>
-          <Calendar
-            isReadOnly
-            firstDayOfWeek="mon"
-            className="mx-auto"
-            hideDisabledDates
-            isDateUnavailable={(d) => daysWorkedOut.has(d.toString())}
-            visibleMonths={1}
-            classNames={{
-              cellButton:
-                "data-[unavailable=true]:bg-primary data-[unavailable=true]:text-white data-[unavailable=true]:no-underline",
-            }}
-          />
-          <ChartWrapper>
-            {(theme, nivoTheme, colors) => (
-              <>
-                {_(yearCalendarData).map((cd, year) => (
-                  <div key={year}>
-                    <TypographyH1 className="text-center">{year}</TypographyH1>
-                    <div className="aspect-[6/1]">
-                      <ResponsiveCalendar
-                        theme={nivoTheme}
-                        colors={[colors[0]]}
-                        data={cd}
-                        from={cd[0].day}
-                        to={cd[cd.length - 1].day}
-                        margin={{ top: 12, right: 0, bottom: 0, left: 0 }}
-                        monthLegendOffset={4}
-                        align="top"
-                        {...theme.calendar}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-          </ChartWrapper>
+          {category instanceof Set && category.has("month") && <Month />}
+          {category instanceof Set && category.has("year") && <Year />}
+          {category instanceof Set && category.has("multi-year") && (
+            <MultiYear />
+          )}
         </>
       )}
     </PageContainer>

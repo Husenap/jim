@@ -5,10 +5,7 @@ export type ChartTheme = {
 
   colors: string[];
 
-  calendar: {
-    monthBorderWidth: number;
-    monthBorderColor: string;
-    dayBorderWidth: number;
+  timeRange: {
     dayBorderColor: string;
     emptyColor: string;
   };
@@ -19,10 +16,7 @@ export type ChartTheme = {
 export const lightTheme: ChartTheme = {
   id: "light",
   colors: ["#006FEE", "#7828c8", "#17c964", "#f5a524", "#f31260"],
-  calendar: {
-    monthBorderWidth: 2,
-    monthBorderColor: "#ffffff",
-    dayBorderWidth: 1,
+  timeRange: {
     dayBorderColor: "#ffffff",
     emptyColor: "#e4e4e7",
   },
@@ -94,10 +88,7 @@ export const lightTheme: ChartTheme = {
 export const darkTheme: ChartTheme = {
   id: "dark",
   colors: ["#006FEE", "#9353d3", "#17c964", "#f5a524", "#f31260"],
-  calendar: {
-    monthBorderWidth: 2,
-    monthBorderColor: "#000000",
-    dayBorderWidth: 1,
+  timeRange: {
     dayBorderColor: "#000000",
     emptyColor: "#3f3f46",
   },
