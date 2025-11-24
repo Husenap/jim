@@ -17,8 +17,8 @@ export default function Navbar({
   restDays: number;
 }) {
   return (
-    <div className="flex flex-col">
-      <div className="grid grid-cols-3 items-center py-3">
+    <div className="-mx-2 flex flex-col">
+      <div className="grid grid-cols-3 items-center px-2 py-3">
         <div>
           <BackButton />
         </div>
@@ -84,6 +84,8 @@ export default function Navbar({
           </div>
         </>
       )}
+
+      <Divider />
     </div>
   );
 }
