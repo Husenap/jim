@@ -11,20 +11,10 @@ import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import type { Selection } from "@heroui/react";
 import { DateTime } from "luxon";
 import { useMemo, useState } from "react";
-import _ from "underscore";
 
 export default function Page() {
   const { data, isPending, isSuccess } = useQueryWithStatus(
     api.measurements.bodyweight,
-  );
-
-  const calendarData = useMemo(
-    () =>
-      _(data).map((r) => ({
-        ...r,
-        date: DateTime.fromMillis(r.date),
-      })),
-    [data],
   );
 
   const weekStreak = useMemo(() => {

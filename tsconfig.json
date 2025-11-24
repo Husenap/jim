@@ -1,22 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "webworker"
-    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
     "downlevelIteration": true,
@@ -32,7 +21,20 @@
     },
     "types": [
       "@serwist/next/typings"
-    ]
+    ],
+    /* These compiler options are required by Convex */
+    "target": "ESNext",
+    "lib": [
+      "ES2021",
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "webworker"
+    ],
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "isolatedModules": true,
+    "noEmit": true,
   },
   "include": [
     "next-env.d.ts",
@@ -43,6 +45,7 @@
   ],
   "exclude": [
     "node_modules",
-    "public/sw.js"
+    "public/sw.js",
+    "./src/convex/_generated"
   ]
 }

@@ -20,7 +20,7 @@ export default function PostDetails() {
     return <FullscreenSpinner />;
   }
 
-  if (!workout || !user) {
+  if (!workout && !user) {
     return <span>Failed to get workout details!</span>;
   }
 

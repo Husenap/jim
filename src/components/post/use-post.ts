@@ -93,8 +93,8 @@ export function usePost({
   // Create context object
   const context = useMemo(
     () => ({
-      workout: workoutData?.workout || null,
-      user: workoutData?.user || null,
+      workout: workoutData?.workout,
+      user: workoutData?.user,
       toggleLike: workoutData ? toggleLike : undefined,
       addComment: workoutData ? addComment : undefined,
       currentUser,
