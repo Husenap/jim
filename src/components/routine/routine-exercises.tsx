@@ -4,8 +4,8 @@ import { useRoutineContext } from "@/components/routine/routine-context";
 import RoutineExerciseMenu from "@/components/routine/routine-exercise-menu";
 import GetSupersetColor from "@/utils/workout/superset";
 import { Avatar } from "@heroui/react";
+import { Reorder } from "framer-motion";
 import { Dumbbell } from "lucide-react";
-import { Reorder } from "motion/react";
 
 export default function RoutineExercises() {
   const { exercises, setExercises } = useRoutineContext();
@@ -22,7 +22,7 @@ export default function RoutineExercises() {
           <Reorder.Item
             key={item.id}
             value={item}
-            className="transition-background flex flex-row justify-between p-2"
+            className="hover:bg-content2 bg-background flex flex-row justify-between p-2"
           >
             <div className="flex flex-row items-center gap-2">
               <Avatar
