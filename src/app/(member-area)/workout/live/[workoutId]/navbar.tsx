@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { useMutation } from "convex/react";
-import { useTransitionRouter } from "next-view-transitions";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
@@ -93,7 +93,7 @@ function FinishButton() {
   const [description, setDescription] = useState("");
 
   const createWorkout = useMutation(api.workouts.create);
-  const { replace } = useTransitionRouter();
+  const { replace } = useRouter();
 
   const onSave = async () => {
     if (activeWorkout) {

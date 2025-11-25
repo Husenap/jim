@@ -3,7 +3,7 @@
 import { usePostContext } from "@/components/post/post-context";
 import { humanReadibleTimeDiff } from "@/utils/time-diff";
 import { User } from "@heroui/react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 
 export default function WorkoutUser() {
   const { user, workout } = usePostContext();

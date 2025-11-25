@@ -2,7 +2,7 @@ import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import { TypographyH2 } from "@/components/typography";
 import { Button } from "@heroui/react";
 import { Calendar, ChartLine, Dumbbell, PersonStanding } from "lucide-react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 
 export default function ProfileDashboard() {
   return (
@@ -32,6 +32,7 @@ export default function ProfileDashboard() {
         >
           Measures
         </Button>
+
         <Button startContent={<Calendar />} as={Link} href="profile/calendar">
           Calendar
         </Button>

@@ -5,14 +5,16 @@ import Navbar from "@/app/(member-area)/home/navbar";
 import PageContainer from "@/components/page-container";
 import WorkoutFeed from "@/components/workout/workout-feed";
 import { api } from "@/convex/_generated/api";
+import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import type { Selection } from "@heroui/react";
 import { Avatar, Badge, ScrollShadow } from "@heroui/react";
-import { useQuery } from "convex/react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function Page() {
-  const activeFollowees = useQuery(api.activeWorkouts.followees) ?? [];
+  const { data: activeFollowees, isSuccess } = useQueryWithStatus(
+    api.activeWorkouts.followees,
+  );
   const [page, setPage] = useState<Selection>(new Set(["home"]));
 
   return (
@@ -20,7 +22,7 @@ export default function Page() {
       topNavbar={<Navbar page={page} setPage={setPage} />}
       bottomNavbar={<BottomNavbar />}
     >
-      {activeFollowees.length > 0 && (
+      {isSuccess && activeFollowees.length > 0 && (
         <>
           <ScrollShadow
             className="-mx-2"
