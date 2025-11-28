@@ -1,34 +1,24 @@
+import { useCalendarContext } from "@/components/calendar/calendar-context";
 import ChartWrapper from "@/components/charts/chart-wrapper";
 import { TypographyH1, TypographyH2 } from "@/components/typography";
-import { api } from "@/convex/_generated/api";
-import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import { ResponsiveTimeRange } from "@nivo/calendar";
 import { DateTime, Interval } from "luxon";
 import { useEffect, useMemo, useRef } from "react";
 import _ from "underscore";
 
 export default function Year() {
-  const { data } = useQueryWithStatus(api.measurements.bodyweight);
+  const { calendarData, daysWorkedOut, sickData } = useCalendarContext();
 
-  const calendarData = useMemo(
-    () =>
-      _(data).map((r) => ({
-        ...r,
-        date: DateTime.fromMillis(r.date),
-      })),
-    [data],
-  );
-
-  const monthCalendarData2 = useMemo(() => {
+  const monthCalendarData = useMemo(() => {
     if (calendarData.length === 0) return [];
 
     let startMonth = _.chain(calendarData)
-      .map(({ date }) => date.startOf("month"))
+      .map((date) => date.startOf("month"))
       .min()
       .value() as DateTime;
     const endMonth = (
       _.chain(calendarData)
-        .map(({ date }) => date.startOf("month"))
+        .map((date) => date.startOf("month"))
         .max()
         .value() as DateTime
     ).plus({ months: 1 });
@@ -44,10 +34,11 @@ export default function Year() {
           .mapObject((i) => ({
             i,
             cd: calendarData
-              .filter(({ date }) => i.contains(date))
-              .map(({ date }) => ({
+              .concat(sickData)
+              .filter((date) => i.contains(date))
+              .map((date) => ({
                 day: date.toFormat("yyyy-MM-dd"),
-                value: 0,
+                value: daysWorkedOut.has(date.toISODate()) ? 1 : 0,
               })),
           }))
           .value(),
@@ -67,19 +58,19 @@ export default function Year() {
       <ChartWrapper>
         {(theme, nivoTheme, colors) => (
           <>
-            {_(monthCalendarData2).map((monthData, year) => (
+            {_(monthCalendarData).map((monthData, year) => (
               <div key={year}>
                 <TypographyH1 className="text-center">{year}</TypographyH1>
                 <div className="grid grid-cols-3 gap-4">
                   {_(monthData).map(({ i, cd }) => (
-                    <div key={i.toISO()}>
+                    <div key={i.toISODate()}>
                       <TypographyH2 className="text-center">
                         {i.start!.monthLong}
                       </TypographyH2>
                       <div className="aspect-square">
                         <ResponsiveTimeRange
                           theme={nivoTheme}
-                          colors={[colors[0]]}
+                          colors={[colors[1], colors[0]]}
                           data={cd}
                           from={i.start!.toJSDate()}
                           to={i.end!.toJSDate()}
@@ -91,6 +82,7 @@ export default function Year() {
                           direction="vertical"
                           monthLegendOffset={4}
                           align="top"
+                          isInteractive={false}
                           {...theme.timeRange}
                         />
                       </div>
