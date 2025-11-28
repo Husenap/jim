@@ -27,7 +27,7 @@ import {
 } from "@heroui/react";
 import { useMutation } from "convex/react";
 import { Dumbbell, Ellipsis, X } from "lucide-react";
-import { useTransitionRouter } from "next-view-transitions";
+import { useRouter } from "next/navigation";
 
 export default function WorkoutPost() {
   const { workout, user, currentUser } = usePostContext();
@@ -54,7 +54,7 @@ export default function WorkoutPost() {
     },
   );
 
-  const { push } = useTransitionRouter();
+  const { push } = useRouter();
   const removeDisclosure = useDisclosure();
 
   return (

@@ -3,6 +3,7 @@
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
 import { HeroUIProvider, ToastProvider } from "@heroui/react";
+import { ConvexQueryCacheProvider } from "convex-helpers/react/cache/provider";
 import { ConvexReactClient } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ThemeProvider, useTheme } from "next-themes";
@@ -24,7 +25,7 @@ function ThemeWrappedProviders({ children }: { children: React.ReactNode }) {
         }}
       >
         <ConvexProviderWithClerk useAuth={useAuth} client={convex}>
-          {children}
+          <ConvexQueryCacheProvider>{children}</ConvexQueryCacheProvider>
         </ConvexProviderWithClerk>
       </ClerkProvider>
     </HeroUIProvider>

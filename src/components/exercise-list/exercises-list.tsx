@@ -1,11 +1,12 @@
 "use client";
 
 import { useExercisesContext } from "@/components/exercise-list/exercises-context";
+import FullscreenSpinner from "@/components/fullscreen-spinner";
 import { TypographyH2 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
+import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import { Avatar, Button } from "@heroui/react";
-import { useQuery } from "convex/react";
 import { ChevronRight } from "lucide-react";
 import { useCallback, useMemo } from "react";
 
@@ -14,8 +15,16 @@ export default function ExercisesList({
 }: {
   onSelect?: (exercise: Doc<"exercises">) => void;
 }) {
-  const builtinExercises = useQuery(api.exercises.builtin) ?? [];
-  const customExercises = useQuery(api.exercises.custom) ?? [];
+  const {
+    data: builtinExercises,
+    isPending: isPendingBuiltin,
+    isSuccess: isSuccessBuiltin,
+  } = useQueryWithStatus(api.exercises.builtin);
+  const {
+    data: customExercises,
+    isPending: isPendingCustom,
+    isSuccess: isSuccessCustom,
+  } = useQueryWithStatus(api.exercises.custom);
 
   const { search, muscleGroup, equipment } = useExercisesContext();
 
@@ -46,31 +55,29 @@ export default function ExercisesList({
   );
 
   const filteredBuiltinExercises = useMemo(() => {
-    return builtinExercises?.filter(exerciseFilter);
+    return (builtinExercises ?? []).filter(exerciseFilter);
   }, [builtinExercises, exerciseFilter]);
   const filteredCustomExercises = useMemo(() => {
-    return customExercises?.filter(exerciseFilter);
+    return (customExercises ?? []).filter(exerciseFilter);
   }, [customExercises, exerciseFilter]);
 
   return (
     <>
-      {filteredCustomExercises.length > 0 && (
-        <>
-          <TypographyH2>Custom exercises</TypographyH2>
-          <ExerciseListCategory
-            exercises={filteredCustomExercises}
-            onSelect={onSelect}
-          />
-        </>
+      <TypographyH2>Custom exercises</TypographyH2>
+      {isPendingCustom && <FullscreenSpinner />}
+      {isSuccessCustom && filteredCustomExercises.length > 0 && (
+        <ExerciseListCategory
+          exercises={filteredCustomExercises}
+          onSelect={onSelect}
+        />
       )}
-      {filteredBuiltinExercises.length > 0 && (
-        <>
-          <TypographyH2>Built-in exercises</TypographyH2>
-          <ExerciseListCategory
-            exercises={filteredBuiltinExercises}
-            onSelect={onSelect}
-          />
-        </>
+      <TypographyH2>Built-in exercises</TypographyH2>
+      {isPendingBuiltin && <FullscreenSpinner />}
+      {isSuccessBuiltin && filteredBuiltinExercises.length > 0 && (
+        <ExerciseListCategory
+          exercises={filteredBuiltinExercises}
+          onSelect={onSelect}
+        />
       )}
     </>
   );

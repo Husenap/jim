@@ -1,7 +1,6 @@
 import { Providers } from "@/app/providers";
 import { cn } from "@heroui/react";
 import { Viewport } from "next";
-import { ViewTransitions } from "next-view-transitions";
 import { Geist } from "next/font/google";
 import "./globals.css";
 
@@ -43,19 +42,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ViewTransitions>
-      <html
-        lang="en"
-        className={cn(
-          geistSans.className,
-          "h-full min-h-full overflow-x-hidden overscroll-x-none",
-        )}
-        suppressHydrationWarning
-      >
-        <body className="bg-background text-foreground relative h-full min-h-full w-full overflow-x-hidden overscroll-x-none">
-          <Providers>{children}</Providers>
-        </body>
-      </html>
-    </ViewTransitions>
+    <html
+      lang="en"
+      className={cn(
+        geistSans.className,
+        "h-full min-h-full overflow-x-hidden overscroll-x-none",
+      )}
+      suppressHydrationWarning
+    >
+      <body className="bg-background text-foreground relative h-full min-h-full w-full overflow-x-hidden overscroll-x-none">
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }

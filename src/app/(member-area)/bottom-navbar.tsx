@@ -2,16 +2,19 @@
 
 import ConfirmationDialog from "@/components/confirmation-dialog";
 import { api } from "@/convex/_generated/api";
+import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import { Button, Divider, useDisclosure } from "@heroui/react";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { Dumbbell, Home, Play, User, X } from "lucide-react";
-import { Link, useTransitionRouter } from "next-view-transitions";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function BottomNavbar() {
   const pathname = usePathname();
-  const activeWorkout = useQuery(api.activeWorkouts.current);
-  const { push } = useTransitionRouter();
+  const { data: activeWorkout, isSuccess } = useQueryWithStatus(
+    api.activeWorkouts.current,
+  );
+  const { push } = useRouter();
 
   const tabs = [
     {
@@ -33,7 +36,7 @@ export default function BottomNavbar() {
 
   return (
     <>
-      {activeWorkout && (
+      {isSuccess && activeWorkout && (
         <>
           <div className="flex flex-col gap-2 p-2">
             <span className="text-center">Workout in progress</span>

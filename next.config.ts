@@ -3,7 +3,7 @@ import withSerwistInit from "@serwist/next";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  allowedDevOrigins: [process.env.ALLOWED_DEV_ORIGIN ?? "localhost"],
   headers: async () => [
     {
       source: "/(.*)",
@@ -72,7 +72,7 @@ const sentryConfig = withSentryConfig(serwistConfig, {
 
   // Hides source maps from generated client bundles
   sourcemaps: {
-    deleteSourcemapsAfterUpload: true
+    deleteSourcemapsAfterUpload: true,
   },
 
   // Automatically tree-shake Sentry logger statements to reduce bundle size

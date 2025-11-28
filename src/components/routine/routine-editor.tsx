@@ -8,7 +8,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { RoutineExerciseData } from "@/convex/schema";
 import { addToast, Divider } from "@heroui/react";
 import { Dumbbell } from "lucide-react";
-import { useTransitionRouter } from "next-view-transitions";
+import { useRouter } from "next/navigation";
 
 export type RoutineData = {
   name: string;
@@ -25,7 +25,7 @@ export default function RoutineEditor({
   confirmText: string;
   onConfirm: (routineData: RoutineData) => Promise<void>;
 }) {
-  const { back } = useTransitionRouter();
+  const { back } = useRouter();
 
   const { title, errors, setErrors, exercises } = useRoutineContext();
 

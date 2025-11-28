@@ -1,7 +1,7 @@
 import type { Selection } from "@heroui/react";
 import { Button, Select, SelectItem } from "@heroui/react";
 import { Search } from "lucide-react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 
 export default function Navbar({
   page,

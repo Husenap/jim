@@ -95,7 +95,6 @@ function FollowerDrawer({
           {(onClose) => (
             <DrawerBody className="p-0">
               <PageContainer
-                disableViewTransitions
                 topNavbar={
                   <div className="grid w-full grid-cols-3 items-center py-3">
                     <div>

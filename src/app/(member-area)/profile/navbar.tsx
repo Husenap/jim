@@ -4,7 +4,7 @@ import { useProfileContext } from "@/components/profile/profile-context";
 import ProfileShareButton from "@/components/profile/profile-share-button";
 import { Button } from "@heroui/react";
 import { Settings } from "lucide-react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 
 export default function Navbar() {
   const { profileUser } = useProfileContext();

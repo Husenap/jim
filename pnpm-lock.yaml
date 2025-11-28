@@ -72,26 +72,26 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       convex:
-        specifier: ^1.28.0
-        version: 1.28.0(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+        specifier: ^1.29.3
+        version: 1.29.3(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       convex-ents:
         specifier: ^0.16.0
-        version: 0.16.0(convex@1.28.0(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))
+        version: 0.16.0(convex@1.29.3(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))
       convex-helpers:
-        specifier: ^0.1.104
-        version: 0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.7.2)(zod@4.1.5)
+        specifier: ^0.1.105
+        version: 0.1.105(@standard-schema/spec@1.0.0)(convex@1.29.3(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.7.2)(zod@4.1.5)
       framer-motion:
         specifier: ^12.23.24
         version: 12.23.24(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       immer:
-        specifier: ^10.1.3
-        version: 10.1.3
+        specifier: ^11.0.0
+        version: 11.0.0
       import-in-the-middle:
         specifier: 1.15.0
         version: 1.15.0
       lucide-react:
-        specifier: ^0.546.0
-        version: 0.546.0(react@19.0.0)
+        specifier: ^0.554.0
+        version: 0.554.0(react@19.0.0)
       luxon:
         specifier: ^3.7.2
         version: 3.7.2
@@ -101,9 +101,6 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      next-view-transitions:
-        specifier: ^0.3.4
-        version: 0.3.4(next@16.0.0(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -111,20 +108,14 @@ importers:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
       react-intersection-observer:
-        specifier: ^9.16.0
-        version: 9.16.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      react-sortablejs:
-        specifier: ^6.1.4
-        version: 6.1.4(@types/sortablejs@1.15.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sortablejs@1.15.6)
+        specifier: ^10.0.0
+        version: 10.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react-stately:
         specifier: ^3.42.0
         version: 3.42.0(react@19.0.0)
       require-in-the-middle:
         specifier: 7.5.2
         version: 7.5.2
-      sortablejs:
-        specifier: ^1.15.6
-        version: 1.15.6
       svix:
         specifier: ^1.77.0
         version: 1.77.0
@@ -133,7 +124,7 @@ importers:
         version: 1.13.7
       use-immer:
         specifier: ^0.11.0
-        version: 0.11.0(immer@10.1.3)(react@19.0.0)
+        version: 0.11.0(immer@11.0.0)(react@19.0.0)
       use-local-storage:
         specifier: ^3.0.0
         version: 3.0.0(react@19.0.0)
@@ -162,9 +153,6 @@ importers:
       '@types/react-dom':
         specifier: 19.0.2
         version: 19.0.2(@types/react@19.2.2)
-      '@types/sortablejs':
-        specifier: ^1.15.8
-        version: 1.15.8
       '@types/underscore':
         specifier: ^1.13.0
         version: 1.13.0
@@ -2846,9 +2834,6 @@ packages:
   '@types/shimmer@1.2.0':
     resolution: {integrity: sha512-UE7oxhQLLd9gub6JKIAhDq06T0F6FnztwMNRvYgjeQSBeMc1ZG/tA47EwfduvkuQS8apbkM/lpLpWsaCeYsXVg==}
 
-  '@types/sortablejs@1.15.8':
-    resolution: {integrity: sha512-b79830lW+RZfwaztgs1aVPgbasJ8e7AXtZYHTELNXZPsERt4ymJdjV4OccDbHQAvHrCcFpbF78jkm0R6h/pZVg==}
-
   '@types/tedious@4.0.14':
     resolution: {integrity: sha512-KHPsfX/FoVbUGbyYvk1q9MMQHLPeRZhRJZdO45Q4YjvFkv4hMNghCWTvy7rdKessBsmtz4euWCWAB6/tVpI1Iw==}
 
@@ -3041,9 +3026,6 @@ packages:
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
-  classnames@2.3.1:
-    resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
-
   client-only@0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
 
@@ -3093,8 +3075,8 @@ packages:
     peerDependencies:
       convex: ^1.27.0
 
-  convex-helpers@0.1.104:
-    resolution: {integrity: sha512-7CYvx7T3K6n+McDTK4ZQaQNNGBzq5aWezpjzsKbOxPXx7oNcTP9wrpef3JxeXWFzkByJv5hRCjseh9B7eNJ7Ig==}
+  convex-helpers@0.1.105:
+    resolution: {integrity: sha512-B6EUQsBpLFcXpa1g/9Zsc7EaFHdaeMlPLCa/snSD+4hRBFMWKJjT589dZ/0Z40taBOQWC2tb81ciTNr4ctJb2w==}
     hasBin: true
     peerDependencies:
       '@standard-schema/spec': ^1.0.0
@@ -3102,7 +3084,7 @@ packages:
       hono: ^4.0.5
       react: ^17.0.2 || ^18.0.0 || ^19.0.0
       typescript: ^5.5
-      zod: ^3.22.4 || ^4.0.15
+      zod: ^3.25.0 || ^4.0.0
     peerDependenciesMeta:
       '@standard-schema/spec':
         optional: true
@@ -3115,8 +3097,8 @@ packages:
       zod:
         optional: true
 
-  convex@1.28.0:
-    resolution: {integrity: sha512-40FgeJ/LxP9TxnkDDztU/A5gcGTdq1klcTT5mM0Ak+kSlQiDktMpjNX1TfkWLxXaE3lI4qvawKH95v2RiYgFxA==}
+  convex@1.29.3:
+    resolution: {integrity: sha512-tg5TXzMjpNk9m50YRtdp6US+t7ckxE4E+7DNKUCjJ2MupQs2RBSPF/z5SNN4GUmQLSfg0eMILDySzdAvjTrhnw==}
     engines: {node: '>=18.0.0', npm: '>=7.0.0'}
     hasBin: true
     peerDependencies:
@@ -3411,8 +3393,8 @@ packages:
   idb@8.0.3:
     resolution: {integrity: sha512-LtwtVyVYO5BqRvcsKuB2iUMnHwPVByPCXFXOpuU96IZPPoPN6xjOGxZQ74pgSVVLQWtUOYgyeL4GE98BY5D3wg==}
 
-  immer@10.1.3:
-    resolution: {integrity: sha512-tmjF/k8QDKydUlm3mZU+tjM6zeq9/fFpPqH9SzWmBnVVKsPBg/V66qsMwb3/Bo90cgUN+ghdVBess+hPsxUyRw==}
+  immer@11.0.0:
+    resolution: {integrity: sha512-XtRG4SINt4dpqlnJvs70O2j6hH7H0X8fUzFsjMn1rwnETaxwp83HLNimXBjZ78MrKl3/d3/pkzDH0o0Lkxm37Q==}
 
   import-in-the-middle@1.15.0:
     resolution: {integrity: sha512-bpQy+CrsRmYmoPMAE/0G33iwRqwW4ouqdRg8jgbH3aKuCtOc8lxgmYXg2dMM92CRiGP660EtBcymH/eVUpCSaA==}
@@ -3593,8 +3575,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.546.0:
-    resolution: {integrity: sha512-Z94u6fKT43lKeYHiVyvyR8fT7pwCzDu7RyMPpTvh054+xahSgj4HFQ+NmflvzdXsoAjYGdCguGaFKYuvq0ThCQ==}
+  lucide-react@0.554.0:
+    resolution: {integrity: sha512-St+z29uthEJVx0Is7ellNkgTEhaeSoA42I7JjOCBCrc5X6LYMGSv0P/2uS5HDLTExP5tpiqRD2PyUEOS6s9UXA==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -3671,13 +3653,6 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
       react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
-
-  next-view-transitions@0.3.4:
-    resolution: {integrity: sha512-SSiskenQ8JkEFGzPjvFwC5LGGoqgTxM5dxexkeugxvcXFLpWI2ZUh4IsCURD3ovW+8Ue7xXlrtrpy8b7XR7IwQ==}
-    peerDependencies:
-      next: '>=14.0.0'
-      react: ^18.2.0
-      react-dom: ^18.2.0
 
   next@16.0.0:
     resolution: {integrity: sha512-nYohiNdxGu4OmBzggxy9rczmjIGI+TpR5vbKTsE1HqYwNm1B+YSiugSrFguX6omMOKnDHAmBPY4+8TNJk0Idyg==}
@@ -3882,8 +3857,8 @@ packages:
     peerDependencies:
       react: ^19.0.0
 
-  react-intersection-observer@9.16.0:
-    resolution: {integrity: sha512-w9nJSEp+DrW9KmQmeWHQyfaP6b03v+TdXynaoA964Wxt7mdR3An11z4NNCQgL4gKSK7y1ver2Fq+JKH6CWEzUA==}
+  react-intersection-observer@10.0.0:
+    resolution: {integrity: sha512-JJRgcnFQoVXmbE5+GXr1OS1NDD1gHk0HyfpLcRf0575IbJz+io8yzs4mWVlfaqOQq1FiVjLvuYAdEEcrrCfveg==}
     peerDependencies:
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -3913,14 +3888,6 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
-
-  react-sortablejs@6.1.4:
-    resolution: {integrity: sha512-fc7cBosfhnbh53Mbm6a45W+F735jwZ1UFIYSrIqcO/gRIFoDyZeMtgKlpV4DdyQfbCzdh5LoALLTDRxhMpTyXQ==}
-    peerDependencies:
-      '@types/sortablejs': '1'
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-      sortablejs: '1'
 
   react-stately@3.42.0:
     resolution: {integrity: sha512-lYt2o1dd6dK8Bb4GRh08RG/2u64bSA1cqtRqtw4jEMgxC7Q17RFcIumBbChErndSdLzafEG/UBwV6shOfig6yw==}
@@ -4042,9 +4009,6 @@ packages:
 
   simple-swizzle@0.2.4:
     resolution: {integrity: sha512-nAu1WFPQSMNr2Zn9PGSZK9AGn4t/y97lEm+MXTtUDwfP0ksAIX4nO+6ruD9Jwut4C49SB1Ws+fbXsm/yScWOHw==}
-
-  sortablejs@1.15.6:
-    resolution: {integrity: sha512-aNfiuwMEpfBM/CN6LY0ibyhxPfPbyFeBTYJKCvzkJ2GkUpazIt3H+QIPAMHwqQ7tMKaHz1Qj+rJJCqljnf4p3A==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -4170,9 +4134,6 @@ packages:
     resolution: {integrity: sha512-nIVck8DK+GM/0Frwd+nIhZ84pR/BX7rmXMfYwyg+Sri5oGVE99/E3KvXqpC2xHFxyqXyGHTKBSioxxplrO4I4w==}
     engines: {node: '>=10'}
     hasBin: true
-
-  tiny-invariant@1.2.0:
-    resolution: {integrity: sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==}
 
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
@@ -7928,8 +7889,6 @@ snapshots:
 
   '@types/shimmer@1.2.0': {}
 
-  '@types/sortablejs@1.15.8': {}
-
   '@types/tedious@4.0.14':
     dependencies:
       '@types/node': 24.8.1
@@ -8147,8 +8106,6 @@ snapshots:
     dependencies:
       clsx: 2.1.1
 
-  classnames@2.3.1: {}
-
   client-only@0.0.1: {}
 
   clsx@1.2.1: {}
@@ -8183,20 +8140,20 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  convex-ents@0.16.0(convex@1.28.0(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)):
+  convex-ents@0.16.0(convex@1.29.3(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)):
     dependencies:
-      convex: 1.28.0(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      convex: 1.29.3(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
 
-  convex-helpers@0.1.104(@standard-schema/spec@1.0.0)(convex@1.28.0(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.7.2)(zod@4.1.5):
+  convex-helpers@0.1.105(@standard-schema/spec@1.0.0)(convex@1.29.3(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0))(react@19.0.0)(typescript@5.7.2)(zod@4.1.5):
     dependencies:
-      convex: 1.28.0(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      convex: 1.29.3(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
     optionalDependencies:
       '@standard-schema/spec': 1.0.0
       react: 19.0.0
       typescript: 5.7.2
       zod: 4.1.5
 
-  convex@1.28.0(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
+  convex@1.29.3(@clerk/clerk-react@5.53.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0):
     dependencies:
       esbuild: 0.25.4
       prettier: 3.6.2
@@ -8463,7 +8420,7 @@ snapshots:
 
   idb@8.0.3: {}
 
-  immer@10.1.3: {}
+  immer@11.0.0: {}
 
   import-in-the-middle@1.15.0:
     dependencies:
@@ -8614,7 +8571,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.546.0(react@19.0.0):
+  lucide-react@0.554.0(react@19.0.0):
     dependencies:
       react: 19.0.0
 
@@ -8672,12 +8629,6 @@ snapshots:
 
   next-themes@0.4.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
-      react: 19.0.0
-      react-dom: 19.0.0(react@19.0.0)
-
-  next-view-transitions@0.3.4(next@16.0.0(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
-    dependencies:
-      next: 16.0.0(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
@@ -8806,7 +8757,7 @@ snapshots:
       react: 19.0.0
       scheduler: 0.25.0
 
-  react-intersection-observer@9.16.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  react-intersection-observer@10.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
     optionalDependencies:
@@ -8832,15 +8783,6 @@ snapshots:
       use-sidecar: 1.1.3(@types/react@19.2.2)(react@19.0.0)
     optionalDependencies:
       '@types/react': 19.2.2
-
-  react-sortablejs@6.1.4(@types/sortablejs@1.15.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sortablejs@1.15.6):
-    dependencies:
-      '@types/sortablejs': 1.15.8
-      classnames: 2.3.1
-      react: 19.0.0
-      react-dom: 19.0.0(react@19.0.0)
-      sortablejs: 1.15.6
-      tiny-invariant: 1.2.0
 
   react-stately@3.42.0(react@19.0.0):
     dependencies:
@@ -9029,8 +8971,6 @@ snapshots:
     dependencies:
       is-arrayish: 0.3.4
 
-  sortablejs@1.15.6: {}
-
   source-map-js@1.2.1: {}
 
   source-map-support@0.5.21:
@@ -9144,8 +9084,6 @@ snapshots:
       commander: 2.20.3
       source-map-support: 0.5.21
 
-  tiny-invariant@1.2.0: {}
-
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
@@ -9196,9 +9134,9 @@ snapshots:
     dependencies:
       react: 19.0.0
 
-  use-immer@0.11.0(immer@10.1.3)(react@19.0.0):
+  use-immer@0.11.0(immer@11.0.0)(react@19.0.0):
     dependencies:
-      immer: 10.1.3
+      immer: 11.0.0
       react: 19.0.0
 
   use-isomorphic-layout-effect@1.2.1(@types/react@19.2.2)(react@19.0.0):

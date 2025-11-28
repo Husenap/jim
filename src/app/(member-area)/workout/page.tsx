@@ -40,7 +40,8 @@ import {
   Share,
   X,
 } from "lucide-react";
-import { Link, useTransitionRouter } from "next-view-transitions";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Page() {
@@ -50,7 +51,7 @@ export default function Page() {
     isSuccess,
   } = useQueryWithStatus(api.routines.custom);
   const createWorkout = useMutation(api.activeWorkouts.create);
-  const { push } = useTransitionRouter();
+  const { push } = useRouter();
 
   const [isStarting, setIsStarting] = useState(false);
 
@@ -148,7 +149,7 @@ function RoutineMenu({ id }: { id: Id<"routines"> }) {
 
   const removeDisclosure = useDisclosure();
 
-  const { push } = useTransitionRouter();
+  const { push } = useRouter();
 
   return (
     <>

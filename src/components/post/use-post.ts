@@ -2,7 +2,8 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { WorkoutDetailsType } from "@/convex/workouts";
 import { useDisclosure } from "@heroui/react";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex-helpers/react/cache/hooks";
+import { useMutation } from "convex/react";
 import { useCallback, useMemo } from "react";
 
 export function usePost({
@@ -93,8 +94,8 @@ export function usePost({
   // Create context object
   const context = useMemo(
     () => ({
-      workout: workoutData?.workout || null,
-      user: workoutData?.user || null,
+      workout: workoutData?.workout,
+      user: workoutData?.user,
       toggleLike: workoutData ? toggleLike : undefined,
       addComment: workoutData ? addComment : undefined,
       currentUser,

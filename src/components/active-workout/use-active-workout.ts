@@ -2,7 +2,8 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import countSets, { updateSetData } from "@/utils/workout/sets";
 import calculateVolume from "@/utils/workout/volume";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex-helpers/react/cache/hooks";
+import { useMutation } from "convex/react";
 import { useMemo } from "react";
 
 export function useActiveWorkout({
@@ -11,8 +12,12 @@ export function useActiveWorkout({
   workoutId: Id<"activeWorkouts">;
 }) {
   const user = useQuery(api.users.current);
-  const activeWorkout = useQuery(api.activeWorkouts.get, { id: workoutId });
-  const exercises = useQuery(api.activeWorkouts.exercises, { id: workoutId });
+  const activeWorkout = useQuery(api.activeWorkouts.get, {
+    id: workoutId,
+  });
+  const exercises = useQuery(api.activeWorkouts.exercises, {
+    id: workoutId,
+  });
 
   const updateNote = useMutation(api.activeWorkouts.updateNote);
   const updateSuperset = useMutation(api.activeWorkouts.updateSuperset);

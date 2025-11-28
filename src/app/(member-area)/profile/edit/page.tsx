@@ -1,15 +1,21 @@
 "use client";
 
 import Navbar from "@/app/(member-area)/profile/edit/navbar";
+import FullscreenSpinner from "@/components/fullscreen-spinner";
 import PageContainer from "@/components/page-container";
 import { TypographyH2 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
+import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import { Button, Form, Input, Textarea } from "@heroui/react";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Page() {
-  const user = useQuery(api.users.current);
+  const {
+    data: user,
+    isPending,
+    isSuccess,
+  } = useQueryWithStatus(api.users.current);
 
   const [bio, setBio] = useState(user?.bio ?? "");
   const [link, setLink] = useState(user?.link ?? "");
@@ -36,65 +42,73 @@ export default function Page() {
 
   return (
     <PageContainer topNavbar={<Navbar />}>
-      <div className="flex w-full flex-col gap-2">
-        <TypographyH2>Profile details</TypographyH2>
+      {isPending && <FullscreenSpinner />}
+      {isSuccess}
+      {
+        <div className="flex w-full flex-col gap-2">
+          <TypographyH2>Profile details</TypographyH2>
 
-        <Form className="w-full" validationBehavior="aria" onSubmit={onSubmit}>
-          <Textarea
-            label="Bio"
-            labelPlacement="outside"
-            name="bio"
-            placeholder="Describe yourself"
-            type="text"
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            isDisabled={!user}
-          />
-          <Input
-            label="Link"
-            labelPlacement="outside"
-            name="link"
-            placeholder="example.com"
-            startContent={
-              <div className="pointer-events-none flex items-center">
-                <span className="text-small text-default-400">https://</span>
-              </div>
-            }
-            type="url"
-            value={link}
-            onChange={(e) => setLink(e.target.value)}
-            isDisabled={!user}
-          />
-          <Input
-            label="Bodyweight (hidden)"
-            labelPlacement="outside"
-            name="bodyweight"
-            placeholder="Your bodyweight"
-            endContent={
-              <div className="pointer-events-none flex items-center">
-                <span className="text-small text-default-400">kg</span>
-              </div>
-            }
-            type="number"
-            min={0}
-            step={0.1}
-            value={bodyweight.toString()}
-            onChange={(e) => setBodyweight(e.target.value)}
-            isDisabled={!user}
-          />
-          <Button
-            isDisabled={
-              (user?.link ?? "") === link &&
-              (user?.bio ?? "") === bio &&
-              (user?.bodyweight ?? "") === bodyweight
-            }
-            color="primary"
-            type="submit"
+          <Form
+            className="w-full"
+            validationBehavior="aria"
+            onSubmit={onSubmit}
           >
-            Save
-          </Button>
-        </Form>
-      </div>
+            <Textarea
+              label="Bio"
+              labelPlacement="outside"
+              name="bio"
+              placeholder="Describe yourself"
+              type="text"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              isDisabled={!user}
+            />
+            <Input
+              label="Link"
+              labelPlacement="outside"
+              name="link"
+              placeholder="example.com"
+              startContent={
+                <div className="pointer-events-none flex items-center">
+                  <span className="text-small text-default-400">https://</span>
+                </div>
+              }
+              type="url"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              isDisabled={!user}
+            />
+            <Input
+              label="Bodyweight (hidden)"
+              labelPlacement="outside"
+              name="bodyweight"
+              placeholder="Your bodyweight"
+              endContent={
+                <div className="pointer-events-none flex items-center">
+                  <span className="text-small text-default-400">kg</span>
+                </div>
+              }
+              type="number"
+              min={0}
+              step={0.1}
+              value={bodyweight.toString()}
+              onChange={(e) => setBodyweight(e.target.value)}
+              isDisabled={!user}
+            />
+            <Button
+              isDisabled={
+                (user?.link ?? "") === link &&
+                (user?.bio ?? "") === bio &&
+                (user?.bodyweight ?? "") === bodyweight
+              }
+              color="primary"
+              type="submit"
+            >
+              Save
+            </Button>
+          </Form>
+        </div>
+      }
     </PageContainer>
   );
 }
