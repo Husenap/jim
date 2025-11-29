@@ -23,7 +23,7 @@ export default function MultiYear() {
             .value(),
         )
         .value(),
-    [calendarData],
+    [calendarData, sickData, daysWorkedOut],
   );
 
   const endRef = useRef<HTMLDivElement>(null);
@@ -55,6 +55,8 @@ export default function MultiYear() {
                     dayRadius={2}
                     monthLegendOffset={4}
                     isInteractive={false}
+                    minValue={0}
+                    maxValue={1}
                     {...theme.timeRange}
                   />
                 </div>

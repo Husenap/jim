@@ -12,6 +12,7 @@
     "@clerk/nextjs": "^6.33.7",
     "@clerk/themes": "^2.4.28",
     "@heroui/react": "^2.8.5",
+    "@internationalized/date": "^3.10.0",
     "@nivo/calendar": "^0.99.0",
     "@nivo/colors": "^0.99.0",
     "@nivo/core": "^0.99.0",

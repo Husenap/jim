@@ -25,7 +25,11 @@ export function useCalendar() {
   } = useQueryWithStatus(api.sickLeaves.get);
 
   const calendarData = useMemo(
-    () => _(dates).map((millis) => DateTime.fromMillis(millis).startOf("day")),
+    () =>
+      _(dates).map(
+        (millis) =>
+          DateTime.fromMillis(millis).startOf("day") as DateTime<true>,
+      ),
     [dates],
   );
 
@@ -62,9 +66,10 @@ export function useCalendar() {
     () => ({
       isPending: isPendingDates || isPendingSickLeaves,
       isSuccess: isSuccessDates && isSuccessSickLeaves,
-      dates,
+      dates: dates ?? [],
       calendarData,
       daysWorkedOut,
+      sickLeaves: sickLeaves ?? [],
       sickData,
       daysSick,
     }),

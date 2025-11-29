@@ -1,6 +1,7 @@
 "use client";
 
 import BackButton from "@/components/back-button";
+import { useCalendarContext } from "@/components/calendar/calendar-context";
 import { api } from "@/convex/_generated/api";
 import {
   Button,
@@ -11,15 +12,21 @@ import {
   RangeCalendar,
   useDisclosure,
 } from "@heroui/react";
+import { fromAbsolute } from "@internationalized/date";
 import { useMutation } from "convex/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
+import _ from "underscore";
 
 export default function Navbar() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [value, setValue] =
     useState<Parameters<typeof RangeCalendar>[0]["value"]>();
   const create = useMutation(api.sickLeaves.create);
+  const { dates } = useCalendarContext();
+
+  const firstDate = _(dates).min();
+  const lastDate = Date.now();
 
   return (
     <div className="-mx-2 flex flex-col">
@@ -47,6 +54,8 @@ export default function Navbar() {
                         value={value}
                         onChange={setValue}
                         color="secondary"
+                        minValue={fromAbsolute(firstDate, "utc")}
+                        maxValue={fromAbsolute(lastDate, "utc")}
                       />
                     </div>
                     <Button

@@ -1,11 +1,12 @@
 "use client";
 
 import Navbar from "@/app/(member-area)/profile/(stats)/calendar/sick-leave/navbar";
+import Calendar from "@/components/calendar/calendar";
+import { useCalendarContext } from "@/components/calendar/calendar-context";
 import ConfirmationDialog from "@/components/confirmation-dialog";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import PageContainer from "@/components/page-container";
 import { api } from "@/convex/_generated/api";
-import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import { Button, Divider, useDisclosure } from "@heroui/react";
 import { useMutation } from "convex/react";
 import { FunctionReturnType } from "convex/server";
@@ -13,24 +14,28 @@ import { Trash } from "lucide-react";
 import { DateTime } from "luxon";
 
 export default function Page() {
-  const {
-    data: sickLeaves,
-    isPending,
-    isSuccess,
-  } = useQueryWithStatus(api.sickLeaves.get);
+  return (
+    <Calendar>
+      <PageContainer topNavbar={<Navbar />}>
+        <Content />
+      </PageContainer>
+    </Calendar>
+  );
+}
+
+function Content() {
+  const { sickLeaves, isPending, isSuccess } = useCalendarContext();
 
   return (
     <>
-      <PageContainer topNavbar={<Navbar />}>
-        {isPending && <FullscreenSpinner />}
-        {isSuccess && (
-          <>
-            {sickLeaves.toReversed().map((sickLeave) => (
-              <Entry key={sickLeave.id} sickLeave={sickLeave} />
-            ))}
-          </>
-        )}
-      </PageContainer>
+      {isPending && <FullscreenSpinner />}
+      {isSuccess && (
+        <>
+          {sickLeaves.toReversed().map((sickLeave) => (
+            <Entry key={sickLeave.id} sickLeave={sickLeave} />
+          ))}
+        </>
+      )}
     </>
   );
 }
