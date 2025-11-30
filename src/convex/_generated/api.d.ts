@@ -20,6 +20,7 @@ import type * as migrations from "../migrations.js";
 import type * as notifications from "../notifications.js";
 import type * as pushNotifications from "../pushNotifications.js";
 import type * as routines from "../routines.js";
+import type * as sickLeaves from "../sickLeaves.js";
 import type * as types from "../types.js";
 import type * as users from "../users.js";
 import type * as workouts from "../workouts.js";
@@ -43,6 +44,7 @@ declare const fullApi: ApiFromModules<{
   notifications: typeof notifications;
   pushNotifications: typeof pushNotifications;
   routines: typeof routines;
+  sickLeaves: typeof sickLeaves;
   types: typeof types;
   users: typeof users;
   workouts: typeof workouts;

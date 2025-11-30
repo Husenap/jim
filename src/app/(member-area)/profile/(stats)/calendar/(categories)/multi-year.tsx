@@ -1,38 +1,29 @@
+import { useCalendarContext } from "@/components/calendar/calendar-context";
 import ChartWrapper from "@/components/charts/chart-wrapper";
 import { TypographyH1 } from "@/components/typography";
-import { api } from "@/convex/_generated/api";
-import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import { ResponsiveTimeRange } from "@nivo/calendar";
-import { DateTime } from "luxon";
 import { useEffect, useMemo, useRef } from "react";
 import _ from "underscore";
 
 export default function MultiYear() {
-  const { data } = useQueryWithStatus(api.measurements.bodyweight);
+  const { calendarData, sickData, daysWorkedOut } = useCalendarContext();
 
-  const calendarData = useMemo(
-    () =>
-      _(data).map((r) => ({
-        ...r,
-        date: DateTime.fromMillis(r.date),
-      })),
-    [data],
-  );
   const yearCalendarData = useMemo(
     () =>
       _.chain(calendarData)
-        .groupBy(({ date }) => date.year)
+        .concat(sickData)
+        .groupBy((date) => date.year)
         .mapObject((l) =>
           _.chain(l)
-            .map(({ date }) => ({
+            .map((date) => ({
               day: date.toFormat("yyyy-MM-dd"),
-              value: 0,
+              value: daysWorkedOut.has(date.toISODate()) ? 1 : 0,
             }))
             .uniq(true, "day")
             .value(),
         )
         .value(),
-    [calendarData],
+    [calendarData, sickData, daysWorkedOut],
   );
 
   const endRef = useRef<HTMLDivElement>(null);
@@ -53,7 +44,7 @@ export default function MultiYear() {
                 <div className="aspect-[6/1]">
                   <ResponsiveTimeRange
                     theme={nivoTheme}
-                    colors={[colors[0]]}
+                    colors={[colors[1], colors[0]]}
                     data={cd}
                     from={`${year}-1-1`}
                     to={`${year}-12-31`}
@@ -63,7 +54,9 @@ export default function MultiYear() {
                     weekdayTicks={[]}
                     dayRadius={2}
                     monthLegendOffset={4}
-                    align="top"
+                    isInteractive={false}
+                    minValue={0}
+                    maxValue={1}
                     {...theme.timeRange}
                   />
                 </div>

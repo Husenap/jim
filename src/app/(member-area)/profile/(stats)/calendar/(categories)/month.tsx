@@ -1,32 +1,22 @@
+import { useCalendarContext } from "@/components/calendar/calendar-context";
 import { TypographyH1 } from "@/components/typography";
-import { api } from "@/convex/_generated/api";
-import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import { cn } from "@heroui/react";
 import { DateTime, Interval } from "luxon";
 import { useEffect, useMemo, useRef } from "react";
 import _ from "underscore";
 
 export default function Month() {
-  const { data } = useQueryWithStatus(api.measurements.bodyweight);
-
-  const calendarData = useMemo(
-    () =>
-      _(data).map((r) => ({
-        ...r,
-        date: DateTime.fromMillis(r.date),
-      })),
-    [data],
-  );
+  const { calendarData, daysSick, daysWorkedOut } = useCalendarContext();
 
   const months = useMemo(() => {
     if (calendarData.length === 0) return [];
 
     let firstMonth = _.chain(calendarData)
-      .map(({ date }) => date.startOf("month"))
+      .map((date) => date.startOf("month"))
       .min()
       .value() as DateTime;
     const lastMonth = _.chain(calendarData)
-      .map(({ date }) => date.startOf("month"))
+      .map((date) => date.startOf("month"))
       .max()
       .value() as DateTime;
 
@@ -40,22 +30,17 @@ export default function Month() {
     return res;
   }, [calendarData]);
 
-  const daysWorkedOut = useMemo(
-    () => new Set(calendarData.map(({ date }) => date.startOf("day").toISO())),
-    [calendarData],
-  );
-
   const endRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (endRef.current) {
       endRef.current.scrollIntoView({ behavior: "instant" });
     }
-  }, [calendarData]);
+  }, [daysWorkedOut]);
 
   return (
-    <>
+    <div className="grid grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
       {months.map((month) => (
-        <div key={month.toISO()} className="mt-4">
+        <div key={month.toISODate()} className="mt-4">
           <TypographyH1>
             {month.toFormat("MMMM")} {month.toFormat("yyyy")}
           </TypographyH1>
@@ -67,15 +52,20 @@ export default function Month() {
               .splitBy({ day: 1 })
               .map((d) => (
                 <div
-                  key={d.start!.toISO()}
+                  key={d.start!.toISODate()}
                   className="border-content4 flex border-t p-2"
                 >
                   <div
                     className={cn(
                       "flex aspect-square h-8 items-center justify-center rounded-full",
                       {
+                        "bg-secondary text-secondary-foreground": daysSick.has(
+                          d.start!.toISODate(),
+                        ),
+                      },
+                      {
                         "bg-primary text-primary-foreground": daysWorkedOut.has(
-                          d.start!.toISO(),
+                          d.start!.toISODate(),
                         ),
                       },
                     )}
@@ -88,6 +78,6 @@ export default function Month() {
         </div>
       ))}
       <div ref={endRef}></div>
-    </>
+    </div>
   );
 }

@@ -137,6 +137,7 @@ const schema = defineEntSchema({
       field: "likedWorkoutsId",
       table: "users_to_workouts_likers",
     })
+    .edges("sickLeaves", { ref: true })
     .edge("activeWorkout", { ref: true })
     .edges("pastExerciseSets", { to: "pastExerciseSets", ref: true }),
 
@@ -189,6 +190,11 @@ const schema = defineEntSchema({
   })
     .edge("author", { to: "users", field: "authorId" })
     .edge("workout", { to: "workouts", field: "workoutId" }),
+
+  sickLeaves: defineEnt({
+    startTime: v.number(),
+    endTime: v.number(),
+  }).edge("user"),
 });
 
 export default schema;
