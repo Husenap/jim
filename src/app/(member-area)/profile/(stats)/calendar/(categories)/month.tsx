@@ -38,7 +38,7 @@ export default function Month() {
   }, [daysWorkedOut]);
 
   return (
-    <>
+    <div className="grid grid-cols-1 gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
       {months.map((month) => (
         <div key={month.toISODate()} className="mt-4">
           <TypographyH1>
@@ -78,6 +78,6 @@ export default function Month() {
         </div>
       ))}
       <div ref={endRef}></div>
-    </>
+    </div>
   );
 }

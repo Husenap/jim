@@ -61,7 +61,7 @@ export default function Year() {
             {_(monthCalendarData).map((monthData, year) => (
               <div key={year}>
                 <TypographyH1 className="text-center">{year}</TypographyH1>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-4 md:grid-cols-4">
                   {_(monthData).map(({ i, cd }) => (
                     <div key={i.toISODate()}>
                       <TypographyH2 className="text-center">
