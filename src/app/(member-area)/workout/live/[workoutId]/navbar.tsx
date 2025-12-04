@@ -10,6 +10,7 @@ import {
   Drawer,
   DrawerContent,
   Input,
+  Progress,
   Textarea,
   useDisclosure,
 } from "@heroui/react";
@@ -33,7 +34,6 @@ export default function Navbar() {
           </>
         )}
       </div>
-      <Divider />
       <WorkoutDetails />
     </>
   );
@@ -64,21 +64,30 @@ function WorkoutDetails({ disableAnimation }: { disableAnimation?: boolean }) {
   }
 
   return (
-    <div className="flex flex-row items-center py-3">
-      <div className="grid w-full grid-cols-3 text-center">
-        <div className="flex flex-col">
-          <TypographyH4>Duration</TypographyH4>
-          <span className="text-primary text-nowrap">{timeString}</span>
-        </div>
-        <div className="flex flex-col">
-          <TypographyH4>Volume</TypographyH4>
-          <span className="text-nowrap">{volume} kg</span>
-        </div>
-        <div className="flex flex-col">
-          <TypographyH4>Sets</TypographyH4>
-          <span className="text-nowrap">
-            {finishedSets}/{totalSets}
-          </span>
+    <div className="-mx-2">
+      <Progress
+        size="sm"
+        radius="none"
+        value={finishedSets}
+        minValue={0}
+        maxValue={totalSets}
+      />
+      <div className="flex flex-row items-center py-3">
+        <div className="grid w-full grid-cols-3 text-center">
+          <div className="flex flex-col">
+            <TypographyH4>Duration</TypographyH4>
+            <span className="text-primary text-nowrap">{timeString}</span>
+          </div>
+          <div className="flex flex-col">
+            <TypographyH4>Volume</TypographyH4>
+            <span className="text-nowrap">{volume} kg</span>
+          </div>
+          <div className="flex flex-col">
+            <TypographyH4>Sets</TypographyH4>
+            <span className="text-nowrap">
+              {finishedSets}/{totalSets}
+            </span>
+          </div>
         </div>
       </div>
     </div>
