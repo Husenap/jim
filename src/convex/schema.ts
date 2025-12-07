@@ -164,6 +164,7 @@ const schema = defineEntSchema({
     exercises: v.array(ExerciseSetValidator),
     bodyweight: v.optional(v.number()),
     startTime: v.number(),
+    endTime: v.optional(v.number()),
   })
     .edge("user")
     .edges("comments", { ref: "workoutId" })
@@ -171,7 +172,8 @@ const schema = defineEntSchema({
       to: "users",
       field: "likersId",
       table: "users_to_workouts_likers",
-    }),
+    })
+    .index("by_start_time", ["startTime"]),
 
   activeWorkouts: defineEnt({
     title: v.string(),
