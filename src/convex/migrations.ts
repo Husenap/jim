@@ -1,8 +1,8 @@
-import { internalMutation } from "@/convex/_generated/server"
-import { makeMigration } from "convex-helpers/server/migrations"
+import { internalMutation } from "@/convex/_generated/server";
+import { makeMigration } from "convex-helpers/server/migrations";
 
 const migration = makeMigration(internalMutation, {
-  migrationTable: "migrations"
+  migrationTable: "migrations",
 });
 
 /*
@@ -26,3 +26,11 @@ export const removeOldMuscleGroups = migration({
   }),
 });
 */
+
+export const addEndTimeToWorkouts = migration({
+  table: "workouts",
+  migrateOne: async (_, workout) => ({
+    ...workout,
+    endTime: workout._creationTime,
+  }),
+});
