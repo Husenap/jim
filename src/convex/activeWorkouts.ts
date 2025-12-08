@@ -53,8 +53,8 @@ export const create = mutation({
       })),
     });
 
-    const subscriptions = (await user.edgeX("followers")).flatMap(
-      (follower) => follower.pushSubscriptions,
+    const subscriptions = (await user.edgeX("followers")).flatMap((follower) =>
+      follower.pushSubscriptions.map((s) => ({ ...s, userId: follower._id })),
     );
     await sendNotification(ctx, subscriptions, {
       title: "Jim",

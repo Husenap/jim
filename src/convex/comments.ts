@@ -14,19 +14,20 @@ export const addComment = mutation({
     await ctx.table("comments").insert({
       text: text.trim(),
       workoutId,
-      authorId: user._id
+      authorId: user._id,
     });
     if (workout.userId !== user._id) {
+      const owner = await workout.edge("user");
       await sendNotification(
         ctx,
-        (await workout.edge("user")).pushSubscriptions,
+        owner.pushSubscriptions.map((s) => ({ ...s, userId: owner._id })),
         {
           title: `${user.name} commented on your workout!`,
           body: text,
           icon: user.imageURL,
-          path: `/post/${workout._id}`
-        }
+          path: `/post/${workout._id}`,
+        },
       );
     }
-  }
+  },
 });

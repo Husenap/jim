@@ -1,5 +1,4 @@
 import { withSentryConfig } from "@sentry/nextjs";
-import withSerwistInit from "@serwist/next";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -33,17 +32,16 @@ const nextConfig: NextConfig = {
           key: "Cache-Control",
           value: "no-cache, no-store, must-revalidate",
         },
+        {
+          key: "Content-Security-Policy",
+          value: "default-src 'self'; script-src 'self'",
+        },
       ],
     },
   ],
 };
 
-const serwistConfig = withSerwistInit({
-  swSrc: "app/sw.ts",
-  swDest: "public/sw.js",
-})(nextConfig);
-
-const sentryConfig = withSentryConfig(serwistConfig, {
+const sentryConfig = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options
 

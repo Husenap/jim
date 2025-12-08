@@ -89,6 +89,7 @@ export const create = mutation({
       userId: activeWorkout.userId,
       bodyweight: activeWorkout.bodyweight,
       startTime: activeWorkout._creationTime,
+      endTime: Date.now(),
     });
 
     for (const exercise of cleanExercises) {
@@ -114,8 +115,8 @@ export const create = mutation({
 
     await activeWorkout.delete();
 
-    const subscriptions = (await user.edgeX("followers")).flatMap(
-      (follower) => follower.pushSubscriptions,
+    const subscriptions = (await user.edgeX("followers")).flatMap((follower) =>
+      follower.pushSubscriptions.map((s) => ({ ...s, userId: follower._id })),
     );
     await sendNotification(ctx, subscriptions, {
       title: "Jim",
@@ -220,12 +221,16 @@ export const toggleLike = mutation({
 
       if (workout.userId !== user._id) {
         const owner = await workout.edgeX("user");
-        await sendNotification(ctx, owner.pushSubscriptions, {
-          title: "Jim",
-          body: `${user.name} liked your workout!`,
-          icon: user.imageURL,
-          path: `/post/${workout._id}`,
-        });
+        await sendNotification(
+          ctx,
+          owner.pushSubscriptions.map((s) => ({ ...s, userId: owner._id })),
+          {
+            title: "Jim",
+            body: `${user.name} liked your workout!`,
+            icon: user.imageURL,
+            path: `/post/${workout._id}`,
+          },
+        );
       }
     }
   },
