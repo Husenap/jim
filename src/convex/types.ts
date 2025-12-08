@@ -23,4 +23,4 @@ export type PushSubscription = {
     p256dh: string;
     auth: string;
   };
-}
+};

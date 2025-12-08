@@ -18,12 +18,15 @@ function urlBase64ToUint8Array(base64String: string) {
 
 export function useServiceWorker() {
   const [isSupported, setIsSupported] = useState(false);
-  const [subscription, setSubscription] = useState<PushSubscription | null>(null);
+  const [subscription, setSubscription] = useState<PushSubscription | null>(
+    null,
+  );
   const subscribeUser = useMutation(api.pushNotifications.subscribe);
   const unsubscribeUser = useMutation(api.pushNotifications.unsubscribe);
 
   useEffect(() => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
+      navigator.serviceWorker.register("/sw.js");
       setIsSupported(true);
       getSubscription();
     }
@@ -61,19 +64,17 @@ export function useServiceWorker() {
     }
   }, [subscription, setSubscription]);
 
-  const context = useMemo(() => ({
-    isSupported,
-    subscription,
-    subscribe,
-    unsubscribe
-  }), [
-    isSupported,
-    subscription,
-    subscribe,
-    unsubscribe
-  ]);
+  const context = useMemo(
+    () => ({
+      isSupported,
+      subscription,
+      subscribe,
+      unsubscribe,
+    }),
+    [isSupported, subscription, subscribe, unsubscribe],
+  );
 
   return context;
-};
+}
 
 export type UseServiceWorkerReturn = ReturnType<typeof useServiceWorker>;

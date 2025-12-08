@@ -36,9 +36,5 @@ next-env.d.ts
 
 certificates
 
-# serwist
-public/sw*
-public/swe-worker*
-
 # Sentry Config File
 .env.sentry-build-plugin

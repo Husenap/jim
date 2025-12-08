@@ -19,9 +19,6 @@
         "./src/*"
       ]
     },
-    "types": [
-      "@serwist/next/typings"
-    ],
     /* These compiler options are required by Convex */
     "target": "ESNext",
     "lib": [

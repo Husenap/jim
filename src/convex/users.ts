@@ -15,7 +15,7 @@ export const byUsername = query({
   args: { username: v.string() },
   handler: async (ctx, { username }) => {
     return (await userByUsername(ctx, username))?.doc();
-  }
+  },
 });
 
 export const toggleFollow = mutation({
@@ -26,26 +26,32 @@ export const toggleFollow = mutation({
     if (!user) return;
 
     if (await user.edge("followees").has(userId)) {
-      await ctx.table("users").getX(user._id).patch({
-        followees: { remove: [userId] }
-      });
+      await ctx
+        .table("users")
+        .getX(user._id)
+        .patch({
+          followees: { remove: [userId] },
+        });
     } else {
-      await ctx.table("users").getX(user._id).patch({
-        followees: { add: [userId] }
-      });
+      await ctx
+        .table("users")
+        .getX(user._id)
+        .patch({
+          followees: { add: [userId] },
+        });
       const followee = await ctx.table("users").getX(userId);
       await sendNotification(
         ctx,
-        followee.pushSubscriptions,
+        followee.pushSubscriptions.map((s) => ({ ...s, userId: followee._id })),
         {
           title: "Jim",
           body: `${user.name} started following you!`,
           icon: user.imageURL,
-          path: `/user/${user.username}`
-        }
+          path: `/user/${user.username}`,
+        },
       );
     }
-  }
+  },
 });
 
 export const isFollower = query({
@@ -55,7 +61,7 @@ export const isFollower = query({
     const user = await getCurrentUser(ctx);
     if (!user) return false;
     return await user.edge("followers").has(userId);
-  }
+  },
 });
 export const isFollowee = query({
   args: { userId: v.optional(v.id("users")) },
@@ -64,28 +70,32 @@ export const isFollowee = query({
     const user = await getCurrentUser(ctx);
     if (!user) return false;
     return await user.edge("followees").has(userId);
-  }
+  },
 });
 export const followers = query({
   args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, { userId }) => {
     if (!userId) return [];
     return await ctx.table("users").getX(userId).edge("followers").docs();
-  }
+  },
 });
 export const followees = query({
   args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, { userId }) => {
     if (!userId) return [];
     return await ctx.table("users").getX(userId).edge("followees").docs();
-  }
+  },
 });
 
 export const search = query({
   args: { search: v.string() },
   handler: async (ctx, { search }) => {
-    return await ctx.table("users").search("search_username", q => q.search("username", search)).take(15).docs();
-  }
+    return await ctx
+      .table("users")
+      .search("search_username", (q) => q.search("username", search))
+      .take(15)
+      .docs();
+  },
 });
 
 export const updateProfile = mutation({
@@ -99,7 +109,7 @@ export const updateProfile = mutation({
     if (user) {
       await ctx.table("users").getX(user._id).patch({ bio, link, bodyweight });
     }
-  }
+  },
 });
 
 export const upsertFromClerk = internalMutation({
@@ -108,9 +118,12 @@ export const upsertFromClerk = internalMutation({
     const userAttributes = {
       username: data.username as string,
       imageURL: data.image_url,
-      name: (data.first_name || data.last_name) ? [data.first_name ?? "", data.last_name ?? ""].join(" ").trim() : data.username!,
+      name:
+        data.first_name || data.last_name
+          ? [data.first_name ?? "", data.last_name ?? ""].join(" ").trim()
+          : data.username!,
       externalId: data.id,
-      pushSubscriptions: []
+      pushSubscriptions: [],
     };
 
     try {
