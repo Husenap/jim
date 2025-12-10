@@ -14,9 +14,9 @@ import {
 } from "@heroui/react";
 import { fromAbsolute } from "@internationalized/date";
 import { useMutation } from "convex/react";
+import { ClipboardPlus } from "lucide-react";
 import { DateTime } from "luxon";
 import { useState } from "react";
-import _ from "underscore";
 
 export default function Navbar() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -25,7 +25,7 @@ export default function Navbar() {
   const create = useMutation(api.sickLeaves.create);
   const { dates } = useCalendarContext();
 
-  const firstDate = _(dates).min();
+  const firstDate = Math.min(...dates, Date.now());
   const lastDate = Date.now();
 
   return (
@@ -38,8 +38,12 @@ export default function Navbar() {
         <div className="text-center">Sick Leave</div>
 
         <div className="flex justify-end">
-          <Button color="secondary" onPress={onOpen}>
-            New Entry
+          <Button
+            startContent={<ClipboardPlus />}
+            color="secondary"
+            onPress={onOpen}
+          >
+            Log
           </Button>
           <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
             <ModalContent>

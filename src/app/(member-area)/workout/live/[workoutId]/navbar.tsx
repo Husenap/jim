@@ -1,5 +1,6 @@
 import { useActiveWorkoutContext } from "@/components/active-workout/active-workout-context";
 import BackButton from "@/components/back-button";
+import ConfirmationDialog from "@/components/confirmation-dialog";
 import DrawerPageContainer from "@/components/drawer-page-container";
 import { TypographyH4 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
@@ -209,6 +210,9 @@ function WorkoutForm({ onClose }: { onClose: () => void }) {
     }
   }, [activeWorkout, title, description, finalStartTime, finalEndTime]);
 
+  const removeDisclosure = useDisclosure();
+  const removeActiveWorkout = useMutation(api.activeWorkouts.remove);
+
   return (
     <>
       <DrawerPageContainer
@@ -226,21 +230,21 @@ function WorkoutForm({ onClose }: { onClose: () => void }) {
           </>
         }
       >
-        <Input
-          name="title"
-          placeholder="Workout Title"
-          value={title}
-          onValueChange={setTitle}
-          size="lg"
-          variant="underlined"
-          isClearable
-        />
         <WorkoutDetails
           disableAnimation
           startTime={finalStartTime}
           endTime={finalEndTime}
         />
         <Divider />
+        <Input
+          label="Title"
+          labelPlacement="outside"
+          name="title"
+          placeholder="Workout Title"
+          value={title}
+          onValueChange={setTitle}
+          isClearable
+        />
         <Textarea
           label="Description"
           labelPlacement="outside"
@@ -249,10 +253,8 @@ function WorkoutForm({ onClose }: { onClose: () => void }) {
           type="text"
           value={description}
           onValueChange={setDescription}
-          variant="underlined"
           minRows={2}
         />
-        <Divider />
         <DatePicker
           label="When workout started"
           labelPlacement="outside"
@@ -267,10 +269,8 @@ function WorkoutForm({ onClose }: { onClose: () => void }) {
             )
           }
           granularity="second"
-          variant="underlined"
           maxValue={fromAbsolute(Date.now(), "utc")}
         />
-        <Divider />
         <TimeInput
           label="Workout duration"
           labelPlacement="outside"
@@ -278,7 +278,19 @@ function WorkoutForm({ onClose }: { onClose: () => void }) {
           value={timeDuration}
           onChange={setTimeDuration}
           granularity="second"
-          variant="underlined"
+        />
+        <Button
+          variant="light"
+          color="danger"
+          onPress={removeDisclosure.onOpen}
+        >
+          Discard Workout
+        </Button>
+        <ConfirmationDialog
+          disclosure={removeDisclosure}
+          titleText="Are you sure you want to discard this workout?"
+          confirmText="Discard Workout"
+          onConfirm={removeActiveWorkout}
         />
       </DrawerPageContainer>
     </>

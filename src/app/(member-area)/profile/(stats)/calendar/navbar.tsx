@@ -14,7 +14,7 @@ export default function Navbar({
   category: Selection;
   setCategory: (selection: Selection) => void;
 }) {
-  const { dates, calendarData, sickData } = useCalendarContext();
+  const { calendarData, sickData } = useCalendarContext();
 
   const combinedDays = useMemo(
     () => calendarData.concat(sickData),
@@ -104,14 +104,18 @@ export default function Navbar({
         </div>
 
         <div className="flex justify-end">
-          <Button
-            isIconOnly
-            variant="light"
-            as={Link}
-            href="/profile/calendar/sick-leave"
-          >
-            <ClipboardPlus />
-          </Button>
+          {calendarData.length !== 0 && (
+            <>
+              <Button
+                isIconOnly
+                variant="light"
+                as={Link}
+                href="/profile/calendar/sick-leave"
+              >
+                <ClipboardPlus />
+              </Button>
+            </>
+          )}
         </div>
       </div>
 

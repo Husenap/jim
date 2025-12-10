@@ -9,18 +9,29 @@ import { useCalendarContext } from "@/components/calendar/calendar-context";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import PageContainer from "@/components/page-container";
 import type { Selection } from "@heroui/react";
+import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function Page() {
   const [category, setCategory] = useState<Selection>(new Set(["month"]));
 
   const Content = () => {
-    const { isPending, isSuccess } = useCalendarContext();
+    const { calendarData, isPending, isSuccess } = useCalendarContext();
     return (
       <>
         {isPending && <FullscreenSpinner />}
         {isSuccess && (
           <>
+            {calendarData.length === 0 && (
+              <>
+                <div className="flex flex-col items-center gap-2 py-8">
+                  <CalendarIcon size={32} />
+                  <span className="text-center">
+                    You haven't finished any workouts yet.
+                  </span>
+                </div>
+              </>
+            )}
             {category instanceof Set && category.has("month") && <Month />}
             {category instanceof Set && category.has("year") && <Year />}
             {category instanceof Set && category.has("multi-year") && (
