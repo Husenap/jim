@@ -3,7 +3,7 @@ import WorkoutPost from "@/components/workout/workout-post";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Spinner } from "@heroui/react";
-import { usePaginatedQuery } from "convex-helpers/react/cache/hooks";
+import { usePaginatedQuery } from "convex/react";
 import { InView } from "react-intersection-observer";
 
 export default function WorkoutFeed({
