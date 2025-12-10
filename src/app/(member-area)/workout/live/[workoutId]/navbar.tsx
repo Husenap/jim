@@ -18,7 +18,11 @@ import {
   TimeInput,
   useDisclosure,
 } from "@heroui/react";
-import { fromAbsolute, toLocalTimeZone } from "@internationalized/date";
+import {
+  fromAbsolute,
+  parseDateTime,
+  toLocalTimeZone,
+} from "@internationalized/date";
 import type { DateValue } from "@react-types/datepicker";
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
@@ -194,8 +198,11 @@ function WorkoutForm({ onClose }: { onClose: () => void }) {
           1000
       );
     }
+    if (startTime && activeWorkout) {
+      return finalStartTime + (Date.now() - activeWorkout._creationTime);
+    }
     return Date.now();
-  }, [finalStartTime, timeDuration]);
+  }, [finalStartTime, timeDuration, startTime, activeWorkout]);
 
   const onSave = useCallback(async () => {
     if (activeWorkout) {
@@ -263,12 +270,16 @@ function WorkoutForm({ onClose }: { onClose: () => void }) {
           onChange={(v) =>
             setStartTime(
               fromAbsolute(
-                Math.min(v?.toDate("").getTime() ?? Date.now(), Date.now()),
+                Math.max(
+                  Math.min(v?.toDate("").getTime() ?? Date.now(), Date.now()),
+                  new Date("2020-01-01").getTime(),
+                ),
                 "utc",
               ),
             )
           }
           granularity="second"
+          minValue={parseDateTime("2020-01-01")}
           maxValue={fromAbsolute(Date.now(), "utc")}
         />
         <TimeInput
