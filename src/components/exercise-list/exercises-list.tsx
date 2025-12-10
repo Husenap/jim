@@ -63,21 +63,29 @@ export default function ExercisesList({
 
   return (
     <>
-      <TypographyH2>Custom exercises</TypographyH2>
-      {isPendingCustom && <FullscreenSpinner />}
-      {isSuccessCustom && filteredCustomExercises.length > 0 && (
-        <ExerciseListCategory
-          exercises={filteredCustomExercises}
-          onSelect={onSelect}
-        />
-      )}
-      <TypographyH2>Built-in exercises</TypographyH2>
-      {isPendingBuiltin && <FullscreenSpinner />}
-      {isSuccessBuiltin && filteredBuiltinExercises.length > 0 && (
-        <ExerciseListCategory
-          exercises={filteredBuiltinExercises}
-          onSelect={onSelect}
-        />
+      {isPendingBuiltin || isPendingCustom ? (
+        <FullscreenSpinner />
+      ) : (
+        <>
+          {isSuccessCustom && filteredCustomExercises.length > 0 && (
+            <>
+              <TypographyH2>Custom exercises</TypographyH2>
+              <ExerciseListCategory
+                exercises={filteredCustomExercises}
+                onSelect={onSelect}
+              />
+            </>
+          )}
+          {isSuccessBuiltin && filteredBuiltinExercises.length > 0 && (
+            <>
+              <TypographyH2>Built-in exercises</TypographyH2>
+              <ExerciseListCategory
+                exercises={filteredBuiltinExercises}
+                onSelect={onSelect}
+              />
+            </>
+          )}
+        </>
       )}
     </>
   );

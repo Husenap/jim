@@ -7,8 +7,9 @@ import PageContainer from "@/components/page-container";
 import { TypographyH1 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { useQueryWithStatus } from "@/utils/use-query-with-status";
-import { Divider } from "@heroui/react";
+import { Divider, Link } from "@heroui/react";
 import { ResponsiveLine } from "@nivo/line";
+import { PersonStanding } from "lucide-react";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
 import _ from "underscore";
@@ -28,6 +29,7 @@ export default function Page() {
             x: new Date(date),
             y: bodyweight!,
           }))
+          .sortBy("x")
           .reverse()
           .value(),
       },
@@ -39,7 +41,22 @@ export default function Page() {
     <>
       <PageContainer topNavbar={<Navbar />}>
         {isPending && <FullscreenSpinner />}
-        {isSuccess && (
+        {isSuccess && chartData[0].data.length == 0 && (
+          <>
+            <div className="flex flex-col items-center gap-2 py-8">
+              <span className="text-center">
+                You don't have any bodyweight measurements yet.
+              </span>
+              <PersonStanding size={32} />
+              <span className="text-center text-balance">
+                Get started by adding your bodyweight to your profile{" "}
+                <Link href={"/profile/edit"}>here</Link>, finish workouts and
+                then come back here to see your progress.
+              </span>
+            </div>
+          </>
+        )}
+        {isSuccess && chartData[0].data.length > 0 && (
           <>
             <ChartWrapper>
               {(_theme, nivoTheme, colors) => (

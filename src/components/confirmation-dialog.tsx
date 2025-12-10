@@ -31,7 +31,9 @@ export default function ConfirmationDialog({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>{titleText}</ModalHeader>
+              <ModalHeader className="text-center text-balance">
+                {titleText}
+              </ModalHeader>
               <ModalBody className="py-4">
                 <Button
                   color="danger"
