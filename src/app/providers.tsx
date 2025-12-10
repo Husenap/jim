@@ -16,7 +16,7 @@ function ThemeWrappedProviders({ children }: { children: React.ReactNode }) {
   const { resolvedTheme } = useTheme();
 
   return (
-    <HeroUIProvider className="h-full min-h-full">
+    <HeroUIProvider className="h-full min-h-full" locale="en-GB">
       <ToastProvider />
       <ClerkProvider
         publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY as string}
