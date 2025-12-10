@@ -37,7 +37,7 @@ export default function ProfileUserData() {
             <div className="grid w-full grid-cols-3">
               <div className="flex flex-col">
                 <TypographyH4>Workouts</TypographyH4>
-                <span>{workouts.length}</span>
+                <span>{workouts?.length ?? 0}</span>
               </div>
               <div className="flex flex-col">
                 <FollowerDrawer

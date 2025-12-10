@@ -17,14 +17,8 @@ export default function ProfilePage({
   showDashboard?: boolean;
   showRoutines?: boolean;
 }) {
-  const {
-    profileUser,
-    currentUser,
-    isVisitor,
-    isFollowee,
-    isFollower,
-    workouts,
-  } = useProfileContext();
+  const { profileUser, currentUser, isVisitor, isFollowee, isFollower } =
+    useProfileContext();
   const toggleFollow = useMutation(api.users.toggleFollow);
 
   if (profileUser === undefined) {
@@ -64,7 +58,7 @@ export default function ProfilePage({
           <TypographyH2>Routines</TypographyH2>
         </div>
       )}
-      {workouts.length > 0 && <ProfileWorkouts />}
+      <ProfileWorkouts />
     </>
   );
 }

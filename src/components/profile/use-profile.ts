@@ -8,8 +8,7 @@ export function useProfile({ username }: { username?: Id<"users"> }) {
   const profileUser = username
     ? useQuery(api.users.byUsername, { username: username })
     : currentUser;
-  const workouts =
-    useQuery(api.workouts.get, { userId: profileUser?._id }) ?? [];
+  const workouts = useQuery(api.workouts.get, { userId: profileUser?._id });
 
   const isFollowee =
     useQuery(api.users.isFollowee, { userId: profileUser?._id }) ?? false;
