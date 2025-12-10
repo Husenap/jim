@@ -66,8 +66,13 @@ export const create = mutation({
     activeWorkoutId: v.id("activeWorkouts"),
     title: v.string(),
     description: v.optional(v.string()),
+    startTime: v.number(),
+    endTime: v.number(),
   },
-  handler: async (ctx, { activeWorkoutId, title, description }) => {
+  handler: async (
+    ctx,
+    { activeWorkoutId, title, description, startTime, endTime },
+  ) => {
     const user = await getCurrentUser(ctx);
     const activeWorkout = await ctx
       .table("activeWorkouts")
@@ -88,8 +93,8 @@ export const create = mutation({
       exercises: cleanExercises,
       userId: activeWorkout.userId,
       bodyweight: activeWorkout.bodyweight,
-      startTime: activeWorkout._creationTime,
-      endTime: Date.now(),
+      startTime,
+      endTime,
     });
 
     for (const exercise of cleanExercises) {
@@ -155,15 +160,14 @@ export const paginatedWorkouts = query({
 
       if (userId) {
         results = await ctx
-          .table("users")
-          .getX(userId)
-          .edgeX("workouts")
-          .order("desc")
+          .table("workouts")
+          .order("desc", "by_start_time")
+          .filter((q) => q.eq(q.field("userId"), userId))
           .paginate(paginationOpts);
       } else if (discovery) {
         results = await ctx
           .table("workouts")
-          .order("desc")
+          .order("desc", "by_start_time")
           .paginate(paginationOpts);
       } else {
         const followees = await user.edgeX("followees").map((f) => f._id);
@@ -171,10 +175,10 @@ export const paginatedWorkouts = query({
 
         results = await ctx
           .table("workouts")
+          .order("desc", "by_start_time")
           .filter((q) =>
             q.or(...followees.map((id) => q.eq(q.field("userId"), id))),
           )
-          .order("desc")
           .paginate(paginationOpts);
       }
 

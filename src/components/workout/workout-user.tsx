@@ -1,7 +1,7 @@
 "use client";
 
 import { usePostContext } from "@/components/post/post-context";
-import { humanReadibleTimeDiff } from "@/utils/time-diff";
+import { humanReadableTimeDiff } from "@/utils/time-diff";
 import { User } from "@heroui/react";
 import Link from "next/link";
 
@@ -17,8 +17,8 @@ export default function WorkoutUser() {
       href={`/user/${user.username}`}
       avatarProps={{ src: user.imageURL }}
       name={user.name}
-      description={humanReadibleTimeDiff({
-        startTime: workout._creationTime,
+      description={humanReadableTimeDiff({
+        startTime: workout.startTime,
       })}
     />
   );

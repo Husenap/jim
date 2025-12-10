@@ -1,6 +1,6 @@
 import { usePostContext } from "@/components/post/post-context";
 import { TypographyH4 } from "@/components/typography";
-import { humanReadiableDuration } from "@/utils/time-diff";
+import { humanReadableDuration } from "@/utils/time-diff";
 import countSets from "@/utils/workout/sets";
 import calculateVolume from "@/utils/workout/volume";
 import { useMemo } from "react";
@@ -13,9 +13,9 @@ export default function WorkoutStats() {
   const time = useMemo(
     () =>
       workout.startTime
-        ? humanReadiableDuration({
+        ? humanReadableDuration({
             startTime: workout.startTime,
-            endTime: workout._creationTime,
+            endTime: workout.endTime,
             includeSeconds: false,
           })
         : undefined,

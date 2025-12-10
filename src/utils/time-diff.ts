@@ -1,19 +1,32 @@
-function calculateTimeDiff({ startTime, endTime }: { startTime?: number | Date, endTime?: number | Date }) {
-  startTime = startTime ?? new Date();
-  if (startTime instanceof Date) {
-    startTime = startTime.getTime();
+function timeToMillis(time?: number | Date) {
+  time = time ?? new Date();
+  if (time instanceof Date) {
+    time = time.getTime();
   }
-  endTime = endTime ?? new Date();
-  if (endTime instanceof Date) {
-    endTime = endTime.getTime();
-  }
+  return time;
+}
 
+function calculateTimeDiff({
+  startTime,
+  endTime,
+}: {
+  startTime?: number | Date;
+  endTime?: number | Date;
+}) {
+  startTime = timeToMillis(startTime);
+  endTime = timeToMillis(endTime);
   return endTime - startTime;
 }
 
-export function humanReadibleTimeDiff({ startTime, endTime }: { startTime?: number | Date, endTime?: number | Date }): string {
-  let timeDifference = calculateTimeDiff({ startTime, endTime })
-  const tense = timeDifference > 0 ? 'ago' : 'from now';
+export function humanReadableTimeDiff({
+  startTime,
+  endTime,
+}: {
+  startTime?: number | Date;
+  endTime?: number | Date;
+}): string {
+  let timeDifference = calculateTimeDiff({ startTime, endTime });
+  const tense = timeDifference > 0 ? "ago" : "from now";
   timeDifference = Math.abs(timeDifference);
 
   const secondsAgo = timeDifference / 1000;
@@ -71,17 +84,19 @@ export function humanReadibleTimeDiff({ startTime, endTime }: { startTime?: numb
     }
   }
   return "Now";
-};
+}
 
-export function humanReadiableDuration({ startTime, endTime, includeSeconds = true }: { startTime?: number | Date, endTime?: number | Date, includeSeconds?: boolean }) {
-  startTime = startTime ?? new Date();
-  if (startTime instanceof Date) {
-    startTime = startTime.getTime();
-  }
-  endTime = endTime ?? new Date();
-  if (endTime instanceof Date) {
-    endTime = endTime.getTime();
-  }
+export function humanReadableDuration({
+  startTime,
+  endTime,
+  includeSeconds = true,
+}: {
+  startTime?: number | Date;
+  endTime?: number | Date;
+  includeSeconds?: boolean;
+}) {
+  startTime = timeToMillis(startTime);
+  endTime = timeToMillis(endTime);
 
   const timeDifference = Math.abs(calculateTimeDiff({ startTime, endTime }));
 
@@ -96,7 +111,7 @@ export function humanReadiableDuration({ startTime, endTime, includeSeconds = tr
   if (minutes >= 1) {
     parts.push(`${minutes}min`);
   }
-  if (includeSeconds || parts.length === 0) {
+  if ((includeSeconds && seconds >= 1) || parts.length === 0) {
     parts.push(`${seconds}s`);
   }
   return parts.join(" ");

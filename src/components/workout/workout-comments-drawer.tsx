@@ -3,7 +3,7 @@ import DrawerPageContainer from "@/components/drawer-page-container";
 import { usePostContext } from "@/components/post/post-context";
 import WorkoutTitleDescription from "@/components/workout/workout-title-description";
 import WorkoutUser from "@/components/workout/workout-user";
-import { humanReadibleTimeDiff } from "@/utils/time-diff";
+import { humanReadableTimeDiff } from "@/utils/time-diff";
 import {
   Avatar,
   Button,
@@ -85,7 +85,7 @@ export default function WorkoutCommentsDrawer() {
                         {comment.author.name}
                       </span>
                       <span className="text-foreground/70 text-sm">
-                        {humanReadibleTimeDiff({
+                        {humanReadableTimeDiff({
                           startTime: comment._creationTime,
                         })}
                       </span>
