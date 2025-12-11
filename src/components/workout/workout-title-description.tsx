@@ -36,7 +36,9 @@ export default function WorkoutTitleDescription() {
   return (
     <div>
       <TypographyH1>{workout.title}</TypographyH1>
-      <TypographyH2>{...descriptionWithMentions}</TypographyH2>
+      {descriptionWithMentions.length > 0 && (
+        <TypographyH2>{...descriptionWithMentions}</TypographyH2>
+      )}
     </div>
   );
 }
