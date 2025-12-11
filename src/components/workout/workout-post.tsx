@@ -101,10 +101,11 @@ export default function WorkoutPost() {
                   : undefined
               }
               src={w.exercise.imageURL}
-              size="sm"
               icon={<Dumbbell />}
             />
-            {w.sets.length} sets {w.exercise.name}
+            <span className="flex-1">
+              {w.sets.length} sets {w.exercise.name}
+            </span>
           </div>
         ))}
         {workout.exercises.length > 3 && (
