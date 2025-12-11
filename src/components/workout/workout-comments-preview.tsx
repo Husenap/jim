@@ -1,5 +1,5 @@
 import { usePostContext } from "@/components/post/post-context";
-import { Avatar, Divider } from "@heroui/react";
+import { Avatar } from "@heroui/react";
 
 export default function WorkoutCommentsPreview() {
   const { workout, commentsDisclosure, currentUser } = usePostContext();
@@ -17,7 +17,7 @@ export default function WorkoutCommentsPreview() {
           {workout.comments.slice(0, 2).map((comment) => (
             <div key={comment._id} className="flex flex-row gap-2">
               <Avatar size="sm" src={comment.author.imageURL} />
-              <span className="pt-1">
+              <span className="flex-1 pt-1">
                 <span className="pr-2 font-semibold">
                   {comment.author.name}
                 </span>
@@ -27,7 +27,7 @@ export default function WorkoutCommentsPreview() {
           ))}
           <div className="flex flex-row gap-2">
             {currentUser && <Avatar size="sm" src={currentUser.imageURL} />}
-            <span className="pt-1 text-foreground/70">Write a comment...</span>
+            <span className="text-foreground/70 pt-1">Write a comment...</span>
           </div>
         </div>
       </div>
