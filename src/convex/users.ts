@@ -90,11 +90,33 @@ export const followees = query({
 export const search = query({
   args: { search: v.string() },
   handler: async (ctx, { search }) => {
-    return await ctx
-      .table("users")
-      .search("search_username", (q) => q.search("username", search))
-      .take(15)
-      .docs();
+    const user = await getCurrentUserOrThrow(ctx);
+
+    if (search === "") {
+      return user.edge("followees").docs();
+    }
+
+    const map = new Map();
+    const groups = await Promise.all([
+      ctx
+        .table("users")
+        .search("search_name", (q) => q.search("name", search))
+        .filter((q) => q.neq(q.field("_id"), user._id))
+        .take(15)
+        .docs(),
+      ctx
+        .table("users")
+        .search("search_username", (q) => q.search("username", search))
+        .filter((q) => q.neq(q.field("_id"), user._id))
+        .take(15)
+        .docs(),
+    ]);
+    for (const group of groups) {
+      for (const user of group) {
+        map.set(user._id, user);
+      }
+    }
+    return [...map.values()];
   },
 });
 

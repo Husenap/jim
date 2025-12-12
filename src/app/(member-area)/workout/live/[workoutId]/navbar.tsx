@@ -2,6 +2,7 @@ import { useActiveWorkoutContext } from "@/components/active-workout/active-work
 import BackButton from "@/components/back-button";
 import ConfirmationDialog from "@/components/confirmation-dialog";
 import DrawerPageContainer from "@/components/drawer-page-container";
+import TextareaWithMentions from "@/components/input/textarea-with-mentions";
 import { TypographyH4 } from "@/components/typography";
 import { api } from "@/convex/_generated/api";
 import { humanReadableDuration } from "@/utils/time-diff";
@@ -14,7 +15,6 @@ import {
   DrawerContent,
   Input,
   Progress,
-  Textarea,
   TimeInput,
   useDisclosure,
 } from "@heroui/react";
@@ -252,7 +252,7 @@ function WorkoutForm({ onClose }: { onClose: () => void }) {
           onValueChange={setTitle}
           isClearable
         />
-        <Textarea
+        <TextareaWithMentions
           label="Description"
           labelPlacement="outside"
           name="description"

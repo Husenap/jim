@@ -1,4 +1,4 @@
-![](./app/opengraph-image.png)
+![](./src/app/opengraph-image.png)
 
 # Jim
 

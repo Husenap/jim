@@ -127,6 +127,7 @@ const schema = defineEntSchema({
     .index("externalId", ["externalId"])
     .index("username", ["username"])
     .searchIndex("search_username", { searchField: "username" })
+    .searchIndex("search_name", { searchField: "name" })
     .edges("followers", { to: "users", inverse: "followees" })
     .edges("exercises", { ref: "ownerId" })
     .edges("routines", { ref: "ownerId" })
