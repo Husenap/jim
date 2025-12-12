@@ -4,26 +4,29 @@ import Navbar from "@/app/(member-area)/home/search/navbar";
 import FullscreenSpinner from "@/components/fullscreen-spinner";
 import PageContainer from "@/components/page-container";
 import { api } from "@/convex/_generated/api";
-import { useQueryWithStatus } from "@/utils/use-query-with-status";
 import { Button, User } from "@heroui/react";
+import { useQuery } from "convex-helpers/react/cache/hooks";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
   const [search, setSearch] = useState("");
 
-  const {
-    data: users,
-    isSuccess,
-    isPending,
-  } = useQueryWithStatus(api.users.search, {
+  const rawUsers = useQuery(api.users.search, {
     search,
   });
+  const [users, setUsers] = useState<typeof rawUsers>(undefined);
+  useEffect(() => {
+    if (rawUsers) {
+      setUsers(rawUsers);
+    }
+  }, [rawUsers]);
 
   return (
     <PageContainer topNavbar={<Navbar onSearch={setSearch} />}>
-      {isPending && <FullscreenSpinner />}
-      {isSuccess && (
+      {users === undefined ? (
+        <FullscreenSpinner />
+      ) : (
         <>
           {users.length <= 0 ? (
             <span>No users found.</span>
