@@ -110,7 +110,7 @@ export default function TextareaWithMentions(props: TextAreaProps) {
         wrapperRef={inputWrapperRef}
         ref={inputRef}
         {...props}
-        onFocusChange={(focused) => setTimeout(() => setFocus(focused), 100)}
+        onFocusChange={setFocus}
       />
     </>
   );
