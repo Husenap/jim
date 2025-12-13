@@ -62,7 +62,7 @@ export default function TextareaWithMentions(props: TextAreaProps) {
               triggerType="listbox"
               placement="bottom-start"
               disableDialogFocus
-              isOpen={!!currentMatch}
+              isOpen={currentMatch && focus}
               shouldCloseOnBlur={false}
               shouldCloseOnScroll={false}
               classNames={{
@@ -86,6 +86,7 @@ export default function TextareaWithMentions(props: TextAreaProps) {
                         props.onValueChange?.(
                           value.replace(reMentionAtEnd, `@${user.username} `),
                         );
+                        inputRef.current?.focus();
                       }}
                     >
                       <User
