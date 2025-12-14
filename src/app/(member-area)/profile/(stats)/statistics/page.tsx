@@ -254,9 +254,12 @@ export default function Page() {
                   <TableRow>
                     <TableCell>Total</TableCell>
                     <TableCell className="text-right">
-                      {_(setsPerMuscle)
-                        .values()
-                        .reduce((a, b) => a + b, 0)}
+                      {Math.round(
+                        10.0 *
+                          _(setsPerMuscle)
+                            .values()
+                            .reduce((a, b) => a + b, 0),
+                      ) / 10.0}
                     </TableCell>
                   </TableRow>
                   {_.chain(tableRows)
