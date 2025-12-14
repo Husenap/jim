@@ -321,27 +321,18 @@ function ExerciseSet({
     [isMutable, rows],
   );
 
-  const classNames = {
-    th: "bg-transparent text-foreground/70 border-b border-divider",
-    td: [
-      "group-data-[first=true]/tr:first:before:rounded-none",
-      "group-data-[first=true]/tr:last:before:rounded-none",
-      "group-data-[middle=true]/tr:before:rounded-none",
-      "group-data-[last=true]/tr:first:before:rounded-none",
-      "group-data-[last=true]/tr:last:before:rounded-none",
-      "group-data-[odd=true]/tr:before:bg-default/40",
-    ],
-  };
-
   return (
     <>
       <Table
         className="-mx-2 w-auto"
-        classNames={classNames}
+        classNames={{
+          thead: "[&>tr]:last:hidden",
+          th: "bg-transparent text-foreground/70 border-b border-divider",
+          td: "group-data-[odd=true]/tr:bg-default/40",
+        }}
         removeWrapper
         radius="none"
-        aria-label="Sets"
-        isStriped
+        aria-label={`Sets for ${exercise.name}`}
       >
         <TableHeader>
           {columns.map((column) => (
