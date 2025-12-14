@@ -39,6 +39,9 @@ const nextConfig: NextConfig = {
       ],
     },
   ],
+  experimental: {
+    clientTraceMetadata: ["sentry-trace", "baggage"],
+  },
 };
 
 const sentryConfig = withSentryConfig(nextConfig, {
