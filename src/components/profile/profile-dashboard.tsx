@@ -1,7 +1,7 @@
 import ExercisesDrawer from "@/components/exercise-list/exercises-drawer";
 import { TypographyH2 } from "@/components/typography";
 import { Button } from "@heroui/react";
-import { Calendar, ChartLine, Dumbbell, PersonStanding } from "lucide-react";
+import { BicepsFlexed, Calendar, ChartLine, Dumbbell } from "lucide-react";
 import Link from "next/link";
 
 export default function ProfileDashboard() {
@@ -10,11 +10,11 @@ export default function ProfileDashboard() {
       <TypographyH2>Dashboard</TypographyH2>
       <div className="grid grid-cols-2 grid-rows-2 gap-2">
         <Button
-          startContent={<ChartLine />}
+          startContent={<BicepsFlexed />}
           as={Link}
           href="profile/statistics"
         >
-          Statistics
+          Muscles
         </Button>
 
         <ExercisesDrawer>
@@ -25,12 +25,8 @@ export default function ProfileDashboard() {
           )}
         </ExercisesDrawer>
 
-        <Button
-          startContent={<PersonStanding />}
-          as={Link}
-          href="profile/measures"
-        >
-          Measures
+        <Button startContent={<ChartLine />} as={Link} href="profile/measures">
+          Bodyweight
         </Button>
 
         <Button startContent={<Calendar />} as={Link} href="profile/calendar">

@@ -82,7 +82,8 @@ export default function Page() {
     const fromDate = DateTime.local().startOf("day").minus({ weeks: 1 });
 
     for (const workout of data) {
-      if (DateTime.fromMillis(workout.date).startOf("day") < fromDate) continue;
+      if (DateTime.fromMillis(workout.date).startOf("day") <= fromDate)
+        continue;
       for (const exercise of workout.exercises) {
         const muscleGroups = exercise.muscleGroups;
         const sets = exercise.numSets;
