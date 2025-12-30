@@ -2,8 +2,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import countSets, { updateSetData } from "@/utils/workout/sets";
 import calculateVolume from "@/utils/workout/volume";
-import { useQuery } from "convex-helpers/react/cache/hooks";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useMemo } from "react";
 
 export function useActiveWorkout({

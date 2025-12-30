@@ -68,6 +68,9 @@ importers:
       '@sentry/nextjs':
         specifier: 10.20.0
         version: 10.20.0(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(next@16.0.7(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(webpack@5.98.0)
+      '@typescript/native-preview':
+        specifier: 7.0.0-dev.20251230.1
+        version: 7.0.0-dev.20251230.1
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -78,14 +81,14 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       convex:
-        specifier: ^1.31.0
-        version: 1.31.0(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
+        specifier: ^1.31.2
+        version: 1.31.2(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
       convex-ents:
         specifier: ^0.16.0
-        version: 0.16.0(convex@1.31.0(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3))
+        version: 0.16.0(convex@1.31.2(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3))
       convex-helpers:
         specifier: ^0.1.105
-        version: 0.1.105(@standard-schema/spec@1.0.0)(convex@1.31.0(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.7.2)(zod@4.1.12)
+        version: 0.1.105(@standard-schema/spec@1.0.0)(convex@1.31.2(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.7.2)(zod@4.1.12)
       framer-motion:
         specifier: ^12.23.24
         version: 12.23.24(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -96,8 +99,8 @@ importers:
         specifier: 1.15.0
         version: 1.15.0
       lucide-react:
-        specifier: ^0.556.0
-        version: 0.556.0(react@19.2.3)
+        specifier: ^0.562.0
+        version: 0.562.0(react@19.2.3)
       luxon:
         specifier: ^3.7.2
         version: 3.7.2
@@ -2799,6 +2802,45 @@ packages:
   '@types/web-push@3.6.4':
     resolution: {integrity: sha512-GnJmSr40H3RAnj0s34FNTcJi1hmWFV5KXugE0mYWnYhgTAHLJ/dJKAwDmvPJYMke0RplY2XE9LnM4hqSqKIjhQ==}
 
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20251230.1':
+    resolution: {integrity: sha512-JRyr0mzauRgccWsRhIhHzTGRZmADp/y/bF9qKcufDDVdQiziEnVH1rtg0ePmNWwaiBN0wtMvFC1FJBuDwOBbpw==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20251230.1':
+    resolution: {integrity: sha512-BqDG8vVWf5eS8pSPZAE2+SSABeaBzeO0SFK8dsValhxFXU9fOvx+ipjwx9XSP/mmiI5dGrLWNWFCLpHLz+5HCA==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20251230.1':
+    resolution: {integrity: sha512-ZEaZ4NjwEpY74rsXQKYDAOOniTi5gdfj4J6SKycXQfkKDcceiCNAtHKKqg3mKbbqo5t9LDKUTrNvXZZcApfVmQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20251230.1':
+    resolution: {integrity: sha512-blHrcAeT4DWu3P9xROzHNJQyqEI+bpxbDlbKuaHjoBmOQcDkWqzgC77H6PchrMy6XS06kiso5r79YB1QB9fdrA==}
+    cpu: [arm]
+    os: [linux]
+
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20251230.1':
+    resolution: {integrity: sha512-spqetji1aYItC/6gmcdETQt5c9HLN/kAAEc1Tp+AOFWOnYWU68Ba7KobFNJJ7MXuqRl7YfceCALGVgUCh+/a/g==}
+    cpu: [x64]
+    os: [linux]
+
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20251230.1':
+    resolution: {integrity: sha512-0v7xabWEQZF+WEcYyv3nniPNnP4Xdyeli0uOIiZgAkdNNP32boTOMGGdrsj6zkVUiG9/Dj2I4ALWLZ7YdSpcpQ==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20251230.1':
+    resolution: {integrity: sha512-Na009pIwwMENmb/DE6AErXom2CmSepqfw+ZklnPLxLrrf4JFxuB2HNAdjtVQ+EYWWWd5IVNpJij8qhRG/j2Nhw==}
+    cpu: [x64]
+    os: [win32]
+
+  '@typescript/native-preview@7.0.0-dev.20251230.1':
+    resolution: {integrity: sha512-nZOKxRCAkE6675R4n2dZIAwqaHc+R6zlqMRhf08chxQjT8O46tjzm0sBCo2Aqwqlc/zfi+a8NZi6PnVj8mN2Wg==}
+    hasBin: true
+
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
 
@@ -3030,8 +3072,8 @@ packages:
       zod:
         optional: true
 
-  convex@1.31.0:
-    resolution: {integrity: sha512-ht3dtpWQmxX62T8PT3p/5PDlRzSW5p2IDTP4exKjQ5dqmvhtn1wLFakJAX4CCeu1s0Ch0dKY5g2dk/wETTRAOw==}
+  convex@1.31.2:
+    resolution: {integrity: sha512-RFuJOwlL2bM5X63egvBI5ZZZH6wESREpAbHsLjODxzDeJuewTLKrEnbvHV/NWp1uJYpgEFJziuGHmZ0tnAmmJg==}
     engines: {node: '>=18.0.0', npm: '>=7.0.0'}
     hasBin: true
     peerDependencies:
@@ -3477,8 +3519,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.556.0:
-    resolution: {integrity: sha512-iOb8dRk7kLaYBZhR2VlV1CeJGxChBgUthpSP8wom9jfj79qovgG6qcSdiy6vkoREKPnbUYzJsCn4o4PtG3Iy+A==}
+  lucide-react@0.562.0:
+    resolution: {integrity: sha512-82hOAu7y0dbVuFfmO4bYF1XEwYk/mEbM5E+b1jgci/udUBEE/R7LF5Ip0CCEmXe8AybRM8L+04eP+LGZeDvkiw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -7680,6 +7722,37 @@ snapshots:
     dependencies:
       '@types/node': 24.10.1
 
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20251230.1':
+    optional: true
+
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20251230.1':
+    optional: true
+
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20251230.1':
+    optional: true
+
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20251230.1':
+    optional: true
+
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20251230.1':
+    optional: true
+
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20251230.1':
+    optional: true
+
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20251230.1':
+    optional: true
+
+  '@typescript/native-preview@7.0.0-dev.20251230.1':
+    optionalDependencies:
+      '@typescript/native-preview-darwin-arm64': 7.0.0-dev.20251230.1
+      '@typescript/native-preview-darwin-x64': 7.0.0-dev.20251230.1
+      '@typescript/native-preview-linux-arm': 7.0.0-dev.20251230.1
+      '@typescript/native-preview-linux-arm64': 7.0.0-dev.20251230.1
+      '@typescript/native-preview-linux-x64': 7.0.0-dev.20251230.1
+      '@typescript/native-preview-win32-arm64': 7.0.0-dev.20251230.1
+      '@typescript/native-preview-win32-x64': 7.0.0-dev.20251230.1
+
   '@webassemblyjs/ast@1.14.1':
     dependencies:
       '@webassemblyjs/helper-numbers': 1.13.2
@@ -7909,20 +7982,20 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  convex-ents@0.16.0(convex@1.31.0(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)):
+  convex-ents@0.16.0(convex@1.31.2(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)):
     dependencies:
-      convex: 1.31.0(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
+      convex: 1.31.2(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
 
-  convex-helpers@0.1.105(@standard-schema/spec@1.0.0)(convex@1.31.0(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.7.2)(zod@4.1.12):
+  convex-helpers@0.1.105(@standard-schema/spec@1.0.0)(convex@1.31.2(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.7.2)(zod@4.1.12):
     dependencies:
-      convex: 1.31.0(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
+      convex: 1.31.2(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)
     optionalDependencies:
       '@standard-schema/spec': 1.0.0
       react: 19.2.3
       typescript: 5.7.2
       zod: 4.1.12
 
-  convex@1.31.0(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3):
+  convex@1.31.2(@clerk/clerk-react@5.58.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3):
     dependencies:
       esbuild: 0.25.4
       prettier: 3.6.2
@@ -8304,7 +8377,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.556.0(react@19.2.3):
+  lucide-react@0.562.0(react@19.2.3):
     dependencies:
       react: 19.2.3
 
